@@ -1,18 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour
+public class EnemyController : Entities
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	public bool isSkeleton;
+	public bool isOgre;
+	public bool isZombie;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	public override void Init()
+	{
+		base.Init();
+
+		if (isSkeleton)
+		{
+			stats = (EntityStatsSO)ScriptableObject.CreateInstance(typeof(EntityStatsSO));
+			AssetDatabase.LoadAssetAtPath("Assets/ScriptableObjects/Entities/Enemy_skeleton.asset", typeof(EntityStatsSO));
+		}
+		if (isOgre)
+		{
+			stats = (EntityStatsSO)ScriptableObject.CreateInstance(typeof(EntityStatsSO));
+			AssetDatabase.LoadAssetAtPath("Assets/ScriptableObjects/Entities/Enemy_skeleton.asset", typeof(EntityStatsSO));
+		}
+		if (isZombie)
+		{
+			stats = (EntityStatsSO)ScriptableObject.CreateInstance(typeof(EntityStatsSO));
+			AssetDatabase.LoadAssetAtPath("Assets/ScriptableObjects/Entities/Enemy_skeleton.asset", typeof(EntityStatsSO));
+		}
+	}
 }
