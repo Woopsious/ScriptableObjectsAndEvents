@@ -3,9 +3,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "EntityStatsScriptableObject", menuName = "EntityStats")]
 public class EntityStatsSO : ScriptableObject
 {
+	public string entityName;
+
 	[Header("health")]
 	public int maxHealth;
-	public int health;
 
 	[Header("Resistances")]
 	public int physicalDamageResistance;
@@ -19,9 +20,4 @@ public class EntityStatsSO : ScriptableObject
 
 	[Header("Mana")]
 	public int maxMana;
-
-	private void OnEnable()
-	{
-		maxHealth = health;
-	}
 }

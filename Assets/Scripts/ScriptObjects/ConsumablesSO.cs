@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ConsumablesScriptableObject", menuName = "Items/Consumables")]
 public class ConsumablesSO : ItemsSO
 {
-	[Header("Consumable toggles")]
+	[Header("Consumable Info")]
 	public int healthRestoration;
 	public int manaRestoration;
 }

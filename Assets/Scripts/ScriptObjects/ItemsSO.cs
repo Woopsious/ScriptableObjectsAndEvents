@@ -4,10 +4,11 @@ using UnityEngine.UI;
 [CreateAssetMenu(fileName = "ItemsScriptableObject", menuName = "Items")]
 public class ItemsSO : ScriptableObject
 {
+	[Header("Item Info")]
 	public Image itemImage;
 	public int ItemPrice;
 
-	[Header("Item toggles")]
+	[Header("Item Toggles")]
 	public bool isConsumable;
 	public bool isEquipable;
 

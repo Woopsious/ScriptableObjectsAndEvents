@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class PlayerController : Entities
 {
+	public int playerLevel;
+
 	public override void Update()
 	{
+		base.Update();
+
 		if (Input.GetKey(KeyCode.W))
 		{
 			transform.Translate(Vector3.forward * stats.moveSpeed * Time.deltaTime);
