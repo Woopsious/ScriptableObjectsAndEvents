@@ -19,11 +19,9 @@ public class EntityStatsSO : ScriptableObject
 
 	[Header("Mana")]
 	public int maxMana;
-	public int mana;
 
 	private void OnEnable()
 	{
 		maxHealth = health;
-		maxMana = mana;
 	}
 }

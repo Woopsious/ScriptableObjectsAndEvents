@@ -14,5 +14,4 @@ public class ItemsSO : ScriptableObject
 	[Header("Is Inventory Stackable")]
 	public bool isStackable;
 	public int MaxStackCount;
-	public int currentStackCount;
 }
