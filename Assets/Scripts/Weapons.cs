@@ -2,63 +2,42 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapons : MonoBehaviour
+public class Weapons : MonoBehaviour, IGetStatModifier
 {
+	[Header("Weapon Info")]
 	public WeaponsSO weaponType;
 
-	[Header("Weapon Info")]
-	public int weaponItemLevel;
-	public int damage;
-	public float attackSpeed;
-
-	[Header("Damage Type")]
-	public DamageType damageType;
-	public enum DamageType
-	{
-		isPhysicalDamageType, isPoisonDamageType, isFireDamageType, isIceDamageType
-	}
-	[Header("Rarity Type")]
+	[Header("Changeable")]
+	public int itemLevel;
 	public Rarity rarity;
 	public enum Rarity
 	{
 		isCommon, isRare, isLegendary
 	}
-
-	[Header("Ranged Weapon Toggles")]
-	public bool isRangedWeapon;
-	public float attackRange;
-	public float maxAttackRange;
-
-	[Header("Magic Weapon Toggles")]
-	public int mana;
-	public int manaCost;
+	[Header("UnChangeable")]
+	public int damage;
+	public int bonusMana;
+	private float modifier;
 
 	public void Start()
 	{
-		
+		Init();
 	}
 	public void Init()
 	{
+		GetStatModifier(itemLevel, (IGetStatModifier.Rarity)rarity);
+	}
 
-	}
-	public void OnEnable()
+	public void GetStatModifier(int itemLevel, IGetStatModifier.Rarity rarity)
 	{
-		GetModifier(rarity);
-	}
-	public void GetModifier(Rarity rarity)
-	{
-		float modifier = 1.25f;
-		/*
-		if (rarity == Rarity.isLegendary) { modifier += 0.25f; }
-		if (rarity == Rarity.isRare) { modifier += 0.1f; }
+		float modifier = 1f;
+		if (rarity == IGetStatModifier.Rarity.isLegendary) { modifier += 0.25f; } //get rarity modifier
+		if (rarity == IGetStatModifier.Rarity.isRare) { modifier += 0.1f; }
 		else { modifier += 0; }
 
-		modifier += (float)WeaponItemLevel / 10;
+		modifier += (float)itemLevel / 20 - 0.025f;  //get item level modifier
 
-		Debug.Log(modifier);
-		Debug.Log(WeaponItemLevel / 10);
-
-		newDamage = (int)(damage * modifier);
-		*/
+		damage = (int)(weaponType.baseDamage * modifier);
+		bonusMana = (int)(weaponType.baseBonusMana * modifier);
 	}
 }

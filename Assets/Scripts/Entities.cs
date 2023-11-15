@@ -5,16 +5,12 @@ using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-public class Entities : MonoBehaviour
+public class Entities : MonoBehaviour, IDamagable
 {
-	public EntityType entityType;
-	public enum EntityType
-	{
-		isPlayer, isZombie, isSkeleton, isOgre
-	}
+	[Header("Entity Info")]
 	public EntityStatsSO stats;
 
-	[Header("health")]
+	[Header("Health")]
 	public int maxHealth;
 	public int currentHealth;
 
@@ -32,15 +28,9 @@ public class Entities : MonoBehaviour
 	public int maxMana;
 	public int currentMana;
 
-	public WeaponsSO weapon;
-
-	public int currentWeaponDamage;
-
-	public DamageType damageType;
-	public enum DamageType
-	{
-		isPhysicalDamageType, isPoisonDamageType, isFireDamageType, isIceDamageType
-	}
+	[Header("Equipped WeaponInfo")]
+	public GameObject equippedWeaponContainer;
+	public Weapons equippedWeapon;
 
 	public void Start()
 	{
@@ -48,7 +38,7 @@ public class Entities : MonoBehaviour
 	}
 	public virtual void Update()
 	{
-		currentWeaponDamage = weapon.newDamage;
+
 	}
 
 	public virtual void Init()
@@ -70,47 +60,44 @@ public class Entities : MonoBehaviour
 		if (currentHealth > maxHealth)
 			currentHealth = maxHealth;
 	}
-	public virtual int CalculateDamageResistance(int damage, DamageType damageType)
+	public void RecieveDamage(int damage, IDamagable.DamageType damageType)
 	{
-		if (damageType == DamageType.isPoisonDamageType)
+		Debug.Log("Obj name: " + stats.entityName + " | Damage recieved: " + damage);
+		if (damageType == IDamagable.DamageType.isPoisonDamageType)
 		{
 			Debug.Log("Poison Dmg res: " + poisonDamageResistance);
-			return damage -= poisonDamageResistance;
+			damage -= poisonDamageResistance;
 		}
-		if (damageType == DamageType.isFireDamageType)
+		if (damageType == IDamagable.DamageType.isFireDamageType)
 		{
 			Debug.Log("Fire Dmg res: " + fireDamageResistance);
-			return damage -= fireDamageResistance;
+			damage -= fireDamageResistance;
 		}
-		if (damageType == DamageType.isIceDamageType)
+		if (damageType == IDamagable.DamageType.isIceDamageType)
 		{
 			Debug.Log("Ice Dmg res: " + iceDamageResistance);
-			return damage -= iceDamageResistance;
+			damage -= iceDamageResistance;
 		}
 		else
 		{
 			Debug.Log("Physical Dmg res: " + physicalDamageResistance);
-			return damage -= physicalDamageResistance;
+			 damage -= physicalDamageResistance;
 		}
-	}
-	public virtual void RecieveDamage(int damage, DamageType damageType)
-	{
-		Debug.Log("Obj name: " + stats.entityName + " | Damage recieved: " + damage);
 
-		int healthLost = CalculateDamageResistance(damage, damageType);
-		if (healthLost < 2) //always deal 2 damage
-			healthLost = 2;
+		if (damage < 2) //always deal 2 damage
+			damage = 2;
 
-		Debug.Log("health lost after resistance: " + healthLost);
-		currentHealth -= healthLost;
+		Debug.Log("health lost after resistance: " + damage);
+		currentHealth -= damage;
 	}
 
 	public virtual void OnTriggerEnter(Collider other)
 	{
-		if (other.GetComponent<EnemyController>() != null)
+		if (other.GetComponent<EnemyController>() != null && equippedWeaponContainer.transform.GetChild(0).GetComponent<Weapons>() != null)
 		{
-			Debug.Log("Collision");
-			other.GetComponent<EnemyController>().RecieveDamage(weapon.newDamage, (DamageType)weapon.damageType);
+			equippedWeapon = equippedWeaponContainer.transform.GetChild(0).GetComponent<Weapons>();
+			other.GetComponent<EnemyController>().RecieveDamage(equippedWeapon.damage, 
+				(IDamagable.DamageType)equippedWeapon.weaponType.baseDamageType);
 		}
 	}
 }

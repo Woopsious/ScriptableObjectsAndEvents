@@ -58,12 +58,15 @@
     <Analyzer Include="E:\Unity\2022.3.9f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\IDamagable.cs" />
     <Compile Include="Assets\Scripts\Weapons.cs" />
+    <Compile Include="Assets\Scripts\IGetModifier.cs" />
     <Compile Include="Assets\Scripts\ScriptObjects\ItemsSO.cs" />
     <Compile Include="Assets\Scripts\EnemyController.cs" />
     <Compile Include="Assets\Scripts\EntityUi.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\ScriptObjects\EntityStatsSO.cs" />
+    <Compile Include="Assets\Scripts\HealthComponent.cs" />
     <Compile Include="Assets\Scripts\ScriptObjects\ConsumablesSO.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Entities.cs" />
