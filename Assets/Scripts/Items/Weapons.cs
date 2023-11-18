@@ -35,9 +35,21 @@ public class Weapons : MonoBehaviour, IGetStatModifier
 		if (rarity == IGetStatModifier.Rarity.isRare) { modifier += 0.1f; }
 		else { modifier += 0; }
 
-		modifier += (float)itemLevel / 20 - 0.025f;  //get item level modifier
+		modifier += (float)itemLevel / 20 - 0.025f;  //get level modifier
 
 		damage = (int)(weaponType.baseDamage * modifier);
 		bonusMana = (int)(weaponType.baseBonusMana * modifier);
+	}
+	public virtual void OnTriggerEnter(Collider other)
+	{
+		if (other.GetComponent<EntityHealth>() != null && other.GetComponent<EntityHealth>().isDamagable)
+		{
+			other.GetComponent<EntityHealth>().RecieveDamage(damage,
+				(IDamagable.DamageType)weaponType.baseDamageType);
+		}
+		else
+		{
+			Debug.Log(other.name);
+		}
 	}
 }

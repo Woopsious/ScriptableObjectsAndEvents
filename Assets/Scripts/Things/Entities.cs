@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Entities : MonoBehaviour, IDamagable
 {
 	[Header("Entity Info")]
-	public EntityStatsSO stats;
+	public EntityBaseStatsSO stats;
 
 	[Header("Health")]
 	public int maxHealth;
@@ -21,8 +22,8 @@ public class Entities : MonoBehaviour, IDamagable
 	public int iceDamageResistance;
 
 	[Header("Speed")]
-	public int moveSpeed;
-	public int turnSpeed;
+	public float moveSpeed;
+	public float turnSpeed;
 
 	[Header("Mana")]
 	public int maxMana;
@@ -31,6 +32,10 @@ public class Entities : MonoBehaviour, IDamagable
 	[Header("Equipped WeaponInfo")]
 	public GameObject equippedWeaponContainer;
 	public Weapons equippedWeapon;
+
+	[Header("Entity Body")]
+	public NavMeshAgent navMeshAgent;
+	public Rigidbody rb;
 
 	public void Start()
 	{
@@ -49,8 +54,8 @@ public class Entities : MonoBehaviour, IDamagable
 		poisonDamageResistance = stats.poisonDamageResistance;
 		fireDamageResistance = stats.fireDamageResistance;
 		iceDamageResistance = stats.iceDamageResistance;
-		moveSpeed = stats.moveSpeed;
-		turnSpeed = stats.turnSpeed;
+		moveSpeed = stats.navMeshMoveSpeed;
+		turnSpeed = stats.navMeshTurnSpeed;
 		maxMana = stats.maxMana;
 		currentMana = stats.maxMana;
 	}
@@ -89,15 +94,5 @@ public class Entities : MonoBehaviour, IDamagable
 
 		Debug.Log("health lost after resistance: " + damage);
 		currentHealth -= damage;
-	}
-
-	public virtual void OnTriggerEnter(Collider other)
-	{
-		if (other.GetComponent<EnemyController>() != null && equippedWeaponContainer.transform.GetChild(0).GetComponent<Weapons>() != null)
-		{
-			equippedWeapon = equippedWeaponContainer.transform.GetChild(0).GetComponent<Weapons>();
-			other.GetComponent<EnemyController>().RecieveDamage(equippedWeapon.damage, 
-				(IDamagable.DamageType)equippedWeapon.weaponType.baseDamageType);
-		}
 	}
 }

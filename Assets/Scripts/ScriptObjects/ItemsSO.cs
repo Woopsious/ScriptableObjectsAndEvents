@@ -8,8 +8,12 @@ public class ItemsSO : ScriptableObject
 	public Image itemImage;
 	public int ItemPrice;
 
-	[Header("Item Toggles")]
-	public bool isConsumable;
+	[Header("Item Type")]
+	public ItemType itemType;
+	public enum ItemType
+	{
+		isConsumable, isWeapon, isArmor
+	}
 	public bool isEquipable;
 
 	[Header("Is Inventory Stackable")]

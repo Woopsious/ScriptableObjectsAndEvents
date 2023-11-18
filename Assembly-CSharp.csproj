@@ -58,19 +58,28 @@
     <Analyzer Include="E:\Unity\2022.3.9f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\IDamagable.cs" />
-    <Compile Include="Assets\Scripts\Weapons.cs" />
-    <Compile Include="Assets\Scripts\IGetModifier.cs" />
+    <Compile Include="Assets\Scripts\Things\EntityController.cs" />
+    <Compile Include="Assets\Scripts\Items\Consumables.cs" />
+    <Compile Include="Assets\Scripts\Things\Things.cs" />
+    <Compile Include="Assets\Scripts\ScriptObjects\EntityBehavioursSO.cs" />
+    <Compile Include="Assets\Scripts\Things\Entities.cs" />
+    <Compile Include="Assets\Scripts\Items\DroppedItems.cs" />
+    <Compile Include="Assets\Scripts\Things\EntityHealthUi.cs" />
     <Compile Include="Assets\Scripts\ScriptObjects\ItemsSO.cs" />
-    <Compile Include="Assets\Scripts\EnemyController.cs" />
-    <Compile Include="Assets\Scripts\EntityUi.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\Interfaces\IDamagable.cs" />
+    <Compile Include="Assets\Scripts\Things\EntityBehaviour.cs" />
+    <Compile Include="Assets\Scripts\Interfaces\IGetModifier.cs" />
+    <Compile Include="Assets\Scripts\Things\EnemyController.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
-    <Compile Include="Assets\Scripts\ScriptObjects\EntityStatsSO.cs" />
-    <Compile Include="Assets\Scripts\HealthComponent.cs" />
     <Compile Include="Assets\Scripts\ScriptObjects\ConsumablesSO.cs" />
-    <Compile Include="Assets\Scripts\PlayerController.cs" />
-    <Compile Include="Assets\Scripts\Entities.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerInventory.cs" />
+    <Compile Include="Assets\Scripts\Things\WorldItems.cs" />
+    <Compile Include="Assets\Scripts\ScriptObjects\EntityBaseStatsSO.cs" />
     <Compile Include="Assets\Scripts\ScriptObjects\WeaponsSO.cs" />
+    <Compile Include="Assets\Scripts\Items\Weapons.cs" />
+    <Compile Include="Assets\Scripts\Things\EntityHealth.cs" />
+    <Compile Include="Assets\Scripts\Interactables.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -721,6 +730,9 @@
     <Reference Include="Unity.Services.Core">
       <HintPath>Library\ScriptAssemblies\Unity.Services.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.ProBuilder.AddOns.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.ProBuilder.AddOns.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Rider.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
     </Reference>
@@ -762,6 +774,9 @@
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ProBuilder.AssetIdRemapUtility">
+      <HintPath>Library\ScriptAssemblies\Unity.ProBuilder.AssetIdRemapUtility.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Purchasing">
       <HintPath>Library\ScriptAssemblies\UnityEngine.Purchasing.dll</HintPath>
@@ -817,6 +832,9 @@
     <Reference Include="UnityEditor.XR.LegacyInputHelpers">
       <HintPath>Library\ScriptAssemblies\UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.ProBuilder">
+      <HintPath>Library\ScriptAssemblies\Unity.ProBuilder.dll</HintPath>
+    </Reference>
     <Reference Include="Purchasing.Common">
       <HintPath>Library\ScriptAssemblies\Purchasing.Common.dll</HintPath>
     </Reference>
@@ -825,6 +843,9 @@
     </Reference>
     <Reference Include="Unity.Timeline">
       <HintPath>Library\ScriptAssemblies\Unity.Timeline.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ProBuilder.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.ProBuilder.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VisualScripting.SettingsProvider.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.SettingsProvider.Editor.dll</HintPath>

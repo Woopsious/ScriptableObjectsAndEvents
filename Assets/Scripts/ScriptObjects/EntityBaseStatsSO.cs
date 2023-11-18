@@ -1,7 +1,8 @@
 using UnityEngine;
+using UnityEngine.AI;
 
-[CreateAssetMenu(fileName = "EntityStatsScriptableObject", menuName = "EntityStats")]
-public class EntityStatsSO : ScriptableObject
+[CreateAssetMenu(fileName = "EntityStatsScriptableObject", menuName = "EntityBaseStats")]
+public class EntityBaseStatsSO : ScriptableObject
 {
 	public string entityName;
 
@@ -15,8 +16,8 @@ public class EntityStatsSO : ScriptableObject
 	public int iceDamageResistance;
 
 	[Header("Speed")]
-	public int moveSpeed;
-	public int turnSpeed;
+	public float navMeshMoveSpeed;
+	public int navMeshTurnSpeed;
 
 	[Header("Mana")]
 	public int maxMana;
