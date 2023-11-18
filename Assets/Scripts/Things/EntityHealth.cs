@@ -82,4 +82,5 @@ public class EntityHealth : MonoBehaviour
 		healthUi.UpdateHealthBar(currentHealth, maxHealth);	//ui not made atm
 		Debug.Log("health lost after resistance: " + damage + " | current health: " + currentHealth);
 	}
+
 }
