@@ -3,54 +3,29 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public class Weapons : MonoBehaviour, IGetStatModifier
+public class Weapons : DroppedItems, IGetStatModifier
 {
 	[Header("Weapon Info")]
-	public WeaponsSO weaponType;
-
-	[Header("Changeable")]
-	public int itemLevel;
-	public Rarity rarity;
-	public enum Rarity
-	{
-		isCommon, isRare, isLegendary
-	}
-	[Header("UnChangeable")]
 	public int damage;
 	public int bonusMana;
-	private float modifier;
+	public bool isEquipped;
 
-	public void Start()
+	public override void Start()
 	{
-		Init();
+		base.Start();
+		SetWeaponStats();
 	}
-	public void Init()
+	public void SetWeaponStats()
 	{
-		GetStatModifier(itemLevel, (IGetStatModifier.Rarity)rarity);
-	}
-
-	public void GetStatModifier(int itemLevel, IGetStatModifier.Rarity rarity)
-	{
-		float modifier = 1f;
-		if (rarity == IGetStatModifier.Rarity.isLegendary) { modifier += 0.25f; } //get rarity modifier
-		if (rarity == IGetStatModifier.Rarity.isRare) { modifier += 0.1f; }
-		else { modifier += 0; }
-
-		modifier += (float)itemLevel / 20 - 0.025f;  //get level modifier
-
-		damage = (int)(weaponType.baseDamage * modifier);
-		bonusMana = (int)(weaponType.baseBonusMana * modifier);
+		damage = (int)(weaponBaseRef.baseDamage * statModifier);
+		bonusMana = (int)(weaponBaseRef.baseBonusMana * statModifier);
 	}
 	public virtual void OnTriggerEnter(Collider other)
 	{
-		if (other.GetComponent<EntityHealth>() != null && other.GetComponent<EntityHealth>().isDamagable)
+		if (other.GetComponent<EntityHealth>() != null && isEquipped)
 		{
 			other.GetComponent<EntityHealth>().RecieveDamage(damage,
-				(IDamagable.DamageType)weaponType.baseDamageType);
-		}
-		else
-		{
-			Debug.Log(other.name);
+				(IDamagable.DamageType)weaponBaseRef.baseDamageType);
 		}
 	}
 }

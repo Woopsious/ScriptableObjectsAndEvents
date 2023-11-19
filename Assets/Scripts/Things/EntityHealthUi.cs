@@ -11,10 +11,6 @@ public class EntityHealthUi : MonoBehaviour
 
 	public void Start()
 	{
-		Init();
-	}
-	public void Init()
-	{
 		try
 		{
 			UiObj.transform.SetParent(FindObjectOfType<Canvas>().gameObject.transform);

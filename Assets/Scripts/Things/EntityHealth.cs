@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class EntityHealth : MonoBehaviour
 {
 	[Header("Health")]
-	public bool isDamagable;
 	public int maxHealth;
 	public int currentHealth;
 
@@ -23,17 +22,9 @@ public class EntityHealth : MonoBehaviour
 
 	public void Start()
 	{
-		Init();
+
 	}
 
-	//set up functions
-	public void Init()
-	{
-		if (GetComponent<EntityController>() == null)
-			{ Debug.LogWarning("EntityContriller Component Not Found"); return; }
-		else
-			SetHealthStats(GetComponent<EntityController>().entityBaseStats, 1f);
-	}
 	public void SetHealthStats(EntityBaseStatsSO entityBaseStats, float modifier)
 	{
 		maxHealth = (int)(entityBaseStats.maxHealth * modifier);
@@ -79,8 +70,7 @@ public class EntityHealth : MonoBehaviour
 			damage = 2;
 
 		currentHealth -= damage;
-		healthUi.UpdateHealthBar(currentHealth, maxHealth);	//ui not made atm
+		//healthUi.UpdateHealthBar(currentHealth, maxHealth);	//ui not made atm
 		Debug.Log("health lost after resistance: " + damage + " | current health: " + currentHealth);
 	}
-
 }

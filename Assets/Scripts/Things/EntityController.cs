@@ -8,31 +8,29 @@ public class EntityController : MonoBehaviour, IGetStatModifier
 {
 	public int entityLevel;
 	public EntityBaseStatsSO entityBaseStats;
+	public float statModifier;
 
 	private Rigidbody rb;
 
 	public void Start()
 	{
-		Init();
+		rb = GetComponent<Rigidbody>();
+		GetStatModifier(entityLevel, IGetStatModifier.Rarity.isCommon);
 	}
+
 	public virtual void Update()
 	{
 
 	}
 
-	public void Init()
-	{
-		rb = GetComponent<Rigidbody>();
-		GetStatModifier(entityLevel, IGetStatModifier.Rarity.isCommon);
-	}
 	public void GetStatModifier(int itemLevel, IGetStatModifier.Rarity rarity)
 	{
 		float modifier = 1f;
-		modifier += (float)itemLevel / 20 - 0.025f;  //get level modifier
+		statModifier = modifier + (itemLevel - 1f) / 20;  //get level modifier
 
 		if (GetComponent<EntityHealth>() == null)
 			{ Debug.LogWarning("EntityHealth Componenet not found"); return; }
 		else
-			GetComponent<EntityHealth>().SetHealthStats(entityBaseStats, modifier);
+			GetComponent<EntityHealth>().SetHealthStats(entityBaseStats, statModifier);
 	}
 }

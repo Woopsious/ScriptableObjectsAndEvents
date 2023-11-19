@@ -9,11 +9,6 @@ public class EntityBehaviour : MonoBehaviour
 
 	public void Start()
 	{
-		Init();
-	}
-
-	public void Init()
-	{
 		navMeshAgent = GetComponent<NavMeshAgent>();
 	}
 }
