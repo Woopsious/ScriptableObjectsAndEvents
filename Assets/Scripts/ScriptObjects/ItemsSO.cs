@@ -7,6 +7,7 @@ public class ItemsSO : ScriptableObject
 	[Header("Item Info")]
 	public Image itemImage;
 	public int ItemPrice;
+	public int ItemId;
 
 	[Header("Item Type")]
 	public ItemType itemType;

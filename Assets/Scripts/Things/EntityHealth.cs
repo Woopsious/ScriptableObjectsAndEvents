@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class EntityHealth : MonoBehaviour
+public class EntityHealth : MonoBehaviour, IGetStatModifier
 {
+	[Header("Entity Info")]
+	public EntityBaseStatsSO entityBaseStats;
+	public int entityLevel;
+	public float statModifier;
+
 	[Header("Health")]
 	public int maxHealth;
 	public int currentHealth;
@@ -20,12 +26,19 @@ public class EntityHealth : MonoBehaviour
 	[Header("Optional Refs")]
 	public EntityHealthUi healthUi;
 
+	public EntityDeathEvent onEntityDeath;
+
 	public void Start()
 	{
-
+		GetStatModifier(entityLevel, IGetStatModifier.Rarity.isCommon);
+	}
+	public void GetStatModifier(int level, IGetStatModifier.Rarity rarity)
+	{
+		float modifier = (level - 1f) / 20;  //get level modifier
+		SetHealthStats(modifier += 1);
 	}
 
-	public void SetHealthStats(EntityBaseStatsSO entityBaseStats, float modifier)
+	public void SetHealthStats(float modifier)
 	{
 		maxHealth = (int)(entityBaseStats.maxHealth * modifier);
 		currentHealth = (int)(entityBaseStats.maxHealth * modifier);
@@ -70,6 +83,9 @@ public class EntityHealth : MonoBehaviour
 			damage = 2;
 
 		currentHealth -= damage;
+		if (currentHealth <= 0)
+			onEntityDeath.TriggerEvent();
+
 		//healthUi.UpdateHealthBar(currentHealth, maxHealth);	//ui not made atm
 		Debug.Log("health lost after resistance: " + damage + " | current health: " + currentHealth);
 	}
