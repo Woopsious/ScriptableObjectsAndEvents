@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
@@ -27,6 +28,9 @@ public class EntityHealth : MonoBehaviour, IGetStatModifier
 	public EntityHealthUi healthUi;
 
 	public EntityDeathEvent onEntityDeath;
+
+	[Serializable]
+	public class EntityDeathEvent : UnityEvent { }
 
 	public void Start()
 	{
@@ -82,9 +86,12 @@ public class EntityHealth : MonoBehaviour, IGetStatModifier
 		if (damage < 2) //always deal 2 damage
 			damage = 2;
 
+		//making another event named onRecieveDamage like onEntityDeath i could invoke other actions like hit animations/sounds/knockback
+		//and then calling ui to update the health bar
+
 		currentHealth -= damage;
-		if (currentHealth <= 0)
-			onEntityDeath.TriggerEvent();
+		if (currentHealth >= 0)
+			onEntityDeath.Invoke();
 
 		//healthUi.UpdateHealthBar(currentHealth, maxHealth);	//ui not made atm
 		Debug.Log("health lost after resistance: " + damage + " | current health: " + currentHealth);

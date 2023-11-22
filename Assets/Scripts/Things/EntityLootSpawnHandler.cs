@@ -1,28 +1,28 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class LootSpawner : MonoBehaviour
+public class EntityLootSpawner : MonoBehaviour
 {
-	public void SpawnLootOnEntityDeath(GameObject obj)
+	public LootPoolsSO lootPool;
+
+	public Task SpawnLootOnEntityDeath()
 	{
-		if (obj.GetComponent<EntityController>() == null) return; //if comp exists grap lootpoll + create local refs
-
-		LootPoolsSO entityLootPool = obj.GetComponent<EntityController>().lootPool;
-		Vector3 position = obj.transform.position;
-
-		for (int i = 0; i < entityLootPool.minDroppedItemsAmount; i++) //spawn item from loot poll at death location
+		for (int i = 0; i < lootPool.minDroppedItemsAmount; i++) //spawn item from loot poll at death location
 		{
-			GameObject go = Instantiate(entityLootPool.lootPoolList[GetRandomNumber(entityLootPool.lootPoolList.Count)].gameObject,
-				position, Quaternion.identity);
+			GameObject go = Instantiate(lootPool.lootPoolList[GetRandomNumber(lootPool.lootPoolList.Count)].gameObject,
+				gameObject.transform.position, Quaternion.identity);
 
 			go.AddComponent<Interactables>(); //add interactables script. set randomized stats
 			go.GetComponent<DroppedItems>().OnItemDrop(SetRarity(), SetItemLevel());
 		}
+		return Task.CompletedTask;
 	}
+	//get stat modifier values
 	public DroppedItems.Rarity SetRarity()
 	{
 		float percentage = GetRandomNumber(100);
@@ -45,12 +45,10 @@ public class LootSpawner : MonoBehaviour
 		return itemLvl - 4;
 	}
 
-
 	public int GetRandomNumber(int num)
 	{
 		return Random.Range(0, num + 1);
 	}
-
 	public bool WillDropExtraloot()
 	{
 		return false;

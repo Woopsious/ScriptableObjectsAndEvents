@@ -59,23 +59,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\ScriptObjects\LootPoolsSO.cs" />
-    <Compile Include="Assets\Scripts\Things\EntityController.cs" />
     <Compile Include="Assets\Scripts\Items\Consumables.cs" />
     <Compile Include="Assets\Scripts\Things\Things.cs" />
     <Compile Include="Assets\Scripts\ScriptObjects\EntityBehavioursSO.cs" />
-    <Compile Include="Assets\Scripts\EventManager.cs" />
-    <Compile Include="Assets\Scripts\Things\Entities.cs" />
     <Compile Include="Assets\Scripts\Items\DroppedItems.cs" />
     <Compile Include="Assets\Scripts\Things\EntityHealthUi.cs" />
+    <Compile Include="Assets\Scripts\Things\EntityDeathHandler.cs" />
     <Compile Include="Assets\Scripts\ScriptObjects\ItemsSO.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IDamagable.cs" />
     <Compile Include="Assets\Scripts\Things\EntityBehaviour.cs" />
+    <Compile Include="Assets\Scripts\Things\EntityLootSpawnHandler.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IGetModifier.cs" />
-    <Compile Include="Assets\Scripts\Things\EnemyController.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
-    <Compile Include="Assets\Scripts\LootSpawner.cs" />
-    <Compile Include="Assets\Scripts\Events\EntityDeathEvent.cs" />
     <Compile Include="Assets\Scripts\ScriptObjects\ConsumablesSO.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerInventory.cs" />
     <Compile Include="Assets\Scripts\Things\WorldItems.cs" />
