@@ -6,7 +6,7 @@ public class Interactables : MonoBehaviour
 {
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.GetComponent<PlayerController>() != null && GetComponent<DroppedItems>() != null)
-			GetComponent<DroppedItems>().PickUpItem();
+		if (other.GetComponent<PlayerController>() != null && GetComponent<Items>() != null)
+			GetComponent<Items>().PickUpItem();
 	}
 }

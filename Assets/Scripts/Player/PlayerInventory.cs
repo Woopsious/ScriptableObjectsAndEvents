@@ -8,7 +8,7 @@ public class PlayerInventory : MonoBehaviour
 
 	public GameObject weaponContainer;
 
-	public List<DroppedItems> playerInventory = new List<DroppedItems>();
+	public List<Items> playerInventory = new List<Items>();
 
 	public List<GameObject> WeaponDatabase = new List<GameObject>();
 
@@ -24,20 +24,20 @@ public class PlayerInventory : MonoBehaviour
 		}
 	}
 
-	public void AddItemToPlayerInventory(DroppedItems item)
+	public void AddItemToPlayerInventory(Items item)
 	{
 		playerInventory.Add(item);
 
-		foreach (DroppedItems itemInInventry in playerInventory)
+		foreach (Items itemInInventry in playerInventory)
 		{
-			if (itemInInventry.itemType == DroppedItems.ItemType.isWeapon)
+			if (itemInInventry.itemType == Items.ItemType.isWeapon)
 			{
 				Debug.Log("item damage: " + itemInInventry.weaponBaseRef.baseDamage);
 				Debug.Log("item added to Inventroy: " + itemInInventry.weaponBaseRef);
 			}
 		}
 	}
-	public void RemoveItemToPlayerInventory(DroppedItems item)
+	public void RemoveItemToPlayerInventory(Items item)
 	{
 
 	}
@@ -48,7 +48,7 @@ public class PlayerInventory : MonoBehaviour
 		{
 			int index = GetRandomNumber();
 
-			if (playerInventory[index].itemType == DroppedItems.ItemType.isWeapon)
+			if (playerInventory[index].itemType == Items.ItemType.isWeapon)
 			{
 				GameObject go;
 				switch (playerInventory[index].weaponBaseRef.baseDamage)

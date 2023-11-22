@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class EntityHealth : MonoBehaviour, IGetStatModifier
 {
 	[Header("Entity Info")]
-	public EntityBaseStatsSO entityBaseStats;
+	public SOEntityBaseStats entityBaseStats;
 	public int entityLevel;
 	public float statModifier;
 
@@ -86,13 +86,18 @@ public class EntityHealth : MonoBehaviour, IGetStatModifier
 		if (damage < 2) //always deal 2 damage
 			damage = 2;
 
-		//making another event named onRecieveDamage like onEntityDeath i could invoke other actions like hit animations/sounds/knockback
-		//and then calling ui to update the health bar
+		///
+		/// invoke onRecieveDamage like onEntityDeath that calls hit animations/sounds/knockback/ui health bar update
+		/// also could invoke a onEntityDeath that instead calls functions in scripts to disable them then and play death sounds/animations
+		/// this way if an entity does have a death sound but no death animation i dont need to run checks or hard code a reference
+		/// and a box for instance can just have a death sound and instead of a death animation has a death partical effect explosion
+		///
 
 		currentHealth -= damage;
 		if (currentHealth <= 0)
 		{
 			onEntityDeath.Invoke();
+			Destroy(gameObject);
 		}
 		//healthUi.UpdateHealthBar(currentHealth, maxHealth);	//ui not made atm
 		Debug.Log("health lost after resistance: " + damage + " | current health: " + currentHealth);

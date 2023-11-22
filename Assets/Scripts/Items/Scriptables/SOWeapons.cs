@@ -2,7 +2,7 @@ using UnityEngine;
 using static Weapons;
 
 [CreateAssetMenu(fileName = "WeaponsScriptableObject", menuName = "Items/Weapons")]
-public class WeaponsSO : ItemsSO
+public class SOWeapons : SOItems
 {
 	[Header("Weapon Info")]
 	public bool isBareHands;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public class Weapons : DroppedItems, IGetStatModifier
+public class Weapons : Items, IGetStatModifier
 {
 	[Header("Weapon Info")]
 	public int damage;

@@ -58,27 +58,29 @@
     <Analyzer Include="E:\Unity\2022.3.9f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\ScriptObjects\LootPoolsSO.cs" />
+    <Compile Include="Assets\Scripts\Entities\WorldItems.cs" />
     <Compile Include="Assets\Scripts\Items\Consumables.cs" />
-    <Compile Include="Assets\Scripts\Things\Things.cs" />
-    <Compile Include="Assets\Scripts\ScriptObjects\EntityBehavioursSO.cs" />
-    <Compile Include="Assets\Scripts\Items\DroppedItems.cs" />
-    <Compile Include="Assets\Scripts\Things\EntityHealthUi.cs" />
-    <Compile Include="Assets\Scripts\Things\EntityDeathHandler.cs" />
-    <Compile Include="Assets\Scripts\ScriptObjects\ItemsSO.cs" />
+    <Compile Include="Assets\Scripts\Entities\Things.cs" />
+    <Compile Include="Assets\Scripts\Entities\Scriptables\SOEntityBehaviours.cs" />
+    <Compile Include="Assets\Scripts\Entities\EntityLootSpawnHandler.cs" />
+    <Compile Include="Assets\Scripts\Entities\EntityDeathHandler.cs" />
+    <Compile Include="Assets\Scripts\SpawnEvents.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IDamagable.cs" />
-    <Compile Include="Assets\Scripts\Things\EntityBehaviour.cs" />
-    <Compile Include="Assets\Scripts\Things\EntityLootSpawnHandler.cs" />
+    <Compile Include="Assets\Scripts\EnemySpawnHandler.cs" />
+    <Compile Include="Assets\Scripts\Items\Scriptables\SOConsumables.cs" />
+    <Compile Include="Assets\Scripts\Items\Scriptables\SOWeapons.cs" />
+    <Compile Include="Assets\Scripts\Items\Scriptables\SOItems.cs" />
+    <Compile Include="Assets\Scripts\Entities\Scriptables\SOEntityBaseStats.cs" />
+    <Compile Include="Assets\Scripts\Entities\EntityBehaviour.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IGetModifier.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
-    <Compile Include="Assets\Scripts\ScriptObjects\ConsumablesSO.cs" />
+    <Compile Include="Assets\Scripts\Items\Items.cs" />
+    <Compile Include="Assets\Scripts\Entities\EntityHealthUi.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerInventory.cs" />
-    <Compile Include="Assets\Scripts\Things\WorldItems.cs" />
-    <Compile Include="Assets\Scripts\ScriptObjects\EntityBaseStatsSO.cs" />
-    <Compile Include="Assets\Scripts\ScriptObjects\WeaponsSO.cs" />
+    <Compile Include="Assets\Scripts\Entities\EntityHealth.cs" />
     <Compile Include="Assets\Scripts\Items\Weapons.cs" />
-    <Compile Include="Assets\Scripts\Things\EntityHealth.cs" />
+    <Compile Include="Assets\Scripts\Entities\Scriptables\SOLootPools.cs" />
     <Compile Include="Assets\Scripts\Interactables.cs" />
   </ItemGroup>
   <ItemGroup>

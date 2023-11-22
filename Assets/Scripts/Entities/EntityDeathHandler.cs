@@ -9,9 +9,6 @@ public class CleanUpDeadEntities : MonoBehaviour
 		//play death sound
 		//play death animation
 		//in MP call RPC to clean up 
-
-		//Destroy will destroy the prefab so its disabled for now (unity throws an error anyway)
-		//Destroy(gameObject);
 	}
 	public bool Dead(int currentHealth)
 	{

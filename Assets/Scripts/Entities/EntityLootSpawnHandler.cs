@@ -8,30 +8,30 @@ using Random = UnityEngine.Random;
 
 public class EntityLootSpawnHandler : MonoBehaviour
 {
-	public LootPoolsSO lootPool;
+	public SOLootPools lootPool;
 
 	public void SpawnLootOnEntityDeath()
 	{
 		for (int i = 0; i < lootPool.minDroppedItemsAmount; i++) //spawn item from loot poll at death location
 		{
 			GameObject go = Instantiate(lootPool.lootPoolList[GetRandomNumber(lootPool.lootPoolList.Count)].gameObject,
-				gameObject.transform.position, Quaternion.identity);
+				transform.position, Quaternion.identity);
 
 			go.AddComponent<Interactables>(); //add interactables script. set randomized stats
-			go.GetComponent<DroppedItems>().OnItemDrop(SetRarity(), SetItemLevel());
+			go.GetComponent<Items>().OnItemDrop(SetRarity(), SetItemLevel());
 		}
 	}
 	//get stat modifier values
-	public DroppedItems.Rarity SetRarity()
+	public Items.Rarity SetRarity()
 	{
 		float percentage = GetRandomNumber(101);
 
 		if (percentage > 90)
-			return DroppedItems.Rarity.isLegendary;
+			return Items.Rarity.isLegendary;
 		else if (percentage > 60 && percentage < 90)
-			return DroppedItems.Rarity.isRare;
+			return Items.Rarity.isRare;
 		else
-			return DroppedItems.Rarity.isCommon;
+			return Items.Rarity.isCommon;
 	}
 	public int SetItemLevel()
 	{

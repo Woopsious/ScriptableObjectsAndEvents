@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "ItemsScriptableObject", menuName = "Items")]
-public class ItemsSO : ScriptableObject
+public class SOItems : ScriptableObject
 {
 	[Header("Item Info")]
 	public Image itemImage;

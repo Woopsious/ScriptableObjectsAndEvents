@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "LootPoolScriptableObject", menuName = "LootPools")]
-public class LootPoolsSO : ScriptableObject
+public class SOLootPools : ScriptableObject
 {
 	public int droppedGoldAmount;
 
-	public List<DroppedItems> lootPoolList = new List<DroppedItems>();
+	public List<Items> lootPoolList = new List<Items>();
 
 	public int minDroppedItemsAmount;
 	public int maxDroppedItemsAmount;

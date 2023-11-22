@@ -4,7 +4,7 @@ using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEditor.PackageManager;
 using UnityEngine;
 
-public class DroppedItems : MonoBehaviour
+public class Items : MonoBehaviour
 {
 	///
 	/// items that are dropped on the ground and can be picked up via Interactable Component script
@@ -25,8 +25,8 @@ public class DroppedItems : MonoBehaviour
 	}
 
 	[Header("Item Base Ref")]
-	public WeaponsSO weaponBaseRef;
-	public ConsumablesSO consumableBaseRef;
+	public SOWeapons weaponBaseRef;
+	public SOConsumables consumableBaseRef;
 
 	[Header("Item Dynamic Info")]
 	public int currentStackCount;

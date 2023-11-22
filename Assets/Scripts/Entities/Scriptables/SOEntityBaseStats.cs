@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [CreateAssetMenu(fileName = "EntityStatsScriptableObject", menuName = "EntityBaseStats")]
-public class EntityBaseStatsSO : ScriptableObject
+public class SOEntityBaseStats : ScriptableObject
 {
 	public string entityName;
 
