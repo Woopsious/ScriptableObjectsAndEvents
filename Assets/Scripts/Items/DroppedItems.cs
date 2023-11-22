@@ -65,5 +65,6 @@ public class DroppedItems : MonoBehaviour
 		//in child classes pass through item type specific 
 
 		PlayerInventory.Instance.AddItemToPlayerInventory(this);
+		Destroy(gameObject);
 	}
 }
