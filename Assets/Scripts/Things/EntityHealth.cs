@@ -90,9 +90,10 @@ public class EntityHealth : MonoBehaviour, IGetStatModifier
 		//and then calling ui to update the health bar
 
 		currentHealth -= damage;
-		if (currentHealth >= 0)
+		if (currentHealth <= 0)
+		{
 			onEntityDeath.Invoke();
-
+		}
 		//healthUi.UpdateHealthBar(currentHealth, maxHealth);	//ui not made atm
 		Debug.Log("health lost after resistance: " + damage + " | current health: " + currentHealth);
 	}

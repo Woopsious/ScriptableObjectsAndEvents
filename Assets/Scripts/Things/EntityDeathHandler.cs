@@ -4,20 +4,14 @@ using UnityEngine;
 
 public class CleanUpDeadEntities : MonoBehaviour
 {
-	public void OnRecieveDamage(int currentHealth)
+	public void OnEntityDeath()
 	{
-		if (!Dead(currentHealth)) return;
-
 		//play death sound
 		//play death animation
 		//in MP call RPC to clean up 
-		gameObject.SetActive(false);
-		StartCoroutine(DestroyIn());
-	}
-	public IEnumerator DestroyIn()
-	{
-		yield return new WaitForSeconds(10);
-		Destroy(gameObject);
+
+		//Destroy will destroy the prefab so its disabled for now (unity throws an error anyway)
+		//Destroy(gameObject);
 	}
 	public bool Dead(int currentHealth)
 	{

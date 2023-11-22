@@ -6,11 +6,11 @@ using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class EntityLootSpawner : MonoBehaviour
+public class EntityLootSpawnHandler : MonoBehaviour
 {
 	public LootPoolsSO lootPool;
 
-	public Task SpawnLootOnEntityDeath()
+	public void SpawnLootOnEntityDeath()
 	{
 		for (int i = 0; i < lootPool.minDroppedItemsAmount; i++) //spawn item from loot poll at death location
 		{
@@ -20,12 +20,11 @@ public class EntityLootSpawner : MonoBehaviour
 			go.AddComponent<Interactables>(); //add interactables script. set randomized stats
 			go.GetComponent<DroppedItems>().OnItemDrop(SetRarity(), SetItemLevel());
 		}
-		return Task.CompletedTask;
 	}
 	//get stat modifier values
 	public DroppedItems.Rarity SetRarity()
 	{
-		float percentage = GetRandomNumber(100);
+		float percentage = GetRandomNumber(101);
 
 		if (percentage > 90)
 			return DroppedItems.Rarity.isLegendary;
@@ -38,7 +37,7 @@ public class EntityLootSpawner : MonoBehaviour
 	{
 		int itemLvl;
 		int playerLvl = FindObjectOfType<PlayerController>().gameObject.GetComponent<EntityHealth>().entityLevel;
-		itemLvl = playerLvl + GetRandomNumber(8) - 4; //random item lvl in range of player lvl +/- a max of 4
+		itemLvl = playerLvl + GetRandomNumber(9) - 4; //random item lvl in range of player lvl +/- a max of 4
 
 		if (itemLvl >= 0)
 			itemLvl = 0;
@@ -47,7 +46,7 @@ public class EntityLootSpawner : MonoBehaviour
 
 	public int GetRandomNumber(int num)
 	{
-		return Random.Range(0, num + 1);
+		return Random.Range(0, num);
 	}
 	public bool WillDropExtraloot()
 	{

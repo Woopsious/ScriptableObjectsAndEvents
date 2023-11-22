@@ -32,8 +32,8 @@ public class PlayerInventory : MonoBehaviour
 		{
 			if (itemInInventry.itemType == DroppedItems.ItemType.isWeapon)
 			{
-				Debug.Log("items in Inventory: " + itemInInventry.weaponBaseRef.baseDamage);
-				Debug.Log("items in Inventory: " + itemInInventry.weaponBaseRef);
+				Debug.Log("item damage: " + itemInInventry.weaponBaseRef.baseDamage);
+				Debug.Log("item added to Inventroy: " + itemInInventry.weaponBaseRef);
 			}
 		}
 	}
