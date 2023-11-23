@@ -27,17 +27,17 @@ public class EntityHealthUi : MonoBehaviour
 		if (!gameObject.activeInHierarchy)
 			return;
 
-		gameObject.transform.position = Camera.main.WorldToScreenPoint(EntityObjRef.transform.position + new Vector3(0, 5, 0));
+		gameObject.transform.position = Camera.main.WorldToScreenPoint(EntityObjRef.transform.position + new Vector3(0, 14, 0));
 	}
 	public void OnRecieveDamage(int maxHealth, int currentHealth)
 	{
-		UpdateHealthBar(maxHealth, currentHealth);
+		ShowUIHealthBar(maxHealth, currentHealth);
 	}
 
 	public void ShowUIHealthBar(int maxHealth, int currentHealth)
 	{
 		gameObject.SetActive(true);
-		UpdateHealthBar(currentHealth, maxHealth);
+		UpdateHealthBar(maxHealth, currentHealth);
 	}
 	public void HideUIHealthBar()
 	{
@@ -45,10 +45,9 @@ public class EntityHealthUi : MonoBehaviour
 	}
 	public void UpdateHealthBar(int maxHealth, int currentHealth)
 	{
-		float health = currentHealth;
-		float healthPercentage = health / maxHealth * 100;
+		float healthPercentage = (float)currentHealth / maxHealth;
 		HealthSlider.value = healthPercentage;
-		HealthText.text = health.ToString() + " / " + maxHealth.ToString();
+		HealthText.text = currentHealth.ToString() + " / " + maxHealth.ToString();
 	}
 	public void RemoveUi()
 	{

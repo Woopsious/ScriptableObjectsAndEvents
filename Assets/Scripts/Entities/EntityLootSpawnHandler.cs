@@ -10,12 +10,12 @@ public class EntityLootSpawnHandler : MonoBehaviour
 {
 	public SOLootPools lootPool;
 
-	public void SpawnLootOnEntityDeath()
+	public void SpawnLootOnEntityDeath(Vector3 position)
 	{
 		for (int i = 0; i < lootPool.minDroppedItemsAmount; i++) //spawn item from loot poll at death location
 		{
 			GameObject go = Instantiate(lootPool.lootPoolList[GetRandomNumber(lootPool.lootPoolList.Count)].gameObject,
-				transform.position, Quaternion.identity);
+				position, Quaternion.identity);
 
 			go.AddComponent<Interactables>(); //add interactables script. set randomized stats
 			go.GetComponent<Items>().OnItemDrop(SetRarity(), SetItemLevel());

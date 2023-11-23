@@ -26,7 +26,16 @@ public class PlayerInventory : MonoBehaviour
 
 	public void AddItemToPlayerInventory(Items item)
 	{
-		playerInventory.Add(item);
+		Items newitem = new()
+		{
+			itemLevel = item.itemLevel,
+			itemType = item.itemType,
+			rarity = item.rarity,
+			weaponBaseRef = item.weaponBaseRef,
+			consumableBaseRef = item.consumableBaseRef,
+		};
+
+		playerInventory.Add(newitem);
 
 		foreach (Items itemInInventry in playerInventory)
 		{
@@ -80,13 +89,12 @@ public class PlayerInventory : MonoBehaviour
 	}
 	public void SetUpWeaponObj(GameObject go)
 	{
-		go.GetComponent<Weapons>().isEquipped = true;
+		go.GetComponent<Weapons>().isEquippedByPlayer = true;
 		go.transform.localPosition = Vector3.zero;
 		Destroy(go.GetComponent<Interactables>()); //on dropped item spawn the interactables script will be added
 	}
 	public int GetRandomNumber()
 	{
-		int i = Random.Range(0, playerInventory.Count);
-		return i;
+		return Random.Range(0, playerInventory.Count);
 	}
 }

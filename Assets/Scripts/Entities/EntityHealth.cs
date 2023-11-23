@@ -29,7 +29,7 @@ public class EntityHealth : MonoBehaviour, IGetStatModifier
 	public EntityDamageEvent onEntityDamageEvent;
 
 	[Serializable]
-	public class EntityDeathEvent : UnityEvent { }
+	public class EntityDeathEvent : UnityEvent<Vector3> { }
 	public EntityDeathEvent onEntityDeath;
 
 	public void Start()
@@ -86,6 +86,9 @@ public class EntityHealth : MonoBehaviour, IGetStatModifier
 		if (damage < 2) //always deal 2 damage
 			damage = 2;
 
+		currentHealth -= damage;
+		onEntityDamageEvent.Invoke(maxHealth, currentHealth);
+
 		///
 		/// invoke onRecieveDamage like onEntityDeath that calls hit animations/sounds/knockback/ui health bar update
 		/// also could invoke a onEntityDeath that instead calls functions in scripts to disable them then and play death sounds/animations
@@ -93,11 +96,9 @@ public class EntityHealth : MonoBehaviour, IGetStatModifier
 		/// and a box for instance can just have a death sound and instead of a death animation has a death partical effect explosion
 		///
 
-		currentHealth -= damage;
-		onEntityDamageEvent.Invoke(maxHealth, currentHealth);
 		if (currentHealth <= 0)
 		{
-			onEntityDeath.Invoke();
+			onEntityDeath.Invoke(gameObject.transform.position);
 			Destroy(gameObject);
 		}
 		//healthUi.UpdateHealthBar(currentHealth, maxHealth);	//ui not made atm

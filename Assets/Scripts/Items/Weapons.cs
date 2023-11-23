@@ -8,7 +8,8 @@ public class Weapons : Items, IGetStatModifier
 	[Header("Weapon Info")]
 	public int damage;
 	public int bonusMana;
-	public bool isEquipped;
+	public bool isEquippedByPlayer;
+	public bool isEquippedByNonPlayer;
 
 	public override void Start()
 	{
@@ -22,10 +23,13 @@ public class Weapons : Items, IGetStatModifier
 	}
 	public virtual void OnTriggerEnter(Collider other)
 	{
-		if (other.GetComponent<EntityHealth>() != null && isEquipped)
+		if (isEquippedByPlayer && other.GetComponent<EntityHealth>() != null)
 		{
-			other.GetComponent<EntityHealth>().RecieveDamage(damage,
-				(IDamagable.DamageType)weaponBaseRef.baseDamageType);
+			other.GetComponent<EntityHealth>().RecieveDamage(damage, (IDamagable.DamageType)weaponBaseRef.baseDamageType);
+		}
+		else if (isEquippedByNonPlayer && other.GetComponent<PlayerController>())
+		{
+			other.GetComponent<EntityHealth>().RecieveDamage(damage, (IDamagable.DamageType)weaponBaseRef.baseDamageType);
 		}
 	}
 }
