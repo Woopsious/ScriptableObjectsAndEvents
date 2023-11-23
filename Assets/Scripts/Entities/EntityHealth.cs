@@ -24,13 +24,13 @@ public class EntityHealth : MonoBehaviour, IGetStatModifier
 	public int fireDamageResistance;
 	public int iceDamageResistance;
 
-	[Header("Optional Refs")]
-	public EntityHealthUi healthUi;
-
-	public EntityDeathEvent onEntityDeath;
+	[Serializable]
+	public class EntityDamageEvent : UnityEvent<int, int> { }
+	public EntityDamageEvent onEntityDamageEvent;
 
 	[Serializable]
 	public class EntityDeathEvent : UnityEvent { }
+	public EntityDeathEvent onEntityDeath;
 
 	public void Start()
 	{
@@ -94,6 +94,7 @@ public class EntityHealth : MonoBehaviour, IGetStatModifier
 		///
 
 		currentHealth -= damage;
+		onEntityDamageEvent.Invoke(maxHealth, currentHealth);
 		if (currentHealth <= 0)
 		{
 			onEntityDeath.Invoke();

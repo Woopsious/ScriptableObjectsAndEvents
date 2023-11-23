@@ -8,13 +8,6 @@ public class CleanUpDeadEntities : MonoBehaviour
 	{
 		//play death sound
 		//play death animation
-		//in MP call RPC to clean up 
-	}
-	public bool Dead(int currentHealth)
-	{
-		if (currentHealth >= 0)
-			return true;
-		else
-			return false;
+		//in MP call RPC to clean up
 	}
 }

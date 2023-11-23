@@ -1,20 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class EntityHealthUi : MonoBehaviour
 {
-	public GameObject UiObj;
+	public GameObject EntityObjRef;
 	public Slider HealthSlider;
-	public Text HealthText;
+	public TMP_Text HealthText;
 
 	public void Start()
 	{
 		try
 		{
-			UiObj.transform.SetParent(FindObjectOfType<Canvas>().gameObject.transform);
-			UiObj.transform.rotation = Quaternion.identity;
+			gameObject.transform.SetParent(FindObjectOfType<Canvas>().gameObject.transform);
+			gameObject.transform.rotation = Quaternion.identity;
 		}
 		catch
 		{
@@ -23,26 +24,34 @@ public class EntityHealthUi : MonoBehaviour
 	}
 	public void Update()
 	{
-		if (!UiObj.activeInHierarchy)
+		if (!gameObject.activeInHierarchy)
 			return;
 
-		UiObj.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position + new Vector3(0, 5, 0));
+		gameObject.transform.position = Camera.main.WorldToScreenPoint(EntityObjRef.transform.position + new Vector3(0, 5, 0));
+	}
+	public void OnRecieveDamage(int maxHealth, int currentHealth)
+	{
+		UpdateHealthBar(maxHealth, currentHealth);
 	}
 
-	public void ShowUIHealthBar(int currentHealth, int maxHealth)
+	public void ShowUIHealthBar(int maxHealth, int currentHealth)
 	{
-		UiObj.SetActive(true);
+		gameObject.SetActive(true);
 		UpdateHealthBar(currentHealth, maxHealth);
 	}
 	public void HideUIHealthBar()
 	{
-		UiObj.SetActive(false);
+		gameObject.SetActive(false);
 	}
-	public void UpdateHealthBar(int currentHealth, int maxHealth)
+	public void UpdateHealthBar(int maxHealth, int currentHealth)
 	{
 		float health = currentHealth;
 		float healthPercentage = health / maxHealth * 100;
 		HealthSlider.value = healthPercentage;
 		HealthText.text = health.ToString() + " / " + maxHealth.ToString();
+	}
+	public void RemoveUi()
+	{
+		Destroy(gameObject);
 	}
 }
