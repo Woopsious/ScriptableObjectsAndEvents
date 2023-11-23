@@ -33,13 +33,14 @@ public class EntityLootSpawnHandler : MonoBehaviour
 		else
 			return Items.Rarity.isCommon;
 	}
+	//return random item lvl in range of player lvl +/- a max of 4
 	public int SetItemLevel()
 	{
-		int itemLvl;
 		int playerLvl = FindObjectOfType<PlayerController>().gameObject.GetComponent<EntityHealth>().entityLevel;
-		itemLvl = playerLvl + GetRandomNumber(9) - 4; //random item lvl in range of player lvl +/- a max of 4
+		int itemLvl = GetRandomNumber(9);
+		itemLvl += playerLvl;
 
-		if (itemLvl >= 0)
+		if (itemLvl <= 0)
 			itemLvl = 0;
 		return itemLvl - 4;
 	}

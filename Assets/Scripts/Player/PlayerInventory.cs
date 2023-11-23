@@ -8,9 +8,7 @@ public class PlayerInventory : MonoBehaviour
 
 	public GameObject weaponContainer;
 
-	public List<Items> playerInventory = new List<Items>();
-
-	public List<GameObject> WeaponDatabase = new List<GameObject>();
+	public List<ItemData> playerInventory = new List<ItemData>();
 
 	public void Start()
 	{
@@ -26,27 +24,19 @@ public class PlayerInventory : MonoBehaviour
 
 	public void AddItemToPlayerInventory(Items item)
 	{
-		Items newitem = new()
+		ItemData itemData = new()
 		{
 			itemLevel = item.itemLevel,
-			itemType = item.itemType,
-			rarity = item.rarity,
+			itemType = (ItemData.ItemType)item.itemType,
+			rarity = (ItemData.Rarity)item.rarity,
 			weaponBaseRef = item.weaponBaseRef,
 			consumableBaseRef = item.consumableBaseRef,
+			currentStackCount = item.currentStackCount,
 		};
 
-		playerInventory.Add(newitem);
-
-		foreach (Items itemInInventry in playerInventory)
-		{
-			if (itemInInventry.itemType == Items.ItemType.isWeapon)
-			{
-				Debug.Log("item damage: " + itemInInventry.weaponBaseRef.baseDamage);
-				Debug.Log("item added to Inventroy: " + itemInInventry.weaponBaseRef);
-			}
-		}
+		playerInventory.Add(itemData);
 	}
-	public void RemoveItemToPlayerInventory(Items item)
+	public void RemoveItemFromPlayerInventory(Items item)
 	{
 
 	}
@@ -57,38 +47,46 @@ public class PlayerInventory : MonoBehaviour
 		{
 			int index = GetRandomNumber();
 
-			if (playerInventory[index].itemType == Items.ItemType.isWeapon)
+			if (playerInventory[index].itemType == ItemData.ItemType.isWeapon)
 			{
 				GameObject go;
 				switch (playerInventory[index].weaponBaseRef.baseDamage)
 				{
 					case 35:
 					Destroy(weaponContainer.transform.GetChild(0).gameObject);
-					go = Instantiate(playerInventory[index].gameObject, weaponContainer.transform, false);
-					SetUpWeaponObj(go);
+					go = Instantiate(GameManager.Instance.weaponDataBase[index], weaponContainer.transform, false);
+					SetUpWeaponObj(go, playerInventory[index]);
 					break;
 					case 25:
 					Destroy(weaponContainer.transform.GetChild(0).gameObject);
-					go = Instantiate(playerInventory[index].gameObject, weaponContainer.transform, false);
-					SetUpWeaponObj(go);
+					go = Instantiate(GameManager.Instance.weaponDataBase[index], weaponContainer.transform, false);
+					SetUpWeaponObj(go, playerInventory[index]);
 					break;
 					case 8:
 					Destroy(weaponContainer.transform.GetChild(0).gameObject);
-					go = Instantiate(playerInventory[index].gameObject, weaponContainer.transform, false);
-					SetUpWeaponObj(go);
+					go = Instantiate(GameManager.Instance.weaponDataBase[index], weaponContainer.transform, false);
+					SetUpWeaponObj(go, playerInventory[index]);
 					break;
 					case 30:
 					Destroy(weaponContainer.transform.GetChild(0).gameObject);
-					go = Instantiate(playerInventory[index].gameObject, weaponContainer.transform, false);
-					SetUpWeaponObj(go);
+					go = Instantiate(GameManager.Instance.weaponDataBase[index], weaponContainer.transform, false);
+					SetUpWeaponObj(go, playerInventory[index]);
 					break;
 				}
 				return;
 			}
 		}
 	}
-	public void SetUpWeaponObj(GameObject go)
+	public void SetUpWeaponObj(GameObject go, ItemData data)
 	{
+		Weapons weapon = go.GetComponent<Weapons>();
+
+		weapon.itemLevel = data.itemLevel;
+		weapon.itemType = (Items.ItemType)data.itemType;
+		weapon.rarity = (Items.Rarity)data.rarity;
+		weapon.weaponBaseRef = data.weaponBaseRef;
+		weapon.consumableBaseRef = data.consumableBaseRef;
+
 		go.GetComponent<Weapons>().isEquippedByPlayer = true;
 		go.transform.localPosition = Vector3.zero;
 		Destroy(go.GetComponent<Interactables>()); //on dropped item spawn the interactables script will be added
