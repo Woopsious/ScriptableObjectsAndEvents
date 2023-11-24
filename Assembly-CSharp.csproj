@@ -59,15 +59,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Entities\Traps.cs" />
-    <Compile Include="Assets\Scripts\Items\ItemData.cs" />
     <Compile Include="Assets\Scripts\Items\Consumables.cs" />
     <Compile Include="Assets\Scripts\Entities\Things.cs" />
     <Compile Include="Assets\Scripts\Entities\Scriptables\SOEntityBehaviours.cs" />
     <Compile Include="Assets\Scripts\Entities\EntityLootSpawnHandler.cs" />
     <Compile Include="Assets\Scripts\Entities\EntityDeathHandler.cs" />
-    <Compile Include="Assets\Scripts\Items\InventoryItems.cs" />
     <Compile Include="Assets\Scripts\SpawnEvents.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\Player\InventoryItem.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IDamagable.cs" />
     <Compile Include="Assets\Scripts\EnemySpawnHandler.cs" />
     <Compile Include="Assets\Scripts\Items\Scriptables\SOConsumables.cs" />

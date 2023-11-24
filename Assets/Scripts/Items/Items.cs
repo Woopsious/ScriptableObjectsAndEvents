@@ -3,16 +3,21 @@ using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Items : MonoBehaviour
 {
 	///
 	/// items that are dropped on the ground and can be picked up via Interactable Component script
-	/// ItemsSO should hold basic item info, for instance using that variable i set in Init 
 	///
 
 	[Header("Item Info")]
+	public string itemName;
+	public Image itemImage;
+	public int ItemPrice;
+	public int ItemId;
 	public int itemLevel;
+
 	public ItemType itemType;
 	public enum ItemType
 	{

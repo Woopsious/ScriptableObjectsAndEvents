@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class SOItems : ScriptableObject
 {
 	[Header("Item Info")]
+	public string itemName;
 	public Image itemImage;
 	public int ItemPrice;
 	public int ItemId;

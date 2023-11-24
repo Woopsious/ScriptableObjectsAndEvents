@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class PlayerInventory : MonoBehaviour
 {
@@ -8,7 +10,7 @@ public class PlayerInventory : MonoBehaviour
 
 	public GameObject weaponContainer;
 
-	public List<ItemData> playerInventory = new List<ItemData>();
+	public List<InventoryItem> playerInventory = new List<InventoryItem>();
 
 	public void Start()
 	{
@@ -24,15 +26,27 @@ public class PlayerInventory : MonoBehaviour
 
 	public void AddItemToPlayerInventory(Items item)
 	{
-		ItemData itemData = new()
+		InventoryItem itemData = new();
+
+		if (item.itemType == Items.ItemType.isWeapon)
 		{
-			itemLevel = item.itemLevel,
-			itemType = (ItemData.ItemType)item.itemType,
-			rarity = (ItemData.Rarity)item.rarity,
-			weaponBaseRef = item.weaponBaseRef,
-			consumableBaseRef = item.consumableBaseRef,
-			currentStackCount = item.currentStackCount,
-		};
+			itemData = new()
+			{
+				itemName = item.itemName,
+				itemImage = item.itemImage,
+				itemLevel = item.itemLevel,
+
+				itemType = (InventoryItem.ItemType)item.itemType,
+				rarity = (InventoryItem.Rarity)item.rarity,
+
+				weaponBaseRef = item.weaponBaseRef,
+				damage = (int)(item.weaponBaseRef.baseDamage * item.statModifier),
+				bonusMana = (int)(item.weaponBaseRef.baseBonusMana * item.statModifier),
+
+				maxStackCount = item.weaponBaseRef.MaxStackCount,
+				currentStackCount = item.currentStackCount
+			};
+		}
 
 		playerInventory.Add(itemData);
 	}
@@ -47,7 +61,7 @@ public class PlayerInventory : MonoBehaviour
 		{
 			int index = GetRandomNumber();
 
-			if (playerInventory[index].itemType == ItemData.ItemType.isWeapon)
+			if (playerInventory[index].itemType == InventoryItem.ItemType.isWeapon)
 			{
 				GameObject go;
 				switch (playerInventory[index].weaponBaseRef.baseDamage)
@@ -77,15 +91,15 @@ public class PlayerInventory : MonoBehaviour
 			}
 		}
 	}
-	public void SetUpWeaponObj(GameObject go, ItemData data)
+	public void SetUpWeaponObj(GameObject go, InventoryItem inventoryItem)
 	{
 		Weapons weapon = go.GetComponent<Weapons>();
 
-		weapon.itemLevel = data.itemLevel;
-		weapon.itemType = (Items.ItemType)data.itemType;
-		weapon.rarity = (Items.Rarity)data.rarity;
-		weapon.weaponBaseRef = data.weaponBaseRef;
-		weapon.consumableBaseRef = data.consumableBaseRef;
+		weapon.itemLevel = inventoryItem.itemLevel;
+		weapon.itemType = (Items.ItemType)inventoryItem.itemType;
+		weapon.rarity = (Items.Rarity)inventoryItem.rarity;
+		weapon.weaponBaseRef = inventoryItem.weaponBaseRef;
+		weapon.consumableBaseRef = inventoryItem.consumableBaseRef;
 
 		go.GetComponent<Weapons>().isEquippedByPlayer = true;
 		go.transform.localPosition = Vector3.zero;

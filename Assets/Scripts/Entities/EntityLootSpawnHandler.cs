@@ -1,26 +1,60 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading.Tasks;
+using Unity.Services.Analytics;
 using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class EntityLootSpawnHandler : MonoBehaviour
 {
+	public GameObject droppedItemPrefab;
 	public SOLootPools lootPool;
 
 	public void SpawnLootOnEntityDeath(Vector3 position)
 	{
 		for (int i = 0; i < lootPool.minDroppedItemsAmount; i++) //spawn item from loot poll at death location
 		{
-			GameObject go = Instantiate(lootPool.lootPoolList[GetRandomNumber(lootPool.lootPoolList.Count)].gameObject,
-				position, Quaternion.identity);
+			int index = GetRandomNumber(lootPool.lootPoolList.Count);
+			GameObject go = Instantiate(droppedItemPrefab, position, Quaternion.identity);
 
+			if (lootPool.lootPoolList[index].itemType == SOItems.ItemType.isWeapon)
+				SetUpWeaponItem(go, index);
+
+			//armor type check and function call
+
+			//consumables type check and function call
+
+			SetUpItem(go, index);
+
+			//generic data here, may change if i make unique droppables like keys as they might not have a need for item level etc.
+			//im just not sure of a better way to do it atm
 			go.AddComponent<Interactables>(); //add interactables script. set randomized stats
 			go.GetComponent<Items>().OnItemDrop(SetRarity(), SetItemLevel());
 		}
 	}
+	public void SetUpItem(GameObject go, int index)
+	{
+		Items item = go.GetComponent<Items>();
+		item.gameObject.name = lootPool.lootPoolList[index].name;
+		item.itemName = lootPool.lootPoolList[index].name;
+		item.itemImage = lootPool.lootPoolList[index].itemImage;
+		item.ItemPrice = lootPool.lootPoolList[index].ItemPrice;
+		item.itemType = (Items.ItemType)lootPool.lootPoolList[index].itemType;
+	}
+	public void SetUpWeaponItem(GameObject go, int index)
+	{
+		Weapons weapon = go.AddComponent<Weapons>();
+		weapon.weaponBaseRef = (SOWeapons)lootPool.lootPoolList[index];
+		weapon.currentStackCount = 1;
+	}
+
+	//ARMOR SPECIFIC FUNCTION
+
+	//CONSUMABLES SPECIFIC FUNCTION
+
 	//get stat modifier values
 	public Items.Rarity SetRarity()
 	{

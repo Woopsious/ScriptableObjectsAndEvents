@@ -7,7 +7,7 @@ public class SOLootPools : ScriptableObject
 {
 	public int droppedGoldAmount;
 
-	public List<Items> lootPoolList = new List<Items>();
+	public List<SOItems> lootPoolList = new List<SOItems>();
 
 	public int minDroppedItemsAmount;
 	public int maxDroppedItemsAmount;
