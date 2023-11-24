@@ -65,6 +65,7 @@
     <Compile Include="Assets\Scripts\Entities\Scriptables\SOEntityBehaviours.cs" />
     <Compile Include="Assets\Scripts\Entities\EntityLootSpawnHandler.cs" />
     <Compile Include="Assets\Scripts\Entities\EntityDeathHandler.cs" />
+    <Compile Include="Assets\Scripts\Items\InventoryItems.cs" />
     <Compile Include="Assets\Scripts\SpawnEvents.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IDamagable.cs" />
