@@ -17,13 +17,20 @@ public class EntityLootSpawnHandler : MonoBehaviour
 	{
 		for (int i = 0; i < lootPool.minDroppedItemsAmount; i++) //spawn item from loot poll at death location
 		{
+			///
+			/// in future make items have a loot pool weight, higher weight = more common EG: chainmail armor rarer then leather armor etc.
+			///
+
 			int index = GetRandomNumber(lootPool.lootPoolList.Count);
 			GameObject go = Instantiate(droppedItemPrefab, position, Quaternion.identity);
+			Debug.LogWarning(index);
+			Debug.LogWarning(lootPool);
 
 			if (lootPool.lootPoolList[index].itemType == SOItems.ItemType.isWeapon)
 				SetUpWeaponItem(go, index);
 
-			//armor type check and function call
+			if (lootPool.lootPoolList[index].itemType == SOItems.ItemType.isArmor)
+				SetUpArmorItem(go, index);
 
 			//consumables type check and function call
 
@@ -42,7 +49,6 @@ public class EntityLootSpawnHandler : MonoBehaviour
 		item.itemName = lootPool.lootPoolList[index].name;
 		item.itemImage = lootPool.lootPoolList[index].itemImage;
 		item.ItemPrice = lootPool.lootPoolList[index].ItemPrice;
-		item.itemType = (Items.ItemType)lootPool.lootPoolList[index].itemType;
 	}
 	public void SetUpWeaponItem(GameObject go, int index)
 	{
@@ -50,8 +56,12 @@ public class EntityLootSpawnHandler : MonoBehaviour
 		weapon.weaponBaseRef = (SOWeapons)lootPool.lootPoolList[index];
 		weapon.currentStackCount = 1;
 	}
-
-	//ARMOR SPECIFIC FUNCTION
+	public void SetUpArmorItem(GameObject go, int index)
+	{
+		Armors armor = go.AddComponent<Armors>();
+		armor.armorBaseRef = (SOArmors)lootPool.lootPoolList[index];
+		armor.currentStackCount = 1;
+	}
 
 	//CONSUMABLES SPECIFIC FUNCTION
 

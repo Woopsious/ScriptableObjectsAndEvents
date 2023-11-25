@@ -30,9 +30,23 @@ public class InventoryItem
 	public int damage;
 	public int bonusMana;
 
-	/// 
-	/// armor specific info like all resistances and extra health etc.
-	/// 
+	[Header("Armor Info")]
+	public int baseBonusHealth;
+	public int baseBonusMana;
+
+	[Header("Armor Slot")]
+	public SOArmors armorBaseRef;
+	public ArmorSlot armorSlot;
+	public enum ArmorSlot
+	{
+		helmet, chestpiece, legs, robe
+	}
+
+	[Header("Armor Resistances")]
+	public int bonusPhysicalResistance;
+	public int bonusPoisonResistance;
+	public int bonusFireResistance;
+	public int bonusIceResistance;
 
 	[Header("Consumable Base Ref")]
 	public SOConsumables consumableBaseRef;

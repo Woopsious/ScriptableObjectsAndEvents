@@ -16,13 +16,8 @@ public class Items : MonoBehaviour
 	public Image itemImage;
 	public int ItemPrice;
 	public int ItemId;
-	public int itemLevel;
 
-	public ItemType itemType;
-	public enum ItemType
-	{
-		isConsumable, isWeapon, isArmor
-	}
+	public int itemLevel;
 	public Rarity rarity;
 	public enum Rarity
 	{
@@ -31,6 +26,7 @@ public class Items : MonoBehaviour
 
 	[Header("Item Base Ref")]
 	public SOWeapons weaponBaseRef;
+	public SOArmors armorBaseRef;
 	public SOConsumables consumableBaseRef;
 
 	[Header("Item Dynamic Info")]
