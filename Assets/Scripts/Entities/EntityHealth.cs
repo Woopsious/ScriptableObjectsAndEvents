@@ -99,7 +99,7 @@ public class EntityHealth : MonoBehaviour, IGetStatModifier
 		if (currentHealth <= 0)
 		{
 			onEntityDeath.Invoke(gameObject.transform.position);
-			Destroy(gameObject);
+			//Destroy(gameObject);
 		}
 		//healthUi.UpdateHealthBar(currentHealth, maxHealth);	//ui not made atm
 		Debug.Log("health lost after resistance: " + damage + " | current health: " + currentHealth);
