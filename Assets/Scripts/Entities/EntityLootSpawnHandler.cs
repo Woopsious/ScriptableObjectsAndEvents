@@ -12,25 +12,22 @@ public class EntityLootSpawnHandler : MonoBehaviour
 {
 	public GameObject droppedItemPrefab;
 	public SOLootPools lootPool;
-	public SOLootPools lootPoolTest;
 
 	public void SpawnLootOnEntityDeath(Vector3 position)
 	{
-		for (int i = 0; i < lootPoolTest.minDroppedItemsAmount; i++) //spawn item from loot poll at death location
+		for (int i = 0; i < lootPool.minDroppedItemsAmount; i++) //spawn item from loot poll at death location
 		{
 			///
 			/// in future make items have a loot pool weight, higher weight = more common EG: chainmail armor rarer then leather armor etc.
 			///
 
-			int index = GetRandomNumber(lootPoolTest.lootPoolList.Count);
+			int index = GetRandomNumber(lootPool.lootPoolList.Count);
 			GameObject go = Instantiate(droppedItemPrefab, position, Quaternion.identity);
-			Debug.LogWarning(index);
-			Debug.LogWarning(lootPoolTest);
 
-			if (lootPoolTest.lootPoolList[index].itemType == SOItems.ItemType.isWeapon)
+			if (lootPool.lootPoolList[index].itemType == SOItems.ItemType.isWeapon)
 				SetUpWeaponItem(go, index);
 
-			if (lootPoolTest.lootPoolList[index].itemType == SOItems.ItemType.isArmor)
+			if (lootPool.lootPoolList[index].itemType == SOItems.ItemType.isArmor)
 				SetUpArmorItem(go, index);
 
 			//consumables type check and function call
@@ -46,21 +43,21 @@ public class EntityLootSpawnHandler : MonoBehaviour
 	public void SetUpItem(GameObject go, int index)
 	{
 		Items item = go.GetComponent<Items>();
-		item.gameObject.name = lootPoolTest.lootPoolList[index].name;
-		item.itemName = lootPoolTest.lootPoolList[index].name;
-		item.itemImage = lootPoolTest.lootPoolList[index].itemImage;
-		item.ItemPrice = lootPoolTest.lootPoolList[index].ItemPrice;
+		item.gameObject.name = lootPool.lootPoolList[index].name;
+		item.itemName = lootPool.lootPoolList[index].name;
+		item.itemImage = lootPool.lootPoolList[index].itemImage;
+		item.ItemPrice = lootPool.lootPoolList[index].ItemPrice;
 	}
 	public void SetUpWeaponItem(GameObject go, int index)
 	{
 		Weapons weapon = go.AddComponent<Weapons>();
-		weapon.weaponBaseRef = (SOWeapons)lootPoolTest.lootPoolList[index];
+		weapon.weaponBaseRef = (SOWeapons)lootPool.lootPoolList[index];
 		weapon.currentStackCount = 1;
 	}
 	public void SetUpArmorItem(GameObject go, int index)
 	{
 		Armors armor = go.AddComponent<Armors>();
-		armor.armorBaseRef = (SOArmors)lootPoolTest.lootPoolList[index];
+		armor.armorBaseRef = (SOArmors)lootPool.lootPoolList[index];
 		armor.currentStackCount = 1;
 	}
 
