@@ -61,6 +61,7 @@
     <Compile Include="Assets\Scripts\Scriptables\SOConsumables.cs" />
     <Compile Include="Assets\Scripts\Entities\Traps.cs" />
     <Compile Include="Assets\Scripts\Entities\Things.cs" />
+    <Compile Include="Assets\Scripts\Entities\EntityEquipmentHandler.cs" />
     <Compile Include="Assets\Scripts\Scriptables\SOWeapons.cs" />
     <Compile Include="Assets\Scripts\Entities\EntityLootSpawnHandler.cs" />
     <Compile Include="Assets\Scripts\Entities\EntityDeathHandler.cs" />

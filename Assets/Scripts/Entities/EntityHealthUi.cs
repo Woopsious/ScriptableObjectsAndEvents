@@ -29,11 +29,12 @@ public class EntityHealthUi : MonoBehaviour
 
 		gameObject.transform.position = Camera.main.WorldToScreenPoint(EntityObjRef.transform.position + new Vector3(0, 14, 0));
 	}
-	public void OnRecieveDamage(int maxHealth, int currentHealth)
+
+	//invoked from event
+	public void OnRecieveDamageEvent(int maxHealth, int currentHealth)
 	{
 		ShowUIHealthBar(maxHealth, currentHealth);
 	}
-
 	public void ShowUIHealthBar(int maxHealth, int currentHealth)
 	{
 		gameObject.SetActive(true);
@@ -49,6 +50,8 @@ public class EntityHealthUi : MonoBehaviour
 		HealthSlider.value = healthPercentage;
 		HealthText.text = currentHealth.ToString() + " / " + maxHealth.ToString();
 	}
+
+	//invoked from event
 	public void RemoveUi()
 	{
 		Destroy(gameObject);

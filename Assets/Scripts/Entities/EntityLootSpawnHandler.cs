@@ -13,7 +13,8 @@ public class EntityLootSpawnHandler : MonoBehaviour
 	public GameObject droppedItemPrefab;
 	public SOLootPools lootPool;
 
-	public void SpawnLootOnEntityDeath(Vector3 position)
+	//invoked from event
+	public void OnDeathEvent(Vector3 position)
 	{
 		for (int i = 0; i < lootPool.minDroppedItemsAmount; i++) //spawn item from loot poll at death location
 		{
@@ -63,7 +64,7 @@ public class EntityLootSpawnHandler : MonoBehaviour
 
 	//CONSUMABLES SPECIFIC FUNCTION
 
-	//get stat modifier values
+	//return random rarity
 	public Items.Rarity SetRarity()
 	{
 		float percentage = GetRandomNumber(101);

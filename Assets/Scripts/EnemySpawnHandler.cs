@@ -28,7 +28,7 @@ public class EnemySpawnHandler : MonoBehaviour
 	public void SpawnEnemy()
 	{
 		GameObject go = Instantiate(ListOfSpawnableEnemies[GetRandomNumber(ListOfSpawnableEnemies.Count)], gameObject.transform);
-
+		
 		Debug.Log("name of spawned Enemy: " + go.name);
 		OnEnemySpawn();
 	}

@@ -25,12 +25,12 @@ public class EntityHealth : MonoBehaviour, IGetStatModifier
 	public int iceDamageResistance;
 
 	[Serializable]
-	public class EntityDamageEvent : UnityEvent<int, int> { }
-	public EntityDamageEvent onEntityDamageEvent;
+	public class OnRecieveDamageEvent : UnityEvent<int, int> { }
+	public OnRecieveDamageEvent onRecieveDamageEvent;
 
 	[Serializable]
-	public class EntityDeathEvent : UnityEvent<Vector3> { }
-	public EntityDeathEvent onEntityDeath;
+	public class OnDeathEvent : UnityEvent<Vector3> { }
+	public OnDeathEvent onDeathEvent;
 
 	public void Start()
 	{
@@ -87,7 +87,7 @@ public class EntityHealth : MonoBehaviour, IGetStatModifier
 			damage = 2;
 
 		currentHealth -= damage;
-		onEntityDamageEvent.Invoke(maxHealth, currentHealth);
+		onRecieveDamageEvent.Invoke(maxHealth, currentHealth);
 
 		///
 		/// invoke onRecieveDamage like onEntityDeath that calls hit animations/sounds/knockback/ui health bar update
@@ -98,8 +98,8 @@ public class EntityHealth : MonoBehaviour, IGetStatModifier
 
 		if (currentHealth <= 0)
 		{
-			onEntityDeath.Invoke(gameObject.transform.position);
-			//Destroy(gameObject);
+			onDeathEvent.Invoke(gameObject.transform.position);
+			Destroy(gameObject);
 		}
 		//healthUi.UpdateHealthBar(currentHealth, maxHealth);	//ui not made atm
 		Debug.Log("health lost after resistance: " + damage + " | current health: " + currentHealth);
