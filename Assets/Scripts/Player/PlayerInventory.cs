@@ -42,6 +42,8 @@ public class PlayerInventory : MonoBehaviour
 	{
 		foreach (GameObject inventroySlot in PlayerInventoryUi.Instance.InventorySlots)
 		{
+			Debug.LogWarning("try stack item");
+
 			InventoryItem itemInSlot;
 			if (inventroySlot.GetComponentInChildren<InventoryItem>() != null)
 			{
@@ -50,8 +52,12 @@ public class PlayerInventory : MonoBehaviour
 				{
 					while (itemInSlot.currentStackCount < itemInSlot.maxStackCount && item.currentStackCount != 0)
 					{
+						Debug.LogWarning("item in slot count: " + itemInSlot.currentStackCount);
+						Debug.LogWarning("new item count: " + item.currentStackCount);
 						itemInSlot.currentStackCount++;
 						item.currentStackCount--;
+
+						itemInSlot.UpdateStackCounter();
 					}
 					if (item.currentStackCount >= 1)
 					{

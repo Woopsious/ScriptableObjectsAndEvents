@@ -29,10 +29,11 @@ public class Items : MonoBehaviour
 	public SOArmors armorBaseRef;
 	public SOConsumables consumableBaseRef;
 
-	[Header("Item Dynamic Info")]
+	[Header("Inventroy Dynamic Info")]
 	public bool isStackable;
 	public int currentStackCount;
 	public float statModifier;
+	public int inventroySlot;
 
 	public virtual void Start()
 	{
