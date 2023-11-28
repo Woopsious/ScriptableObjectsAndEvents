@@ -25,7 +25,33 @@ public class PlayerInventory : MonoBehaviour
 	public void AddItemToPlayerInventory(Items item)
 	{
 		if (item.isStackable)
-			TryStackItem(item);
+		{
+			for (int i = 0; i < PlayerInventoryUi.Instance.InventorySlots.Count; i++)
+			{
+				GameObject inventroySlot = PlayerInventoryUi.Instance.InventorySlots[i];
+				InventoryItem itemInSlot;
+				if (inventroySlot.GetComponentInChildren<InventoryItem>() != null)
+				{
+					itemInSlot = inventroySlot.GetComponentInChildren<InventoryItem>();
+					if (itemInSlot.itemName == item.itemName)
+					{
+						//add item to inventory, if current stack > max stack, currentStack - maxStack == newItemStackCount
+						//spawn new item stack in inventory with newItemStackCount if inventroy has space
+					}
+					else
+					{
+						SpawnNewItemInInventory(inventroySlot, item);
+						return;
+					}
+				}
+				else
+				{
+					SpawnNewItemInInventory(inventroySlot, item);
+					return;
+				}
+			}
+		}
+
 		else
 		{
 			foreach (GameObject inventroySlot in PlayerInventoryUi.Instance.InventorySlots)

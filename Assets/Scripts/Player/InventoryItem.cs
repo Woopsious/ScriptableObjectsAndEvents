@@ -30,6 +30,7 @@ public class InventoryItem : MonoBehaviour
 	public bool isStackable;
 	public int maxStackCount;
 	public int currentStackCount;
+	public int inventroySlot;
 
 	[Header("Weapon Info")]
 	public SOWeapons weaponBaseRef;
