@@ -66,7 +66,7 @@ public class EntityEquipmentHandler : MonoBehaviour
 			go = Instantiate(itemPrefab, weaponSlotContainer.transform);
 		else go = equippedWeapon.gameObject;
 
-		index = GetRandomNumber(possibleWeaponsList.Count);
+		index = Utilities.GetRandomNumber(possibleWeaponsList.Count);
 		SetUpWeapon(go, possibleWeaponsList, index);
 		SetUpWeaponItem(go, possibleWeaponsList, index);
 	}
@@ -80,9 +80,15 @@ public class EntityEquipmentHandler : MonoBehaviour
 
 		weapon.itemLevel = GetComponent<EntityHealth>().entityLevel;
 		weapon.rarity = Items.Rarity.isCommon;
-		weapon.isEquippedByNonPlayer = true;
+		//weapon.isEquippedByNonPlayer = true;
 		weapon.weaponBaseRef = weaponList[index];
 		weapon.currentStackCount = 1;
+
+		//for now just check for player component
+		if (GetComponent<PlayerController>() == null)
+			weapon.isEquippedByNonPlayer = true;
+		else
+			weapon.isEquippedByPlayer = true;
 
 		weapon.GetStatModifier(weapon.itemLevel, (IGetStatModifier.Rarity)weapon.rarity);
 		weapon.gameObject.transform.localPosition = Vector3.zero;
@@ -102,27 +108,33 @@ public class EntityEquipmentHandler : MonoBehaviour
 		GameObject go;
 		int index;
 
+		if (possibleHelmetsList.Count == 0) { return; }
+
 		if (helmetSlotContainer.transform.childCount == 0)
 			go = Instantiate(itemPrefab, helmetSlotContainer.transform);
 		else go = helmetSlotContainer;
 
-		index = GetRandomNumber(possibleHelmetsList.Count);
+		index = Utilities.GetRandomNumber(possibleHelmetsList.Count);
 		SetUpArmor(go, possibleHelmetsList, index);
 		SetUpArmorItem(go, possibleHelmetsList, index);
+
+		if (possibleChestpiecesList.Count == 0) { return; }
 
 		if (chestpieceSlotContainer.transform.childCount == 0)
 			go = Instantiate(itemPrefab, chestpieceSlotContainer.transform);
 		else go = chestpieceSlotContainer;
 
-		index = GetRandomNumber(possibleChestpiecesList.Count);
+		index = Utilities.GetRandomNumber(possibleChestpiecesList.Count);
 		SetUpArmor(go, possibleChestpiecesList, index);
 		SetUpArmorItem(go, possibleChestpiecesList, index);
+
+		if (possibleLegsList.Count == 0) { return; }
 
 		if (legsSlotContainer.transform.childCount == 0)
 			go = Instantiate(itemPrefab, legsSlotContainer.transform);
 		else go = legsSlotContainer;
 
-		index = GetRandomNumber(possibleLegsList.Count);
+		index = Utilities.GetRandomNumber(possibleLegsList.Count);
 		SetUpArmor(go, possibleLegsList, index);
 		SetUpArmorItem(go, possibleLegsList, index);
 	}
@@ -149,9 +161,5 @@ public class EntityEquipmentHandler : MonoBehaviour
 		item.itemName = armorList[index].name;
 		item.itemImage = armorList[index].itemImage;
 		item.ItemPrice = armorList[index].ItemPrice;
-	}
-	public int GetRandomNumber(int num)
-	{
-		return UnityEngine.Random.Range(0, num);
 	}
 }

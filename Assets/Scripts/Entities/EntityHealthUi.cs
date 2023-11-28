@@ -10,6 +10,9 @@ public class EntityHealthUi : MonoBehaviour
 	public Slider HealthSlider;
 	public TMP_Text HealthText;
 
+	private float timer;
+	private float timerCooldown = 3f;
+
 	public void Start()
 	{
 		try
@@ -28,11 +31,20 @@ public class EntityHealthUi : MonoBehaviour
 			return;
 
 		gameObject.transform.position = Camera.main.WorldToScreenPoint(EntityObjRef.transform.position + new Vector3(0, 14, 0));
+
+		timer -= Time.deltaTime;
+
+		if (timer <= 0)
+		{
+			timer = timerCooldown;
+			HideUIHealthBar();
+		}
 	}
 
 	//invoked from event
 	public void OnRecieveDamageEvent(int maxHealth, int currentHealth)
 	{
+		timer = timerCooldown;
 		ShowUIHealthBar(maxHealth, currentHealth);
 	}
 	public void ShowUIHealthBar(int maxHealth, int currentHealth)
@@ -50,9 +62,13 @@ public class EntityHealthUi : MonoBehaviour
 		HealthSlider.value = healthPercentage;
 		HealthText.text = currentHealth.ToString() + " / " + maxHealth.ToString();
 	}
+	public void HideHealthBarCountDown()
+	{
+
+	}
 
 	//invoked from event
-	public void RemoveUi()
+	public void OnEntityDeathRemoveUiEvent()
 	{
 		Destroy(gameObject);
 	}

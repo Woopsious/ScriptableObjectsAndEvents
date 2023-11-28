@@ -22,7 +22,7 @@ public class EntityLootSpawnHandler : MonoBehaviour
 			/// in future make items have a loot pool weight, higher weight = more common EG: chainmail armor rarer then leather armor etc.
 			///
 
-			int index = GetRandomNumber(lootPool.lootPoolList.Count);
+			int index = Utilities.GetRandomNumber(lootPool.lootPoolList.Count);
 			GameObject go = Instantiate(droppedItemPrefab, position, Quaternion.identity);
 
 			if (lootPool.lootPoolList[index].itemType == SOItems.ItemType.isWeapon)
@@ -67,7 +67,7 @@ public class EntityLootSpawnHandler : MonoBehaviour
 	//return random rarity
 	public Items.Rarity SetRarity()
 	{
-		float percentage = GetRandomNumber(101);
+		float percentage = Utilities.GetRandomNumber(101);
 
 		if (percentage > 90)
 			return Items.Rarity.isLegendary;
@@ -80,7 +80,7 @@ public class EntityLootSpawnHandler : MonoBehaviour
 	public int SetItemLevel()
 	{
 		int playerLvl = FindObjectOfType<PlayerController>().gameObject.GetComponent<EntityHealth>().entityLevel;
-		int itemLvl = GetRandomNumber(9);
+		int itemLvl = Utilities.GetRandomNumber(9);
 		itemLvl += playerLvl;
 
 		if (itemLvl <= 0)
@@ -88,10 +88,6 @@ public class EntityLootSpawnHandler : MonoBehaviour
 		return itemLvl - 4;
 	}
 
-	public int GetRandomNumber(int num)
-	{
-		return Random.Range(0, num);
-	}
 	public bool WillDropExtraloot()
 	{
 		return false;

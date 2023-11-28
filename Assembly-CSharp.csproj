@@ -79,6 +79,7 @@
     <Compile Include="Assets\Scripts\Items\Items.cs" />
     <Compile Include="Assets\Scripts\Items\Armors.cs" />
     <Compile Include="Assets\Scripts\Scriptables\SOEntityBaseStats.cs" />
+    <Compile Include="Assets\Scripts\Utilities.cs" />
     <Compile Include="Assets\Scripts\Entities\EntityHealthUi.cs" />
     <Compile Include="Assets\Scripts\Scriptables\SOEntityBehaviours.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerInventory.cs" />

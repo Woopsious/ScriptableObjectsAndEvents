@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-	public GameObject weaponContainer;
-	public Weapons equippedWeapon;
-
 	private Rigidbody rb;
 
 	public void Start()
