@@ -25,6 +25,7 @@ public class Armors : Items
 	{
 		base.Start();
 		SetArmorStats();
+		isStackable = false;
 	}
 	public void SetArmorStats()
 	{

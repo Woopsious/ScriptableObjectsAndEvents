@@ -15,6 +15,7 @@ public class Weapons : Items, IGetStatModifier
 	{
 		base.Start();
 		SetWeaponStats();
+		isStackable = false;
 	}
 	public void SetWeaponStats()
 	{

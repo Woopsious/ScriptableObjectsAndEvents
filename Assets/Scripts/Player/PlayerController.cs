@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class PlayerController : MonoBehaviour
 	public void Update()
 	{
 		PlayerMovementKeys();
+		HideShowInventory();
 	}
 
 	public void PlayerMovementKeys()
@@ -41,5 +43,11 @@ public class PlayerController : MonoBehaviour
 		{
 			transform.eulerAngles -= new Vector3(transform.rotation.x, -80, transform.rotation.y) * Time.unscaledDeltaTime;
 		}
+	}
+
+	public void HideShowInventory()
+	{
+		if (Input.GetKeyDown(KeyCode.I))
+			PlayerInventoryUi.Instance.HideShowInventory();
 	}
 }

@@ -31,7 +31,8 @@ public class EntityLootSpawnHandler : MonoBehaviour
 			if (lootPool.lootPoolList[index].itemType == SOItems.ItemType.isArmor)
 				SetUpArmorItem(go, index);
 
-			//consumables type check and function call
+			if (lootPool.lootPoolList[index].itemType == SOItems.ItemType.isConsumable)
+				SetUpConsumableItem(go, index);
 
 			SetUpItem(go, index);
 
@@ -61,8 +62,12 @@ public class EntityLootSpawnHandler : MonoBehaviour
 		armor.armorBaseRef = (SOArmors)lootPool.lootPoolList[index];
 		armor.currentStackCount = 1;
 	}
-
-	//CONSUMABLES SPECIFIC FUNCTION
+	public void SetUpConsumableItem(GameObject go, int index)
+	{
+		Consumables consumables = go.AddComponent<Consumables>();
+		consumables.consumableBaseRef = (SOConsumables)lootPool.lootPoolList[index];
+		consumables.currentStackCount = 3;
+	}
 
 	//return random rarity
 	public Items.Rarity SetRarity()

@@ -30,6 +30,7 @@ public class Items : MonoBehaviour
 	public SOConsumables consumableBaseRef;
 
 	[Header("Item Dynamic Info")]
+	public bool isStackable;
 	public int currentStackCount;
 	public float statModifier;
 
