@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Services.Analytics;
 using Unity.VisualScripting;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 using static UnityEditor.Progress;
 using Random = UnityEngine.Random;
@@ -25,17 +26,11 @@ public class PlayerInventory : MonoBehaviour
 	public void AddItemToPlayerInventory(Items item)
 	{
 		if (item.isStackable)
-		{
-			Debug.LogWarning("item Stackable");
 			TryStackItem(item);
-		}
 		else
-		{
-			Debug.LogWarning("item Not Stackable");
 			SpawnNewItemInInventory(item);
-		}
 	}
-	public void TryStackItem(Items item)
+	public void TryStackItem(Items newItem)
 	{
 		for (int i = 0; i < PlayerInventoryUi.Instance.InventorySlots.Count; i++)
 		{
@@ -44,33 +39,26 @@ public class PlayerInventory : MonoBehaviour
 			if (inventroySlot.GetComponentInChildren<InventoryItem>() != null)
 			{
 				itemInSlot = inventroySlot.GetComponentInChildren<InventoryItem>();
-				if (itemInSlot.itemName == item.itemName && itemInSlot.currentStackCount < itemInSlot.maxStackCount)
+				if (itemInSlot.itemName == newItem.itemName && itemInSlot.currentStackCount < itemInSlot.maxStackCount)
 				{
-					Debug.LogWarning("item name matches");
-					//add item to inventory, if current stack > max stack, currentStack - maxStack == newItemStackCount
-					//spawn new item stack in inventory with newItemStackCount if inventroy has space
-
+					//add to itemInSlot.CurrentStackCount till maxStackCountReached
 					for (int itemCount = itemInSlot.currentStackCount; itemCount < itemInSlot.maxStackCount; itemCount++)
 					{
-						item.currentStackCount--;
+						if (newItem.currentStackCount <= 0) return; //stop adding when newItem.currentStackCount == 0
+
+						newItem.currentStackCount--;
 						itemInSlot.currentStackCount++;
 						itemInSlot.UpdateStackCounter();
 					}
-					if (item.currentStackCount != 0)
-					{
-						SpawnNewItemInInventory(item);
-						return;
-					}
+					if (newItem.currentStackCount != 0) //if stackcount still has more find next stackable item
+						continue;
 				}
 				else
-				{
-					SpawnNewItemInInventory(item);
-					return;
-				}
+					continue;
 			}
-			else
+			else if (newItem.currentStackCount > 0)
 			{
-				SpawnNewItemInInventory(item);
+				SpawnNewItemInInventory(newItem);
 				return;
 			}
 		}
