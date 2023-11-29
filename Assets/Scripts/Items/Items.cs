@@ -45,6 +45,11 @@ public class Items : MonoBehaviour
 		rarity = setRarity;
 		itemLevel = setLevel;
 		GetStatModifier(itemLevel, (IGetStatModifier.Rarity)rarity);
+
+		name = GetItemName();
+		itemName = GetItemName();
+		itemImage = GetItemImage();
+		ItemPrice = GetItemPrice();
 	}
 	public void GetStatModifier(int level, IGetStatModifier.Rarity rarity)
 	{
@@ -54,6 +59,24 @@ public class Items : MonoBehaviour
 		else { modifier += 0; }
 
 		statModifier = modifier + (level - 1f) / 20;  //get level modifier
+	}
+	public string GetItemName()
+	{
+		if (weaponBaseRef != null) return weaponBaseRef.itemName;
+		else if (armorBaseRef != null) return armorBaseRef.itemName;
+		else return consumableBaseRef.itemName;
+	}
+	public Image GetItemImage()
+	{
+		if (weaponBaseRef != null) return weaponBaseRef.itemImage;
+		else if (armorBaseRef != null) return armorBaseRef.itemImage;
+		else return consumableBaseRef.itemImage;
+	}
+	public int GetItemPrice()
+	{
+		if (weaponBaseRef != null) return (int)(weaponBaseRef.ItemPrice * statModifier);
+		else if (armorBaseRef != null) return (int)(armorBaseRef.ItemPrice * statModifier);
+		else return (int)(consumableBaseRef.ItemPrice * statModifier);
 	}
 
 	public virtual void OnMouseOverItem()

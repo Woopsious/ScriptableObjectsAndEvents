@@ -26,97 +26,79 @@ public class PlayerInventory : MonoBehaviour
 	{
 		if (item.isStackable)
 		{
-			for (int i = 0; i < PlayerInventoryUi.Instance.InventorySlots.Count; i++)
-			{
-				GameObject inventroySlot = PlayerInventoryUi.Instance.InventorySlots[i];
-				InventoryItem itemInSlot;
-				if (inventroySlot.GetComponentInChildren<InventoryItem>() != null)
-				{
-					itemInSlot = inventroySlot.GetComponentInChildren<InventoryItem>();
-					if (itemInSlot.itemName == item.itemName)
-					{
-						//add item to inventory, if current stack > max stack, currentStack - maxStack == newItemStackCount
-						//spawn new item stack in inventory with newItemStackCount if inventroy has space
-					}
-					else
-					{
-						SpawnNewItemInInventory(inventroySlot, item);
-						return;
-					}
-				}
-				else
-				{
-					SpawnNewItemInInventory(inventroySlot, item);
-					return;
-				}
-			}
+			Debug.LogWarning("item Stackable");
+			TryStackItem(item);
 		}
-
 		else
 		{
-			foreach (GameObject inventroySlot in PlayerInventoryUi.Instance.InventorySlots)
-			{
-				if (inventroySlot.GetComponentInChildren<InventoryItem>() == null)
-				{
-					SpawnNewItemInInventory(inventroySlot, item);
-					return;
-				}
-			}
+			Debug.LogWarning("item Not Stackable");
+			SpawnNewItemInInventory(item);
 		}
 	}
 	public void TryStackItem(Items item)
 	{
-		foreach (GameObject inventroySlot in PlayerInventoryUi.Instance.InventorySlots)
+		for (int i = 0; i < PlayerInventoryUi.Instance.InventorySlots.Count; i++)
 		{
-			Debug.LogWarning("try stack item");
-
+			GameObject inventroySlot = PlayerInventoryUi.Instance.InventorySlots[i];
 			InventoryItem itemInSlot;
 			if (inventroySlot.GetComponentInChildren<InventoryItem>() != null)
 			{
 				itemInSlot = inventroySlot.GetComponentInChildren<InventoryItem>();
-				if (item.itemName == itemInSlot.itemName) //find correct type
+				if (itemInSlot.itemName == item.itemName && itemInSlot.currentStackCount < itemInSlot.maxStackCount)
 				{
-					while (itemInSlot.currentStackCount < itemInSlot.maxStackCount && item.currentStackCount != 0)
-					{
-						Debug.LogWarning("item in slot count: " + itemInSlot.currentStackCount);
-						Debug.LogWarning("new item count: " + item.currentStackCount);
-						itemInSlot.currentStackCount++;
-						item.currentStackCount--;
+					Debug.LogWarning("item name matches");
+					//add item to inventory, if current stack > max stack, currentStack - maxStack == newItemStackCount
+					//spawn new item stack in inventory with newItemStackCount if inventroy has space
 
+					for (int itemCount = itemInSlot.currentStackCount; itemCount < itemInSlot.maxStackCount; itemCount++)
+					{
+						item.currentStackCount--;
+						itemInSlot.currentStackCount++;
 						itemInSlot.UpdateStackCounter();
 					}
-					if (item.currentStackCount >= 1)
+					if (item.currentStackCount != 0)
 					{
-						SpawnNewItemInInventory(inventroySlot, item);
+						SpawnNewItemInInventory(item);
 						return;
 					}
-					else return;
 				}
 				else
 				{
-					SpawnNewItemInInventory(inventroySlot, item);
+					SpawnNewItemInInventory(item);
 					return;
 				}
 			}
+			else
+			{
+				SpawnNewItemInInventory(item);
+				return;
+			}
 		}
 	}
-	public void SpawnNewItemInInventory(GameObject inventorySlot, Items item)
+	public void SpawnNewItemInInventory(Items item)
 	{
-		GameObject go = Instantiate(PlayerInventoryUi.Instance.ItemUiPrefab, inventorySlot.transform);
-		InventoryItem newitemInSlot = go.GetComponent<InventoryItem>();
+		foreach (GameObject inventorySlot in PlayerInventoryUi.Instance.InventorySlots)
+		{
+			if (inventorySlot.GetComponentInChildren<InventoryItem>() == null)
+			{
+				GameObject go = Instantiate(PlayerInventoryUi.Instance.ItemUiPrefab, inventorySlot.transform);
+				InventoryItem newitemInSlot = go.GetComponent<InventoryItem>();
 
-		if (item.weaponBaseRef != null)
-			AddWeaponToInventory(newitemInSlot, item);
+				if (item.weaponBaseRef != null)
+					AddWeaponToInventory(newitemInSlot, item);
 
-		if (item.armorBaseRef != null)
-			AddArmorToInventory(newitemInSlot, item);
+				if (item.armorBaseRef != null)
+					AddArmorToInventory(newitemInSlot, item);
 
-		if (item.consumableBaseRef != null)
-			AddConsumableToInventory(newitemInSlot, item);
+				if (item.consumableBaseRef != null)
+					AddConsumableToInventory(newitemInSlot, item);
 
-		newitemInSlot.UpdateName();
-		newitemInSlot.UpdateImage();
-		newitemInSlot.UpdateStackCounter();
+				newitemInSlot.UpdateName();
+				newitemInSlot.UpdateImage();
+				newitemInSlot.UpdateStackCounter();
+				return;
+			}
+		}
 	}
 	public void AddWeaponToInventory(InventoryItem inventoryItem, Items item)
 	{
@@ -168,9 +150,5 @@ public class PlayerInventory : MonoBehaviour
 		inventoryItem.isStackable = item.isStackable;
 		inventoryItem.maxStackCount = item.consumableBaseRef.MaxStackCount;
 		inventoryItem.currentStackCount = item.currentStackCount;
-	}
-	public void OpenCloseInventory()
-	{
-
 	}
 }
