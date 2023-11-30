@@ -5,13 +5,16 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ItemsScriptableObject", menuName = "EnemyBehaviours")]
 public class SOEntityBehaviours : ScriptableObject
 {
-	[Header("Attack Behaviour")]
+	[Header("Idle Behaviour")]
 	public int idleWaitTime;
+	[Tooltip("50 is base value")]
+	public int idleWanderRadius;
 
-	[Tooltip("10 is base value")]
+	[Header("Attack Behaviour")]
+	[Tooltip("max radial distance from player, 10 is base value")]
 	public float aggroRange;
 
-	[Tooltip("will follow player as long as they are in view")]
+	[Tooltip("max distance till player looses aggro while in view")]
 	public float maxChaseRange;
 	public float attackRange; //might be useless as weapons store there own attack range
 

@@ -23,8 +23,11 @@ public class EntityBehaviour : MonoBehaviour
 
 	public void Start()
 	{
-		idleBounds.min = new Vector3(transform.position.x - 50, transform.position.y - 3, transform.position.z - 50);
-		idleBounds.max = new Vector3(transform.position.x + 50, transform.position.y + 3, transform.position.z + 50);
+		idleBounds.min = new Vector3( transform.position.x - entityBehaviour.idleWanderRadius, 
+			transform.position.y - 3, transform.position.z - entityBehaviour.idleWanderRadius);
+
+		idleBounds.max = new Vector3(transform.position.x + entityBehaviour.idleWanderRadius, 
+			transform.position.y + 3, transform.position.z + entityBehaviour.idleWanderRadius);
 
 		HasReachedDestination = true;
 
@@ -93,6 +96,6 @@ public class EntityBehaviour : MonoBehaviour
 	public void OnDrawGizmos()
 	{
 		Gizmos.color = Color.red;
-		Gizmos.DrawCube(idleBounds.center, idleBounds.size);
+		Gizmos.DrawWireCube(idleBounds.center, idleBounds.size);
 	}
 }

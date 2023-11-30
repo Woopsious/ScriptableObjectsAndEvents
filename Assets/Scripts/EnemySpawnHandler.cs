@@ -36,7 +36,8 @@ public class EnemySpawnHandler : MonoBehaviour
 	}
 	public void SpawnEnemy()
 	{
-		GameObject go = Instantiate(ListOfSpawnableEnemies[Utilities.GetRandomNumber(ListOfSpawnableEnemies.Count)], gameObject.transform);
+		GameObject go = Instantiate(ListOfSpawnableEnemies[Utilities.GetRandomNumber(ListOfSpawnableEnemies.Count)], 
+			transform.position, Quaternion.identity);
 
 		EntityHealth entityHealthRef = go.GetComponent<EntityHealth>();
 		entityHealthRef.entityLevel = spawnerLevel;
