@@ -21,6 +21,9 @@ public class EntityBehaviour : MonoBehaviour
 
 	private float timer;
 
+	public PlayerController player;
+	public Vector3 playersLastKnownPosition;
+
 	public void Start()
 	{
 		idleBounds.min = new Vector3( transform.position.x - entityBehaviour.idleWanderRadius, 
@@ -39,11 +42,23 @@ public class EntityBehaviour : MonoBehaviour
 	}
 	public void Update()
 	{
-		IdleAtPositionTimer();
-		CheckDistance();
+		if (player == null)
+		{
+			IdleAtPositionTimer();
+			CheckDistance();
+		}
+		else
+		{
+			UpdatePlayerPosition();
+			//do some other shit
+		}
+	}
+	public void ChasePlayer()
+	{
+		//if player != null and player in view, start chase
 	}
 
-	//idle Behaviour
+	//idle behaviour
 	public void IdleAtPositionTimer()
 	{
 		if (HasReachedDestination == true)
@@ -64,14 +79,38 @@ public class EntityBehaviour : MonoBehaviour
 	public void SampleNewIdleMovePosition()
 	{
 		Vector3 randomMovePosition = Utilities.GetRandomPointInBounds(idleBounds);
-
-		NavMesh.SamplePosition(randomMovePosition, out NavMeshHit navMeshHit, 25, navMeshAgent.areaMask);
-		movePosition = navMeshHit.position;
+		movePosition = SampleNewMovePosition(randomMovePosition);
 
 		if (CheckAndSetNewPath(movePosition))
 			return;
 		else
 			FindNewIdlePosition();
+	}
+
+	//attack behaviour
+	public void MoveTowardsPlayer()
+	{
+		//if player distance greater then maxChaseRange, stop chasing and get new idlePosition, reset player ref, 
+
+		//every x amount of time, sample player position and move towards it
+	}
+	public void UpdatePlayerPosition()
+	{
+		//if player in view update player position else return.
+		CheckIfPlayerVisible();
+
+		playersLastKnownPosition = player.transform.position;
+	}
+	public void CheckIfPlayerVisible()
+	{
+		//raycast check to see if player in view, return true or false.
+	}
+
+	//idle + attack behaviour
+	public Vector3 SampleNewMovePosition(Vector3 position)
+	{
+		NavMesh.SamplePosition(position, out NavMeshHit navMeshHit, 10, navMeshAgent.areaMask);
+		return navMeshHit.position;
 	}
 	public bool CheckAndSetNewPath(Vector3 movePosition)
 	{
