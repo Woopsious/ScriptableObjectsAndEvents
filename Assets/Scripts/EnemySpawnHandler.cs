@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Threading;
 using UnityEngine;
 
@@ -11,6 +12,14 @@ public class EnemySpawnHandler : MonoBehaviour
 
 	public float spawnTimer;
 	private float spawnCooldown = 5;
+
+	public int spawnerLevel;
+
+	public void Start()
+	{
+		//in MP change to array check for then get host level
+		spawnerLevel = FindObjectOfType<PlayerController>().GetComponent<EntityHealth>().entityLevel;
+	}
 
 	public void Update()
 	{
@@ -28,8 +37,11 @@ public class EnemySpawnHandler : MonoBehaviour
 	public void SpawnEnemy()
 	{
 		GameObject go = Instantiate(ListOfSpawnableEnemies[Utilities.GetRandomNumber(ListOfSpawnableEnemies.Count)], gameObject.transform);
-		
-		Debug.Log("name of spawned Enemy: " + go.name);
+
+		EntityHealth entityHealthRef = go.GetComponent<EntityHealth>();
+		entityHealthRef.entityLevel = spawnerLevel;
+		entityHealthRef.onDeathEvent.AddListener(delegate { OnEntityDeathEvent(); } );
+
 		OnEnemySpawn();
 	}
 
@@ -38,7 +50,7 @@ public class EnemySpawnHandler : MonoBehaviour
 		numOfEnemiesCurrentlySpawned++;
 		Debug.Log("enemy Spawned");
 	}
-	public void OnEnemyDeath()
+	public void OnEntityDeathEvent()
 	{
 		numOfEnemiesCurrentlySpawned--;
 	}

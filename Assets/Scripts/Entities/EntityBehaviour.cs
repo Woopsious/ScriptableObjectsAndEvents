@@ -9,15 +9,17 @@ using UnityEngine.AI;
 
 public class EntityBehaviour : MonoBehaviour
 {
-	public Bounds idleBounds;
-	public Vector3 movePosition;
-	public bool HasReachedDestination;
-
 	public NavMeshAgent navMeshAgent;
 	public Rigidbody rb;
 
-	public float timer;
-	public float timerCooldown = 10f;
+	public SOEntityBehaviours entityBehaviour;
+	public SphereCollider viewRangeCollider;
+
+	private Bounds idleBounds;
+	private Vector3 movePosition;
+	private bool HasReachedDestination;
+
+	private float timer;
 
 	public void Start()
 	{
@@ -25,13 +27,21 @@ public class EntityBehaviour : MonoBehaviour
 		idleBounds.max = new Vector3(transform.position.x + 50, transform.position.y + 3, transform.position.z + 50);
 
 		HasReachedDestination = true;
+
+		viewRangeCollider.radius = entityBehaviour.aggroRange;
+
+		navMeshAgent.speed = entityBehaviour.navMeshMoveSpeed;
+		navMeshAgent.angularSpeed = entityBehaviour.navMeshTurnSpeed;
+		navMeshAgent.acceleration = entityBehaviour.navMeshAcceleration;
 	}
 	public void Update()
 	{
-		IdleAtPosition();
+		IdleAtPositionTimer();
 		CheckDistance();
 	}
-	public void IdleAtPosition()
+
+	//idle Behaviour
+	public void IdleAtPositionTimer()
 	{
 		if (HasReachedDestination == true)
 		{
@@ -39,19 +49,16 @@ public class EntityBehaviour : MonoBehaviour
 
 			if (timer < 0)
 			{
-				timer = timerCooldown;
+				timer = entityBehaviour.idleWaitTime;
 				FindNewIdlePosition();
 			}
 		}
 	}
 	public void FindNewIdlePosition()
 	{
-		SampleNewMovePosition();
-
-		Debug.LogWarning("position found");
-		HasReachedDestination = false;
+		SampleNewIdleMovePosition();
 	}
-	public bool SampleNewMovePosition()
+	public void SampleNewIdleMovePosition()
 	{
 		Vector3 randomMovePosition = Utilities.GetRandomPointInBounds(idleBounds);
 
@@ -59,8 +66,9 @@ public class EntityBehaviour : MonoBehaviour
 		movePosition = navMeshHit.position;
 
 		if (CheckAndSetNewPath(movePosition))
-			return true;
-		else return false;
+			return;
+		else
+			FindNewIdlePosition();
 	}
 	public bool CheckAndSetNewPath(Vector3 movePosition)
 	{
@@ -68,13 +76,11 @@ public class EntityBehaviour : MonoBehaviour
 		if (navMeshAgent.CalculatePath(movePosition, path))
 		{
 			navMeshAgent.SetPath(path);
+			HasReachedDestination = false;
 			navMeshAgent.isStopped = false;
 			return true;
 		}
-		else
-		{
-			return false;
-		}
+		else return false;
 	}
 	public void CheckDistance()
 	{
