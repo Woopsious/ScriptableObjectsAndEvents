@@ -20,11 +20,4 @@ public class PlayerDetection : MonoBehaviour
 		if (other.gameObject.GetComponent<PlayerController>())
 			entityBehaviourRef.player = other.gameObject.GetComponent<PlayerController>();
 	}
-	public void OnTriggerExit(Collider other)
-	{
-		if (other.gameObject.GetComponent<PlayerController>() == null) return;
-
-		if (other.gameObject.GetComponent<PlayerController>() == entityBehaviourRef.player)
-			entityBehaviourRef.player = null;
-	}
 }

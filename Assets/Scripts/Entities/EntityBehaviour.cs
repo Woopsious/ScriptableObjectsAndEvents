@@ -22,9 +22,7 @@ public class EntityBehaviour : MonoBehaviour
 	private Vector3 movePosition;
 	private bool HasReachedDestination;
 
-	private float idleTimer;
-	public float chaseTimer;
-	public float chaseTimerCooldown = 1f;
+	public float idleTimer;
 
 	public PlayerController player;
 	public Vector3 playersLastKnownPosition;
@@ -55,15 +53,26 @@ public class EntityBehaviour : MonoBehaviour
 	}
 	public void Update()
 	{
-		if (player == null)
+		if (playersLastKnownPosition == Vector3.zero)
 		{
+			// 1. idle and randomly move around the map within bounds of where they spawned
 			IdleAtPositionTimer();
-			CheckIdleDistance();
+			CheckDistance();
+			UpdatePlayerPosition();
 		}
-		else
+		else if (playersLastKnownPosition != Vector3.zero)
 		{
-			ChasePlayer();
-			//do some other shit
+			// 2. when play enters agro range, chase player endless till they escape max chase range
+			// 2A. if they escape max chase range move to last know position
+			// 2B. if player moves out of visible range move to last know position
+			// 3. once there if player not found go back to step 1.
+			// 4. once there if player is found return to step 2.
+			UpdatePlayerPosition();
+
+			if (CheckIfPlayerVisible())
+				ChasePlayer();
+			else
+				CheckDistance();
 		}
 	}
 
@@ -83,10 +92,6 @@ public class EntityBehaviour : MonoBehaviour
 	}
 	public void FindNewIdlePosition()
 	{
-		SampleNewIdleMovePosition();
-	}
-	public void SampleNewIdleMovePosition()
-	{
 		Vector3 randomMovePosition = Utilities.GetRandomPointInBounds(idleBounds);
 		movePosition = SampleNewMovePosition(randomMovePosition);
 
@@ -95,54 +100,34 @@ public class EntityBehaviour : MonoBehaviour
 		else
 			FindNewIdlePosition();
 	}
-	public void CheckIdleDistance()
-	{
-		if (navMeshAgent.remainingDistance < navMeshAgent.stoppingDistance && HasReachedDestination == false)
-		{
-			HasReachedDestination = true;
-		}
-	}
 
 	//attack behaviour
 	public void ChasePlayer()
 	{
-		//if player != null and player in view, start chase
-
-		if (CheckChaseDistance())
-		{
-			MoveTowardsPlayer();
-			Debug.LogWarning("Player visible");
-		}
-		else
-		{
-			player = null;
-			Debug.LogWarning("Player not visible");
-		}
-	}
-	public void MoveTowardsPlayer()
-	{
 		//if player distance greater then maxChaseRange (checked in CheckDistance), stop chasing get new idlePosition, reset player ref
 		//every x amount of time, sample player position and move towards it
-
-		UpdatePlayerPosition();
-		Vector3 movePosition = SampleNewMovePosition(player.centerPoint.transform.position);
+		HasReachedDestination = false;
+		Vector3 movePosition = SampleNewMovePosition(playersLastKnownPosition);
 		CheckAndSetNewPath(movePosition);
+
+		if (CheckChaseDistance())
+			player = null;
 	}
 	public void UpdatePlayerPosition()
 	{
-		//if player in view update player position else return.
-		if (CheckIfPlayerVisible())
+		if (player != null && CheckIfPlayerVisible())
 			playersLastKnownPosition = player.transform.position;
 	}
 	public bool CheckIfPlayerVisible()
 	{
 		//raycast check to see if player in view, return true or false.
-		Physics.Linecast(centerPoint.transform.position, player.centerPoint.transform.position, out RaycastHit hit, includeMe);
 
 		//occasionally throws null i have no clue why, code is basically a copy and paste from previous game
 		//dont remember null error happening in last game at all, it doesnt seem to break anything at all either
 		try
 		{
+			Physics.Linecast(centerPoint.transform.position, player.centerPoint.transform.position, out RaycastHit hit, includeMe);
+
 			if (hit.point != null && hit.collider.gameObject == player.gameObject)
 				return true;
 			else
@@ -155,7 +140,9 @@ public class EntityBehaviour : MonoBehaviour
 	}
 	public bool CheckChaseDistance()
 	{
-		if (player != null && navMeshAgent.remainingDistance > entityBehaviour.maxChaseRange)
+		float distance = Vector3.Distance(gameObject.transform.position, playersLastKnownPosition);
+		Debug.LogWarning(distance);
+		if (distance < entityBehaviour.maxChaseRange)
 			return false;
 		else return true;
 	}
@@ -177,6 +164,14 @@ public class EntityBehaviour : MonoBehaviour
 			return true;
 		}
 		else return false;
+	}
+	public void CheckDistance()
+	{
+		if (navMeshAgent.remainingDistance < navMeshAgent.stoppingDistance && HasReachedDestination == false)
+		{
+			HasReachedDestination = true;
+			playersLastKnownPosition = Vector3.zero;
+		}
 	}
 
 	//utility
