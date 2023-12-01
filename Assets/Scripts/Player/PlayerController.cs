@@ -6,6 +6,7 @@ using UnityEngine.Rendering;
 public class PlayerController : MonoBehaviour
 {
 	private Rigidbody rb;
+	public GameObject centerPoint;
 
 	public void Start()
 	{
