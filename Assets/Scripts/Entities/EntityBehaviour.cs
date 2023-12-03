@@ -53,21 +53,21 @@ public class EntityBehaviour : MonoBehaviour
 	}
 	public void Update()
 	{
+		UpdatePlayerPosition();
+
 		if (playersLastKnownPosition == Vector3.zero)
 		{
 			// 1. idle and randomly move around the map within bounds of where they spawned
 			IdleAtPositionTimer();
 			CheckDistance();
-			UpdatePlayerPosition();
 		}
 		else if (playersLastKnownPosition != Vector3.zero)
 		{
 			// 2. when play enters agro range, chase player endless till they escape max chase range
 			// 2A. if they escape max chase range move to last know position
 			// 2B. if player moves out of visible range move to last know position
-			// 3. once there if player not found go back to step 1.
-			// 4. once there if player is found return to step 2.
-			UpdatePlayerPosition();
+			// 3. once there, if player not found go back to step 1.
+			// 4. once there, if player is found return to step 2.
 
 			if (CheckIfPlayerVisible())
 				ChasePlayer();
@@ -76,6 +76,10 @@ public class EntityBehaviour : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// using a state machine in actual project will be better long term and simpler to maintain
+	/// </summary>
+	/// 
 	//idle behaviour
 	public void IdleAtPositionTimer()
 	{
@@ -104,8 +108,6 @@ public class EntityBehaviour : MonoBehaviour
 	//attack behaviour
 	public void ChasePlayer()
 	{
-		//if player distance greater then maxChaseRange (checked in CheckDistance), stop chasing get new idlePosition, reset player ref
-		//every x amount of time, sample player position and move towards it
 		HasReachedDestination = false;
 		Vector3 movePosition = SampleNewMovePosition(playersLastKnownPosition);
 		CheckAndSetNewPath(movePosition);
@@ -120,10 +122,6 @@ public class EntityBehaviour : MonoBehaviour
 	}
 	public bool CheckIfPlayerVisible()
 	{
-		//raycast check to see if player in view, return true or false.
-
-		//occasionally throws null i have no clue why, code is basically a copy and paste from previous game
-		//dont remember null error happening in last game at all, it doesnt seem to break anything at all either
 		try
 		{
 			Physics.Linecast(centerPoint.transform.position, player.centerPoint.transform.position, out RaycastHit hit, includeMe);

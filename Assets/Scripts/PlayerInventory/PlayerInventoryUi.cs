@@ -6,9 +6,14 @@ public class PlayerInventoryUi : MonoBehaviour
 {
 	public static PlayerInventoryUi Instance;
 
-
 	public GameObject ItemUiPrefab;
 	public List<GameObject> InventorySlots = new List<GameObject>();
+
+	public GameObject weaponEquipmentSlot;
+
+	public GameObject helmetEquipmentSlot;
+	public GameObject chestpieceEquipmentSlot;
+	public GameObject legsEquipmentSlot;
 
 	public void Start()
 	{

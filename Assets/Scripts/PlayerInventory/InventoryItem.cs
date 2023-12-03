@@ -2,14 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [System.Serializable]
-public class InventoryItem : MonoBehaviour
+public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-	public TMP_Text uiName;
-	public Image uiImage;
-	public TMP_Text uiStackCount;
+	[HideInInspector] public Transform parentAfterDrag;
+
+	public TMP_Text uiItemName;
+	public Image uiItemImage;
+	public TMP_Text uiItemStackCount;
 
 	[Header("Item Info")]
 	public string itemName;
@@ -62,7 +65,7 @@ public class InventoryItem : MonoBehaviour
 
 	public void UpdateName()
 	{
-		uiName.text = itemName;
+		uiItemName.text = itemName;
 	}
 
 	public void UpdateImage()
@@ -72,6 +75,26 @@ public class InventoryItem : MonoBehaviour
 
 	public void UpdateStackCounter()
 	{
-		uiStackCount.text = currentStackCount.ToString();
+		uiItemStackCount.text = currentStackCount.ToString();
+	}
+	public void OnBeginDrag(PointerEventData eventData)
+	{
+		Debug.LogWarning("begin drag");
+		parentAfterDrag = transform.parent;
+		transform.SetParent(transform.root);
+		transform.SetAsLastSibling();
+		uiItemImage.raycastTarget = false;
+	}
+	public void OnDrag(PointerEventData eventData)
+	{
+		Debug.LogWarning("dragging");
+		transform.position = Input.mousePosition;
+	}
+
+	public void OnEndDrag(PointerEventData eventData)
+	{
+		Debug.LogWarning("end drag");
+		transform.SetParent(parentAfterDrag);
+		uiItemImage.raycastTarget = true;
 	}
 }
