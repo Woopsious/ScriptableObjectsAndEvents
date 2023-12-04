@@ -37,7 +37,7 @@ public class PlayerInventory : MonoBehaviour
 			if (inventroySlot.IsSlotNotEmpty())
 			{
 				itemInSlot = inventroySlot.GetComponentInChildren<InventoryItem>();
-				if (inventroySlot.IsItemInSlotSame(newItem) && itemInSlot.currentStackCount < itemInSlot.maxStackCount)
+				if (inventroySlot.IsItemInSlotSameAs(newItem) && itemInSlot.currentStackCount < itemInSlot.maxStackCount)
 				{
 					//add to itemInSlot.CurrentStackCount till maxStackCountReached
 					for (int itemCount = itemInSlot.currentStackCount; itemCount < itemInSlot.maxStackCount; itemCount++)

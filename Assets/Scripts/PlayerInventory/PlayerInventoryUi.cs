@@ -15,6 +15,9 @@ public class PlayerInventoryUi : MonoBehaviour
 	public GameObject chestpieceEquipmentSlot;
 	public GameObject legsEquipmentSlot;
 
+	public GameObject consumableSlotOne;
+	public GameObject consumableSlotTwo;
+
 	public void Start()
 	{
 		Instance = this;
