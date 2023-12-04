@@ -158,7 +158,6 @@ public class EntityBehaviour : MonoBehaviour
 		{
 			navMeshAgent.SetPath(path);
 			HasReachedDestination = false;
-			navMeshAgent.isStopped = false;
 			return true;
 		}
 		else return false;

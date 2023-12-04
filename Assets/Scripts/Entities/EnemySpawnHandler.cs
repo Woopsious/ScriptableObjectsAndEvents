@@ -49,7 +49,6 @@ public class EnemySpawnHandler : MonoBehaviour
 	public void OnEnemySpawn()
 	{
 		numOfEnemiesCurrentlySpawned++;
-		Debug.Log("enemy Spawned");
 	}
 	public void OnEntityDeathEvent()
 	{

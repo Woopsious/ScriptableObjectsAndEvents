@@ -79,7 +79,6 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 	}
 	public void OnBeginDrag(PointerEventData eventData)
 	{
-		Debug.LogWarning("begin drag");
 		parentAfterDrag = transform.parent;
 		transform.SetParent(transform.root);
 		transform.SetAsLastSibling();
@@ -87,13 +86,11 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 	}
 	public void OnDrag(PointerEventData eventData)
 	{
-		Debug.LogWarning("dragging");
 		transform.position = Input.mousePosition;
 	}
 
 	public void OnEndDrag(PointerEventData eventData)
 	{
-		Debug.LogWarning("end drag");
 		transform.SetParent(parentAfterDrag);
 		uiItemImage.raycastTarget = true;
 	}

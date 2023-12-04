@@ -18,10 +18,6 @@ public class PlayerInventory : MonoBehaviour
 	{
 		Instance = this;
 	}
-	public void Update()
-	{
-
-	}
 
 	public void AddItemToPlayerInventory(Items item)
 	{
@@ -131,6 +127,7 @@ public class PlayerInventory : MonoBehaviour
 	{
 		inventoryItem.itemName = item.itemName;
 		inventoryItem.itemImage = item.itemImage;
+		inventoryItem.consumableBaseRef = item.consumableBaseRef;
 
 		inventoryItem.healthRestoration = item.consumableBaseRef.healthRestoration;
 		inventoryItem.manaRestoration = item.consumableBaseRef.manaRestoration;
