@@ -5,6 +5,7 @@ using Unity.Services.Analytics;
 using Unity.VisualScripting;
 using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
+using UnityEngine.ProBuilder.MeshOperations;
 using static UnityEditor.Progress;
 using Random = UnityEngine.Random;
 
@@ -30,12 +31,13 @@ public class PlayerInventory : MonoBehaviour
 	{
 		for (int i = 0; i < PlayerInventoryUi.Instance.InventorySlots.Count; i++)
 		{
-			GameObject inventroySlot = PlayerInventoryUi.Instance.InventorySlots[i];
+			InventorySlot inventroySlot = PlayerInventoryUi.Instance.InventorySlots[i].GetComponent<InventorySlot>();
 			InventoryItem itemInSlot;
-			if (inventroySlot.GetComponentInChildren<InventoryItem>() != null)
+
+			if (inventroySlot.IsSlotNotEmpty())
 			{
 				itemInSlot = inventroySlot.GetComponentInChildren<InventoryItem>();
-				if (itemInSlot.itemName == newItem.itemName && itemInSlot.currentStackCount < itemInSlot.maxStackCount)
+				if (inventroySlot.IsItemInSlotSame(newItem) && itemInSlot.currentStackCount < itemInSlot.maxStackCount)
 				{
 					//add to itemInSlot.CurrentStackCount till maxStackCountReached
 					for (int itemCount = itemInSlot.currentStackCount; itemCount < itemInSlot.maxStackCount; itemCount++)
@@ -61,9 +63,11 @@ public class PlayerInventory : MonoBehaviour
 	}
 	public void SpawnNewItemInInventory(Items item)
 	{
-		foreach (GameObject inventorySlot in PlayerInventoryUi.Instance.InventorySlots)
+		for (int i = 0; i < PlayerInventoryUi.Instance.InventorySlots.Count; i++)
 		{
-			if (inventorySlot.GetComponentInChildren<InventoryItem>() == null)
+			InventorySlot inventorySlot = PlayerInventoryUi.Instance.InventorySlots[i].GetComponent<InventorySlot>();
+
+			if (!inventorySlot.IsSlotNotEmpty())
 			{
 				GameObject go = Instantiate(PlayerInventoryUi.Instance.ItemUiPrefab, inventorySlot.transform);
 				InventoryItem newitemInSlot = go.GetComponent<InventoryItem>();
@@ -135,5 +139,24 @@ public class PlayerInventory : MonoBehaviour
 		inventoryItem.isStackable = item.isStackable;
 		inventoryItem.maxStackCount = item.consumableBaseRef.MaxStackCount;
 		inventoryItem.currentStackCount = item.currentStackCount;
+	}
+
+	public bool CheckIfInventoryFull()
+	{
+		int numOfFilledSlots = 0;
+
+		foreach (GameObject obj in PlayerInventoryUi.Instance.InventorySlots)
+		{
+			InventorySlot inventorySlot = obj.GetComponent<InventorySlot>();
+
+			if (inventorySlot.IsSlotNotEmpty())
+				numOfFilledSlots++;
+		}
+		Debug.LogWarning("number of inventroy slots currently full: " + numOfFilledSlots);
+		Debug.LogWarning("max number of inventroy slots: " + PlayerInventoryUi.Instance.InventorySlots.Count);
+
+		if (numOfFilledSlots == PlayerInventoryUi.Instance.InventorySlots.Count)
+			return true;
+		else return false;
 	}
 }
