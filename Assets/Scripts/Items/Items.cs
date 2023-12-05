@@ -1,15 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class Items : MonoBehaviour
 {
-	///
-	/// items that are dropped on the ground and can be picked up via Interactable Component script
-	///
+	[HideInInspector] public EntityEquipmentHandler entityEquipmentHandler;
 
 	[Header("Item Info")]
 	public string itemName;

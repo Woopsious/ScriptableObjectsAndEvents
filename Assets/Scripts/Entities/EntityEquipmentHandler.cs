@@ -57,7 +57,7 @@ public class EntityEquipmentHandler : MonoBehaviour
 	}
 
 	//weapon
-	public void EquipWeapon()
+	public virtual void EquipWeapon()
 	{
 		GameObject go;
 		int index;
@@ -66,9 +66,13 @@ public class EntityEquipmentHandler : MonoBehaviour
 			go = Instantiate(itemPrefab, weaponSlotContainer.transform);
 		else go = equippedWeapon.gameObject;
 
+		OnWeaponUnequip();
+
 		index = Utilities.GetRandomNumber(possibleWeaponsList.Count);
 		SetUpWeapon(go, possibleWeaponsList, index);
 		SetUpWeaponItem(go, possibleWeaponsList, index);
+		equippedWeapon = go.GetComponent<Weapons>();
+		equippedWeapon.entityEquipmentHandler = this;
 	}
 	public void SetUpWeapon(GameObject go, List<SOWeapons> weaponList, int index)
 	{
@@ -101,42 +105,68 @@ public class EntityEquipmentHandler : MonoBehaviour
 		item.itemImage = weaponList[index].itemImage;
 		item.ItemPrice = weaponList[index].ItemPrice;
 	}
+	public void OnWeaponUnequip()
+	{
+		if (equippedWeapon != null)
+		{
+			bonusEquipmentMana -= equippedWeapon.bonusMana;
+		}
+	}
+	public void OnWeaponEquip()
+	{
+		bonusEquipmentMana += equippedWeapon.bonusMana;
+	}
 
 	//armors
-	public void EquipArmor()
+	public virtual void EquipArmor()
 	{
 		GameObject go;
 		int index;
 
-		if (possibleHelmetsList.Count == 0) { return; }
+		if (possibleHelmetsList.Count != 0)
+		{
+			if (helmetSlotContainer.transform.childCount == 0)
+				go = Instantiate(itemPrefab, helmetSlotContainer.transform);
+			else go = helmetSlotContainer;
 
-		if (helmetSlotContainer.transform.childCount == 0)
-			go = Instantiate(itemPrefab, helmetSlotContainer.transform);
-		else go = helmetSlotContainer;
+			OnArmorUnequip(equippedHelmet);
 
-		index = Utilities.GetRandomNumber(possibleHelmetsList.Count);
-		SetUpArmor(go, possibleHelmetsList, index);
-		SetUpArmorItem(go, possibleHelmetsList, index);
+			index = Utilities.GetRandomNumber(possibleHelmetsList.Count);
+			SetUpArmor(go, possibleHelmetsList, index);
+			SetUpArmorItem(go, possibleHelmetsList, index);
+			equippedHelmet = go.GetComponent<Armors>();
+			equippedHelmet.entityEquipmentHandler = this;
+		}
 
-		if (possibleChestpiecesList.Count == 0) { return; }
+		if (possibleChestpiecesList.Count != 0)
+		{
+			if (chestpieceSlotContainer.transform.childCount == 0)
+				go = Instantiate(itemPrefab, chestpieceSlotContainer.transform);
+			else go = chestpieceSlotContainer;
 
-		if (chestpieceSlotContainer.transform.childCount == 0)
-			go = Instantiate(itemPrefab, chestpieceSlotContainer.transform);
-		else go = chestpieceSlotContainer;
+			OnArmorUnequip(equippedChestpiece);
 
-		index = Utilities.GetRandomNumber(possibleChestpiecesList.Count);
-		SetUpArmor(go, possibleChestpiecesList, index);
-		SetUpArmorItem(go, possibleChestpiecesList, index);
+			index = Utilities.GetRandomNumber(possibleChestpiecesList.Count);
+			SetUpArmor(go, possibleChestpiecesList, index);
+			SetUpArmorItem(go, possibleChestpiecesList, index);
+			equippedChestpiece = go.GetComponent<Armors>();
+			equippedChestpiece.entityEquipmentHandler = this;
+		}
 
-		if (possibleLegsList.Count == 0) { return; }
+		if (possibleLegsList.Count != 0)
+		{
+			if (legsSlotContainer.transform.childCount == 0)
+				go = Instantiate(itemPrefab, legsSlotContainer.transform);
+			else go = legsSlotContainer;
 
-		if (legsSlotContainer.transform.childCount == 0)
-			go = Instantiate(itemPrefab, legsSlotContainer.transform);
-		else go = legsSlotContainer;
+			OnArmorUnequip(equippedLegs);
 
-		index = Utilities.GetRandomNumber(possibleLegsList.Count);
-		SetUpArmor(go, possibleLegsList, index);
-		SetUpArmorItem(go, possibleLegsList, index);
+			index = Utilities.GetRandomNumber(possibleLegsList.Count);
+			SetUpArmor(go, possibleLegsList, index);
+			SetUpArmorItem(go, possibleLegsList, index);
+			equippedLegs = go.GetComponent<Armors>();
+			equippedLegs.entityEquipmentHandler = this;
+		}
 	}
 	public void SetUpArmor(GameObject go, List<SOArmors> armorList, int index)
 	{
@@ -161,5 +191,28 @@ public class EntityEquipmentHandler : MonoBehaviour
 		item.itemName = armorList[index].name;
 		item.itemImage = armorList[index].itemImage;
 		item.ItemPrice = armorList[index].ItemPrice;
+	}
+	public void OnArmorUnequip(Armors armor)
+	{
+		if (armor != null)
+		{
+			bonusEquipmentHealth -= armor.bonusHealth;
+			bonusEquipmentMana -= armor.bonusMana;
+			bonusEquipmentPhysicalResistance -= armor.bonusPhysicalResistance;
+			bonusEquipmentPoisonResistance -= armor.bonusPoisonResistance;
+			bonusEquipmentFireResistance -= armor.bonusFireResistance;
+			bonusEquipmentIceResistance -= armor.bonusIceResistance;
+}
+	}
+	public void OnArmorEquip(Armors armor)
+	{
+		Debug.LogWarning(armor.bonusPhysicalResistance);
+
+		bonusEquipmentHealth += armor.bonusHealth;
+		bonusEquipmentMana += armor.bonusMana;
+		bonusEquipmentPhysicalResistance += armor.bonusPhysicalResistance;
+		bonusEquipmentPoisonResistance += armor.bonusPoisonResistance;
+		bonusEquipmentFireResistance += armor.bonusFireResistance;
+		bonusEquipmentIceResistance += armor.bonusIceResistance;
 	}
 }

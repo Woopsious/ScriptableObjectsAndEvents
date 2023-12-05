@@ -21,6 +21,9 @@ public class Weapons : Items, IGetStatModifier
 	{
 		damage = (int)(weaponBaseRef.baseDamage * statModifier);
 		bonusMana = (int)(weaponBaseRef.baseBonusMana * statModifier);
+
+		if (entityEquipmentHandler != null)
+			entityEquipmentHandler.OnWeaponEquip();
 	}
 	public virtual void OnTriggerEnter(Collider other)
 	{

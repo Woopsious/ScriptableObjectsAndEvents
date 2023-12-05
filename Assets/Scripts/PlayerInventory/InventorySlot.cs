@@ -71,4 +71,11 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 		}
 		else return false;
 	}
+
+	public bool IsEquipmentSlot()
+	{
+		if (slotType != SlotType.generic)
+			return true ;
+		else return false;
+	}
 }
