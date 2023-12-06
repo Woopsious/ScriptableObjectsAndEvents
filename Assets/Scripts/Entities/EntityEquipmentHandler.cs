@@ -73,17 +73,9 @@ public class EntityEquipmentHandler : MonoBehaviour
 		if (equippedWeapon != null)
 		{
 			equippedWeapon.weaponBaseRef = possibleWeaponsList[index];
-			equippedWeapon.SetItemStats(Items.Rarity.isCommon, GetComponent<EntityHealth>().entityLevel);
 			equippedWeapon.entityEquipmentHandler = this;
+			equippedWeapon.SetItemStats(Items.Rarity.isCommon, GetComponent<EntityHealth>().entityLevel);
 		}
-
-		/*
-		index = Utilities.GetRandomNumber(possibleWeaponsList.Count);
-		SetUpWeapon(go, possibleWeaponsList, index);
-		SetUpWeaponItem(go, possibleWeaponsList, index);
-		equippedWeapon = go.GetComponent<Weapons>();
-		equippedWeapon.entityEquipmentHandler = this;
-		*/
 	}
 	public void OnWeaponUnequip()
 	{
@@ -114,8 +106,8 @@ public class EntityEquipmentHandler : MonoBehaviour
 			if (equippedHelmet != null)
 			{
 				equippedHelmet.armorBaseRef = possibleHelmetsList[index];
-				equippedHelmet.SetItemStats(Items.Rarity.isCommon, GetComponent<EntityHealth>().entityLevel);
 				equippedHelmet.entityEquipmentHandler = this;
+				equippedHelmet.SetItemStats(Items.Rarity.isCommon, GetComponent<EntityHealth>().entityLevel);
 			}
 		}
 
@@ -125,15 +117,15 @@ public class EntityEquipmentHandler : MonoBehaviour
 			{
 				go = Instantiate(itemPrefab, chestpieceSlotContainer.transform);
 				go.AddComponent<Armors>();
-				equippedHelmet = go.GetComponent<Armors>();
+				equippedChestpiece = go.GetComponent<Armors>();
 			}
 
 			index = Utilities.GetRandomNumber(possibleChestpiecesList.Count);
 			if (equippedChestpiece != null)
 			{
 				equippedChestpiece.armorBaseRef = possibleChestpiecesList[index];
-				equippedChestpiece.SetItemStats(Items.Rarity.isCommon, GetComponent<EntityHealth>().entityLevel);
 				equippedChestpiece.entityEquipmentHandler = this;
+				equippedChestpiece.SetItemStats(Items.Rarity.isCommon, GetComponent<EntityHealth>().entityLevel);
 			}
 		}
 
@@ -150,8 +142,8 @@ public class EntityEquipmentHandler : MonoBehaviour
 			if (equippedLegs != null)
 			{
 				equippedLegs.armorBaseRef = possibleLegsList[index];
-				equippedLegs.SetItemStats(Items.Rarity.isCommon, GetComponent<EntityHealth>().entityLevel);
 				equippedLegs.entityEquipmentHandler = this;
+				equippedLegs.SetItemStats(Items.Rarity.isCommon, GetComponent<EntityHealth>().entityLevel);
 			}
 		}
 	}
@@ -169,8 +161,6 @@ public class EntityEquipmentHandler : MonoBehaviour
 	}
 	public void OnArmorEquip(Armors armor)
 	{
-		Debug.LogWarning(armor.bonusPhysicalResistance);
-
 		bonusEquipmentHealth += armor.bonusHealth;
 		bonusEquipmentMana += armor.bonusMana;
 		bonusEquipmentPhysicalResistance += armor.bonusPhysicalResistance;

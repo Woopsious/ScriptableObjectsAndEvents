@@ -21,6 +21,7 @@ public class PlayerEquipmentHandler : EntityEquipmentHandler
 		}
 
 		OnWeaponUnequip();
+		equippedWeapon.entityEquipmentHandler = this;
 
 		equippedWeapon.itemName = weapon.itemName;
 		equippedWeapon.itemImage = weapon.itemImage;
@@ -30,11 +31,9 @@ public class PlayerEquipmentHandler : EntityEquipmentHandler
 		equippedWeapon.weaponBaseRef = weapon.weaponBaseRef;
 		equippedWeapon.damage = weapon.damage;
 		equippedWeapon.bonusMana = weapon.bonusMana;
-
-		equippedWeapon.entityEquipmentHandler = this;
 	}
 	public override void EquipArmor(InventoryItem armor)
 	{
-		GameObject go;
+
 	}
 }
