@@ -19,14 +19,17 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 	{
 		slotIndex = transform.GetSiblingIndex();
 	}
+	public void SetUpEquipItemEvents()
+	{
+		if (slotType == SlotType.generic) return;
+	}
 
 	public void OnDrop(PointerEventData eventData)
 	{
 		GameObject droppeditem = eventData.pointerDrag;
 		InventoryItem item = droppeditem.GetComponent<InventoryItem>();
 
-		if (!IsCorrectSlotType(item))
-			return;
+		if (!IsCorrectSlotType(item)) return;
 
 		if (IsSlotNotEmpty())
 		{
@@ -64,13 +67,19 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 		if (slotType == SlotType.generic)
 			return true;
 		if (item.itemType == InventoryItem.ItemType.isConsumable && slotType == SlotType.consumables)
+		{
+			PlayerInventoryManager.Instance.onNewItemEquipEvent.Invoke(item);
 			return true;
+		}
 		else if (item.itemType == InventoryItem.ItemType.isWeapon && slotType == SlotType.weapon)
 		{
+			PlayerInventoryManager.Instance.onNewItemEquipEvent.Invoke(item);
 			return true;
 		}
 		else if (item.itemType == InventoryItem.ItemType.isArmor)
 		{
+			PlayerInventoryManager.Instance.onNewItemEquipEvent.Invoke(item);
+
 			if (item.armorSlot == InventoryItem.ArmorSlot.helmet && slotType == SlotType.helmet)
 				return true;
 			if (item.armorSlot == InventoryItem.ArmorSlot.chestpiece && slotType == SlotType.chestpiece)

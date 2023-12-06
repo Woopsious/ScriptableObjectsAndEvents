@@ -5,6 +5,7 @@ using Unity.Services.Analytics;
 using Unity.VisualScripting;
 using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.ProBuilder.MeshOperations;
 using static UnityEditor.Progress;
 using Random = UnityEngine.Random;
@@ -13,19 +14,23 @@ public class PlayerInventoryManager : MonoBehaviour
 {
 	public static PlayerInventoryManager Instance;
 
-	public List<InventoryItem> playerInventory = new List<InventoryItem>();	
+	[Serializable]
+	public class OnNewItemEquipEvent : UnityEvent<InventoryItem> { }
+	public OnNewItemEquipEvent onNewItemEquipEvent;
 
 	public void Start()
 	{
 		Instance = this;
+		SetUpInventory();
 	}
-
 	public void SetUpInventory()
 	{
 		foreach (GameObject slot in PlayerInventoryUi.Instance.InventorySlots)
 		{
 			InventorySlot inventorySlot = slot.GetComponent<InventorySlot>();
 			inventorySlot.SetUpInventorySlots();
+
+			if (inventorySlot.slotType == InventorySlot.SlotType.generic) return;
 		}
 	}
 

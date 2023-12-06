@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerInventoryUi : MonoBehaviour
 {
@@ -23,6 +25,7 @@ public class PlayerInventoryUi : MonoBehaviour
 		Instance = this;
 		gameObject.SetActive(false);
 	}
+
 	public void HideShowInventory()
 	{
 		if (gameObject.activeInHierarchy)
