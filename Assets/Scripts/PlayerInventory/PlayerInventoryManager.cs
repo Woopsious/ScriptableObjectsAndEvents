@@ -9,15 +9,24 @@ using UnityEngine.ProBuilder.MeshOperations;
 using static UnityEditor.Progress;
 using Random = UnityEngine.Random;
 
-public class PlayerInventory : MonoBehaviour
+public class PlayerInventoryManager : MonoBehaviour
 {
-	public static PlayerInventory Instance;
+	public static PlayerInventoryManager Instance;
 
 	public List<InventoryItem> playerInventory = new List<InventoryItem>();	
 
 	public void Start()
 	{
 		Instance = this;
+	}
+
+	public void SetUpInventory()
+	{
+		foreach (GameObject slot in PlayerInventoryUi.Instance.InventorySlots)
+		{
+			InventorySlot inventorySlot = slot.GetComponent<InventorySlot>();
+			inventorySlot.SetUpInventorySlots();
+		}
 	}
 
 	public void AddItemToPlayerInventory(Items item)
@@ -84,6 +93,7 @@ public class PlayerInventory : MonoBehaviour
 				newitemInSlot.UpdateName();
 				newitemInSlot.UpdateImage();
 				newitemInSlot.UpdateStackCounter();
+				newitemInSlot.inventorySlotIndex = i;
 				return;
 			}
 		}

@@ -39,7 +39,7 @@ public class EntityLootSpawnHandler : MonoBehaviour
 			//generic data here, may change if i make unique droppables like keys as they might not have a need for item level etc.
 			//im just not sure of a better way to do it atm
 			go.AddComponent<Interactables>(); //add interactables script. set randomized stats
-			go.GetComponent<Items>().OnItemDrop(SetRarity(), SetItemLevel());
+			go.GetComponent<Items>().SetItemStats(Utilities.SetRarity(), Utilities.SetItemLevel(GetComponent<EntityHealth>().entityLevel));
 		}
 	}
 	public void SetUpItem(GameObject go, int index)
@@ -69,6 +69,7 @@ public class EntityLootSpawnHandler : MonoBehaviour
 		consumables.currentStackCount = 3;
 	}
 
+	/*
 	//return random rarity
 	public Items.Rarity SetRarity()
 	{
@@ -92,7 +93,7 @@ public class EntityLootSpawnHandler : MonoBehaviour
 			itemLvl = 0;
 		return itemLvl - 4;
 	}
-
+	*/
 	public bool WillDropExtraloot()
 	{
 		return false;

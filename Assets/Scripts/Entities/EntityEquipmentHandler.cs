@@ -50,67 +50,45 @@ public class EntityEquipmentHandler : MonoBehaviour
 	/// </summary>
 	/// 
 
-	public void Start()
+	public virtual void Start()
 	{
-		EquipWeapon();
-		EquipArmor();
+		EquipWeapon(null);
+		EquipArmor(null);
 	}
 
 	//weapon
-	public virtual void EquipWeapon()
+	public virtual void EquipWeapon(InventoryItem weapon)
 	{
 		GameObject go;
 		int index;
 
 		if (weaponSlotContainer.transform.childCount == 0)
+		{
 			go = Instantiate(itemPrefab, weaponSlotContainer.transform);
-		else go = equippedWeapon.gameObject;
+			go.AddComponent<Weapons>();
+			equippedWeapon = go.GetComponent<Weapons>();
+		}
 
-		OnWeaponUnequip();
+		index = Utilities.GetRandomNumber(possibleWeaponsList.Count);
+		if (equippedWeapon != null)
+		{
+			equippedWeapon.weaponBaseRef = possibleWeaponsList[index];
+			equippedWeapon.SetItemStats(Items.Rarity.isCommon, GetComponent<EntityHealth>().entityLevel);
+			equippedWeapon.entityEquipmentHandler = this;
+		}
 
+		/*
 		index = Utilities.GetRandomNumber(possibleWeaponsList.Count);
 		SetUpWeapon(go, possibleWeaponsList, index);
 		SetUpWeaponItem(go, possibleWeaponsList, index);
 		equippedWeapon = go.GetComponent<Weapons>();
 		equippedWeapon.entityEquipmentHandler = this;
-	}
-	public void SetUpWeapon(GameObject go, List<SOWeapons> weaponList, int index)
-	{
-		Weapons weapon;
-
-		if (go.GetComponent<Weapons>() == null)
-			weapon = go.AddComponent<Weapons>();
-		else weapon = go.GetComponent<Weapons>();
-
-		weapon.itemLevel = GetComponent<EntityHealth>().entityLevel;
-		weapon.rarity = Items.Rarity.isCommon;
-		//weapon.isEquippedByNonPlayer = true;
-		weapon.weaponBaseRef = weaponList[index];
-		weapon.currentStackCount = 1;
-
-		//for now just check for player component
-		if (GetComponent<PlayerController>() == null)
-			weapon.isEquippedByNonPlayer = true;
-		else
-			weapon.isEquippedByPlayer = true;
-
-		weapon.GetStatModifier(weapon.itemLevel, (IGetStatModifier.Rarity)weapon.rarity);
-		weapon.gameObject.transform.localPosition = Vector3.zero;
-	}
-	public void SetUpWeaponItem(GameObject go, List<SOWeapons> weaponList, int index)
-	{
-		Items item = go.GetComponent<Items>();
-		item.gameObject.name = weaponList[index].name;
-		item.itemName = weaponList[index].name;
-		item.itemImage = weaponList[index].itemImage;
-		item.ItemPrice = weaponList[index].ItemPrice;
+		*/
 	}
 	public void OnWeaponUnequip()
 	{
 		if (equippedWeapon != null)
-		{
 			bonusEquipmentMana -= equippedWeapon.bonusMana;
-		}
 	}
 	public void OnWeaponEquip()
 	{
@@ -118,7 +96,7 @@ public class EntityEquipmentHandler : MonoBehaviour
 	}
 
 	//armors
-	public virtual void EquipArmor()
+	public virtual void EquipArmor(InventoryItem armor)
 	{
 		GameObject go;
 		int index;
@@ -126,71 +104,56 @@ public class EntityEquipmentHandler : MonoBehaviour
 		if (possibleHelmetsList.Count != 0)
 		{
 			if (helmetSlotContainer.transform.childCount == 0)
+			{
 				go = Instantiate(itemPrefab, helmetSlotContainer.transform);
-			else go = helmetSlotContainer;
-
-			OnArmorUnequip(equippedHelmet);
+				go.AddComponent<Armors>();
+				equippedHelmet = go.GetComponent<Armors>();
+			}
 
 			index = Utilities.GetRandomNumber(possibleHelmetsList.Count);
-			SetUpArmor(go, possibleHelmetsList, index);
-			SetUpArmorItem(go, possibleHelmetsList, index);
-			equippedHelmet = go.GetComponent<Armors>();
-			equippedHelmet.entityEquipmentHandler = this;
+			if (equippedHelmet != null)
+			{
+				equippedHelmet.armorBaseRef = possibleHelmetsList[index];
+				equippedHelmet.SetItemStats(Items.Rarity.isCommon, GetComponent<EntityHealth>().entityLevel);
+				equippedHelmet.entityEquipmentHandler = this;
+			}
 		}
 
 		if (possibleChestpiecesList.Count != 0)
 		{
 			if (chestpieceSlotContainer.transform.childCount == 0)
+			{
 				go = Instantiate(itemPrefab, chestpieceSlotContainer.transform);
-			else go = chestpieceSlotContainer;
-
-			OnArmorUnequip(equippedChestpiece);
+				go.AddComponent<Armors>();
+				equippedHelmet = go.GetComponent<Armors>();
+			}
 
 			index = Utilities.GetRandomNumber(possibleChestpiecesList.Count);
-			SetUpArmor(go, possibleChestpiecesList, index);
-			SetUpArmorItem(go, possibleChestpiecesList, index);
-			equippedChestpiece = go.GetComponent<Armors>();
-			equippedChestpiece.entityEquipmentHandler = this;
+			if (equippedChestpiece != null)
+			{
+				equippedChestpiece.armorBaseRef = possibleChestpiecesList[index];
+				equippedChestpiece.SetItemStats(Items.Rarity.isCommon, GetComponent<EntityHealth>().entityLevel);
+				equippedChestpiece.entityEquipmentHandler = this;
+			}
 		}
 
 		if (possibleLegsList.Count != 0)
 		{
 			if (legsSlotContainer.transform.childCount == 0)
+			{
 				go = Instantiate(itemPrefab, legsSlotContainer.transform);
-			else go = legsSlotContainer;
-
-			OnArmorUnequip(equippedLegs);
+				go.AddComponent<Armors>();
+				equippedLegs = go.GetComponent<Armors>();
+			}
 
 			index = Utilities.GetRandomNumber(possibleLegsList.Count);
-			SetUpArmor(go, possibleLegsList, index);
-			SetUpArmorItem(go, possibleLegsList, index);
-			equippedLegs = go.GetComponent<Armors>();
-			equippedLegs.entityEquipmentHandler = this;
+			if (equippedLegs != null)
+			{
+				equippedLegs.armorBaseRef = possibleLegsList[index];
+				equippedLegs.SetItemStats(Items.Rarity.isCommon, GetComponent<EntityHealth>().entityLevel);
+				equippedLegs.entityEquipmentHandler = this;
+			}
 		}
-	}
-	public void SetUpArmor(GameObject go, List<SOArmors> armorList, int index)
-	{
-		Armors armor;
-
-		if (go.GetComponent<Armors>() == null)
-			armor = go.AddComponent<Armors>();
-		else armor = go.GetComponent<Armors>();
-
-		armor.itemLevel = GetComponent<EntityHealth>().entityLevel;
-		armor.rarity = Items.Rarity.isCommon;
-		armor.armorBaseRef = armorList[index];
-		armor.currentStackCount = 1;
-
-		armor.GetStatModifier(armor.itemLevel, (IGetStatModifier.Rarity)armor.rarity);
-		armor.gameObject.transform.localPosition = Vector3.zero;
-	}
-	public void SetUpArmorItem(GameObject go, List<SOArmors> armorList, int index)
-	{
-		Items item = go.GetComponent<Items>();
-		item.gameObject.name = armorList[index].name;
-		item.itemName = armorList[index].name;
-		item.itemImage = armorList[index].itemImage;
-		item.ItemPrice = armorList[index].ItemPrice;
 	}
 	public void OnArmorUnequip(Armors armor)
 	{

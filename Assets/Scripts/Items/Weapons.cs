@@ -11,20 +11,24 @@ public class Weapons : Items, IGetStatModifier
 	public bool isEquippedByPlayer;
 	public bool isEquippedByNonPlayer;
 
-	public override void Start()
+	public void Start()
 	{
-		base.Start();
-		SetWeaponStats();
-		isStackable = false;
+		if (generateStatsOnStart)
+			SetItemStats(rarity, itemLevel);
 	}
-	public void SetWeaponStats()
+
+	public override void SetItemStats(Rarity setRarity, int setLevel)
 	{
+		base.SetItemStats(setRarity, setLevel);
+
 		damage = (int)(weaponBaseRef.baseDamage * statModifier);
 		bonusMana = (int)(weaponBaseRef.baseBonusMana * statModifier);
+		isStackable = weaponBaseRef.isStackable;
 
 		if (entityEquipmentHandler != null)
 			entityEquipmentHandler.OnWeaponEquip();
 	}
+
 	public virtual void OnTriggerEnter(Collider other)
 	{
 		if (isEquippedByPlayer && other.GetComponent<EntityHealth>() != null)

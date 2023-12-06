@@ -13,20 +13,30 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 		generic, weapon, helmet, chestpiece, legs, robe, consumables
 	}
 
+	public int slotIndex;
+
+	public void SetUpInventorySlots()
+	{
+		slotIndex = transform.GetSiblingIndex();
+	}
+
 	public void OnDrop(PointerEventData eventData)
 	{
 		GameObject droppeditem = eventData.pointerDrag;
 		InventoryItem item = droppeditem.GetComponent<InventoryItem>();
 
+		if (!IsCorrectSlotType(item))
+			return;
+
 		if (IsSlotNotEmpty())
 		{
 			InventoryItem itemInSlot = GetComponentInChildren<InventoryItem>();
 			itemInSlot.transform.SetParent(item.parentAfterDrag, false);
+			itemInSlot.inventorySlotIndex = item.inventorySlotIndex;
 		}
-		if (!IsCorrectSlotType(item))
-			return;
 
 		item.parentAfterDrag = transform;
+		item.inventorySlotIndex = slotIndex;
 	}
 
 	public bool IsSlotNotEmpty()
@@ -56,7 +66,9 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 		if (item.itemType == InventoryItem.ItemType.isConsumable && slotType == SlotType.consumables)
 			return true;
 		else if (item.itemType == InventoryItem.ItemType.isWeapon && slotType == SlotType.weapon)
+		{
 			return true;
+		}
 		else if (item.itemType == InventoryItem.ItemType.isArmor)
 		{
 			if (item.armorSlot == InventoryItem.ArmorSlot.helmet && slotType == SlotType.helmet)
@@ -69,13 +81,6 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 				return true;
 			else return false;
 		}
-		else return false;
-	}
-
-	public bool IsEquipmentSlot()
-	{
-		if (slotType != SlotType.generic)
-			return true ;
 		else return false;
 	}
 }

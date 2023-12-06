@@ -8,15 +8,18 @@ public class Consumables : Items
 	public int healthRestoration;
 	public int manaRestoration;
 
-	public override void Start()
+	public void Start()
 	{
-		base.Start();
-		SetConsumablesStats();
-		isStackable = consumableBaseRef.isStackable;
+		if (generateStatsOnStart)
+			SetItemStats(rarity, itemLevel);
 	}
-	public void SetConsumablesStats()
+
+	public override void SetItemStats(Rarity setRarity, int setLevel)
 	{
+		base.SetItemStats(setRarity, setLevel);
+
 		healthRestoration = consumableBaseRef.healthRestoration;
 		manaRestoration = consumableBaseRef.manaRestoration;
+		isStackable = consumableBaseRef.isStackable;
 	}
 }

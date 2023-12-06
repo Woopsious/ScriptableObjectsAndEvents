@@ -30,9 +30,4 @@ public class PlayerInventoryUi : MonoBehaviour
 		else
 			gameObject.SetActive(true);
 	}
-
-	public void AddItemToUi()
-	{
-
-	}
 }

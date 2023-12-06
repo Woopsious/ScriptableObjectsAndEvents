@@ -21,16 +21,19 @@ public class Armors : Items
 	public int bonusFireResistance;
 	public int bonusIceResistance;
 
-	public override void Start()
+	public void Start()
 	{
-		base.Start();
-		SetArmorStats();
-		isStackable = false;
+		if (generateStatsOnStart)
+			SetItemStats(rarity, itemLevel);
 	}
-	public void SetArmorStats()
+
+	public override void SetItemStats(Rarity setRarity, int setLevel)
 	{
+		base.SetItemStats(setRarity, setLevel);
+
 		bonusHealth = (int)(armorBaseRef.baseBonusHealth * statModifier);
 		bonusMana = (int)(armorBaseRef.baseBonusMana * statModifier);
+		isStackable = armorBaseRef.isStackable;
 
 		armorSlot = (ArmorSlot)armorBaseRef.armorSlot; // may not need this depending on what happens when i make proper inventroy
 

@@ -11,6 +11,9 @@ public class Items : MonoBehaviour
 {
 	[HideInInspector] public EntityEquipmentHandler entityEquipmentHandler;
 
+	[Header("Debug settings")]
+	public bool generateStatsOnStart;
+
 	[Header("Item Info")]
 	public string itemName;
 	public Image itemImage;
@@ -35,12 +38,7 @@ public class Items : MonoBehaviour
 	public float statModifier;
 	public int inventroySlot;
 
-	public virtual void Start()
-	{
-		//On death of enemy entity set Item variable on this Objs Instantiation, randomly pick from selection of items in enemy loot pool
-		GetStatModifier(itemLevel, (IGetStatModifier.Rarity)rarity);
-	}
-	public void OnItemDrop(Rarity setRarity, int setLevel)
+	public virtual void SetItemStats(Rarity setRarity, int setLevel)
 	{
 		rarity = setRarity;
 		itemLevel = setLevel;
@@ -54,8 +52,8 @@ public class Items : MonoBehaviour
 	public void GetStatModifier(int level, IGetStatModifier.Rarity rarity)
 	{
 		float modifier = 1f;
-		if (rarity == IGetStatModifier.Rarity.isLegendary) { modifier += 0.25f; } //get rarity modifier
-		if (rarity == IGetStatModifier.Rarity.isRare) { modifier += 0.1f; }
+		if (rarity == IGetStatModifier.Rarity.isLegendary) { modifier += 0.75f; } //get rarity modifier
+		if (rarity == IGetStatModifier.Rarity.isRare) { modifier += 0.25f; }
 		else { modifier += 0; }
 
 		statModifier = modifier + (level - 1f) / 20;  //get level modifier
@@ -90,13 +88,13 @@ public class Items : MonoBehaviour
 		//called from Interactable Component script that adds item to inventory passing through necessary info
 		//in child classes pass through item type specific 
 
-		if (PlayerInventory.Instance.CheckIfInventoryFull())
+		if (PlayerInventoryManager.Instance.CheckIfInventoryFull())
 		{
 			Debug.LogWarning("Inventory is full");
 			return;
 		}
 
-		PlayerInventory.Instance.AddItemToPlayerInventory(this);
+		PlayerInventoryManager.Instance.AddItemToPlayerInventory(this);
 		Destroy(gameObject);
 	}
 }

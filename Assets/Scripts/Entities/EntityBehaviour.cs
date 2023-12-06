@@ -139,7 +139,7 @@ public class EntityBehaviour : MonoBehaviour
 	public bool CheckChaseDistance()
 	{
 		float distance = Vector3.Distance(gameObject.transform.position, playersLastKnownPosition);
-		Debug.LogWarning(distance);
+
 		if (distance < entityBehaviour.maxChaseRange)
 			return false;
 		else return true;

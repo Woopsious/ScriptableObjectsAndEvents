@@ -14,6 +14,8 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 	public Image uiItemImage;
 	public TMP_Text uiItemStackCount;
 
+	public int inventorySlotIndex;
+
 	[Header("Item Info")]
 	public string itemName;
 	public Image itemImage;
