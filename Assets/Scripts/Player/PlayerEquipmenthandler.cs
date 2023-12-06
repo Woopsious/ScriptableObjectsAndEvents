@@ -1,9 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerEquipmentHandler : EntityEquipmentHandler
 {
+	public class OnNewItemEquipEvent : UnityEvent<InventoryItem> { }
+	public OnNewItemEquipEvent onNewItemEquipEvent;
+
 	public override void Start()
 	{
 		//when loading/saving game, once inventory is loaded then load/instantiate equipped items based on loaded inventory

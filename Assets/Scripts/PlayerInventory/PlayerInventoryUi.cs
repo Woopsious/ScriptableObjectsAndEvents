@@ -20,9 +20,13 @@ public class PlayerInventoryUi : MonoBehaviour
 	public GameObject consumableSlotOne;
 	public GameObject consumableSlotTwo;
 
-	public void Start()
+	public void Awake()
 	{
 		Instance = this;
+	}
+
+	public void Start()
+	{
 		gameObject.SetActive(false);
 	}
 

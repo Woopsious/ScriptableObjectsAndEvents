@@ -14,13 +14,13 @@ public class PlayerInventoryManager : MonoBehaviour
 {
 	public static PlayerInventoryManager Instance;
 
-	[Serializable]
-	public class OnNewItemEquipEvent : UnityEvent<InventoryItem> { }
-	public OnNewItemEquipEvent onNewItemEquipEvent;
+	public void Awake()
+	{
+		Instance = this;
+	}
 
 	public void Start()
 	{
-		Instance = this;
 		SetUpInventory();
 	}
 	public void SetUpInventory()
@@ -46,27 +46,10 @@ public class PlayerInventoryManager : MonoBehaviour
 		for (int i = 0; i < PlayerInventoryUi.Instance.InventorySlots.Count; i++)
 		{
 			InventorySlot inventroySlot = PlayerInventoryUi.Instance.InventorySlots[i].GetComponent<InventorySlot>();
-			InventoryItem itemInSlot;
 
 			if (inventroySlot.IsSlotNotEmpty())
 			{
-				itemInSlot = inventroySlot.GetComponentInChildren<InventoryItem>();
-				if (inventroySlot.IsItemInSlotSameAs(newItem) && itemInSlot.currentStackCount < itemInSlot.maxStackCount)
-				{
-					//add to itemInSlot.CurrentStackCount till maxStackCountReached
-					for (int itemCount = itemInSlot.currentStackCount; itemCount < itemInSlot.maxStackCount; itemCount++)
-					{
-						if (newItem.currentStackCount <= 0) return; //stop adding when newItem.currentStackCount == 0
-
-						newItem.currentStackCount--;
-						itemInSlot.currentStackCount++;
-						itemInSlot.UpdateStackCounter();
-					}
-					if (newItem.currentStackCount != 0) //if stackcount still has more find next stackable item
-						continue;
-				}
-				else
-					continue;
+				AddToStackCount(inventroySlot, newItem);
 			}
 			else if (newItem.currentStackCount > 0)
 			{
@@ -75,6 +58,27 @@ public class PlayerInventoryManager : MonoBehaviour
 			}
 		}
 	}
+	public void AddToStackCount(InventorySlot inventroySlot, Items newItem)
+	{
+		InventoryItem itemInSlot = inventroySlot.GetComponentInChildren<InventoryItem>();
+		if (inventroySlot.IsItemInSlotSameAs(newItem) && itemInSlot.currentStackCount < itemInSlot.maxStackCount)
+		{
+			//add to itemInSlot.CurrentStackCount till maxStackCountReached
+			for (int itemCount = itemInSlot.currentStackCount; itemCount < itemInSlot.maxStackCount; itemCount++)
+			{
+				if (newItem.currentStackCount <= 0) return; //stop adding when newItem.currentStackCount == 0
+
+				newItem.currentStackCount--;
+				itemInSlot.currentStackCount++;
+				itemInSlot.UpdateStackCounter();
+			}
+			if (newItem.currentStackCount != 0) //if stackcount still has more find next stackable item
+				return;
+		}
+		else
+			return;
+	}
+
 	public void SpawnNewItemInInventory(Items item)
 	{
 		for (int i = 0; i < PlayerInventoryUi.Instance.InventorySlots.Count; i++)

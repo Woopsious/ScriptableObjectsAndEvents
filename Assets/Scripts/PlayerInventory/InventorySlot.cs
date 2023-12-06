@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class InventorySlot : MonoBehaviour, IDropHandler
@@ -19,9 +21,20 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 	{
 		slotIndex = transform.GetSiblingIndex();
 	}
-	public void SetUpEquipItemEvents()
+	public void SetUpEquipItemEvents(InventoryItem item)
 	{
 		if (slotType == SlotType.generic) return;
+
+		PlayerEquipmentHandler equipmentHandler;
+
+		if (slotType == SlotType.helmet)
+		{
+			equipmentHandler = PlayerInventoryManager.Instance.GetComponent<PlayerEquipmentHandler>();
+			equipmentHandler.onNewItemEquipEvent.Invoke(gameObject.GetComponentInChildren<InventoryItem>());
+
+			//equipmentHandler.onNewItemEquipEvent.AddListener( delegate {equipmentHandler.EquipArmor()})
+		}
+
 	}
 
 	public void OnDrop(PointerEventData eventData)
@@ -40,6 +53,15 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
 		item.parentAfterDrag = transform;
 		item.inventorySlotIndex = slotIndex;
+
+		if (slotType == SlotType.generic) return;
+
+		//onNewItemEquipEvent.Invoke(gameObject.GetComponentInChildren<InventoryItem>());
+	}
+
+	public InventoryItem ReturnItemInSlot(InventoryItem item)
+	{
+		return item;
 	}
 
 	public bool IsSlotNotEmpty()
@@ -67,19 +89,11 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 		if (slotType == SlotType.generic)
 			return true;
 		if (item.itemType == InventoryItem.ItemType.isConsumable && slotType == SlotType.consumables)
-		{
-			PlayerInventoryManager.Instance.onNewItemEquipEvent.Invoke(item);
 			return true;
-		}
 		else if (item.itemType == InventoryItem.ItemType.isWeapon && slotType == SlotType.weapon)
-		{
-			PlayerInventoryManager.Instance.onNewItemEquipEvent.Invoke(item);
 			return true;
-		}
 		else if (item.itemType == InventoryItem.ItemType.isArmor)
 		{
-			PlayerInventoryManager.Instance.onNewItemEquipEvent.Invoke(item);
-
 			if (item.armorSlot == InventoryItem.ArmorSlot.helmet && slotType == SlotType.helmet)
 				return true;
 			if (item.armorSlot == InventoryItem.ArmorSlot.chestpiece && slotType == SlotType.chestpiece)

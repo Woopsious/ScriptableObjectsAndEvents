@@ -17,12 +17,27 @@ public class EntityHealth : MonoBehaviour, IGetStatModifier
 	[Header("Health")]
 	public int maxHealth;
 	public int currentHealth;
+	[Header("Total")]
+	public int totalMaxHealth;
+	public int totalCurrentHealth;
+
+	[Header("Mana")]
+	public int maxMana;
+	public int currentMana;
+	[Header("Total")]
+	public int totalMaxMana;
+	public int totalCurrentMana;
 
 	[Header("Resistances")]
-	public int physicalDamageResistance;
-	public int poisonDamageResistance;
-	public int fireDamageResistance;
-	public int iceDamageResistance;
+	public int physicalResistance;
+	public int poisonResistance;
+	public int fireResistance;
+	public int iceResistance;
+	[Header("Total")]
+	public int totalPhyicalResistance;
+	public int totalPoisonResistance;
+	public int totalFireResistance;
+	public int totalIceResistance;
 
 	[Serializable]
 	public class OnRecieveDamageEvent : UnityEvent<int, int> { }
@@ -46,10 +61,10 @@ public class EntityHealth : MonoBehaviour, IGetStatModifier
 	{
 		maxHealth = (int)(entityBaseStats.maxHealth * modifier);
 		currentHealth = (int)(entityBaseStats.maxHealth * modifier);
-		physicalDamageResistance = (int)(entityBaseStats.physicalDamageResistance * modifier);
-		poisonDamageResistance = (int)(entityBaseStats.poisonDamageResistance * modifier);
-		fireDamageResistance = (int)(entityBaseStats.fireDamageResistance * modifier);
-		iceDamageResistance = (int)(entityBaseStats.iceDamageResistance * modifier);
+		physicalResistance = (int)(entityBaseStats.physicalDamageResistance * modifier);
+		poisonResistance = (int)(entityBaseStats.poisonDamageResistance * modifier);
+		fireResistance = (int)(entityBaseStats.fireDamageResistance * modifier);
+		iceResistance = (int)(entityBaseStats.iceDamageResistance * modifier);
 	}
 
 	//health functions
@@ -64,23 +79,23 @@ public class EntityHealth : MonoBehaviour, IGetStatModifier
 		Debug.Log(gameObject.name + " recieved :" + damage);
 		if (damageType == IDamagable.DamageType.isPoisonDamageType)
 		{
-			Debug.Log("Poison Dmg res: " + poisonDamageResistance);
-			damage -= poisonDamageResistance;
+			Debug.Log("Poison Dmg res: " + poisonResistance);
+			damage -= poisonResistance;
 		}
 		if (damageType == IDamagable.DamageType.isFireDamageType)
 		{
-			Debug.Log("Fire Dmg res: " + fireDamageResistance);
-			damage -= fireDamageResistance;
+			Debug.Log("Fire Dmg res: " + fireResistance);
+			damage -= fireResistance;
 		}
 		if (damageType == IDamagable.DamageType.isIceDamageType)
 		{
-			Debug.Log("Ice Dmg res: " + iceDamageResistance);
-			damage -= iceDamageResistance;
+			Debug.Log("Ice Dmg res: " + iceResistance);
+			damage -= iceResistance;
 		}
 		else
 		{
-			Debug.Log("Physical Dmg res: " + physicalDamageResistance);
-			damage -= physicalDamageResistance;
+			Debug.Log("Physical Dmg res: " + physicalResistance);
+			damage -= physicalResistance;
 		}
 
 		if (damage < 2) //always deal 2 damage

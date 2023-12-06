@@ -11,6 +11,8 @@ public class EntityEquipmentHandler : MonoBehaviour
 {
 	public GameObject itemPrefab;
 
+	[HideInInspector] public EntityHealth entityHealth;
+
 	[Header("Weapon")]
 	public List<SOWeapons> possibleWeaponsList = new List<SOWeapons>();
 	public GameObject weaponSlotContainer;
@@ -52,6 +54,7 @@ public class EntityEquipmentHandler : MonoBehaviour
 
 	public virtual void Start()
 	{
+		entityHealth = GetComponent<EntityHealth>();
 		EquipWeapon(null);
 		EquipArmor(null);
 	}
@@ -80,11 +83,19 @@ public class EntityEquipmentHandler : MonoBehaviour
 	public void OnWeaponUnequip()
 	{
 		if (equippedWeapon != null)
+		{
 			bonusEquipmentMana -= equippedWeapon.bonusMana;
+
+			entityHealth.totalMaxMana = entityHealth.maxMana + bonusEquipmentMana;
+			entityHealth.totalCurrentMana = entityHealth.currentMana + bonusEquipmentMana;
+		}
 	}
 	public void OnWeaponEquip()
 	{
 		bonusEquipmentMana += equippedWeapon.bonusMana;
+
+		entityHealth.totalMaxMana = entityHealth.maxMana + bonusEquipmentMana;
+		entityHealth.totalCurrentMana = entityHealth.currentMana + bonusEquipmentMana;
 	}
 
 	//armors
@@ -98,6 +109,7 @@ public class EntityEquipmentHandler : MonoBehaviour
 			if (helmetSlotContainer.transform.childCount == 0)
 			{
 				go = Instantiate(itemPrefab, helmetSlotContainer.transform);
+				go.transform.position = Vector3.zero;
 				go.AddComponent<Armors>();
 				equippedHelmet = go.GetComponent<Armors>();
 			}
@@ -116,6 +128,7 @@ public class EntityEquipmentHandler : MonoBehaviour
 			if (chestpieceSlotContainer.transform.childCount == 0)
 			{
 				go = Instantiate(itemPrefab, chestpieceSlotContainer.transform);
+				go.transform.position = Vector3.zero;
 				go.AddComponent<Armors>();
 				equippedChestpiece = go.GetComponent<Armors>();
 			}
@@ -134,6 +147,7 @@ public class EntityEquipmentHandler : MonoBehaviour
 			if (legsSlotContainer.transform.childCount == 0)
 			{
 				go = Instantiate(itemPrefab, legsSlotContainer.transform);
+				go.transform.position = Vector3.zero;
 				go.AddComponent<Armors>();
 				equippedLegs = go.GetComponent<Armors>();
 			}
@@ -157,7 +171,17 @@ public class EntityEquipmentHandler : MonoBehaviour
 			bonusEquipmentPoisonResistance -= armor.bonusPoisonResistance;
 			bonusEquipmentFireResistance -= armor.bonusFireResistance;
 			bonusEquipmentIceResistance -= armor.bonusIceResistance;
-}
+
+			entityHealth.totalMaxHealth = entityHealth.maxHealth - bonusEquipmentHealth;
+			entityHealth.totalCurrentHealth = entityHealth.currentHealth - bonusEquipmentHealth;
+			entityHealth.totalMaxMana = entityHealth.maxMana - bonusEquipmentMana;
+			entityHealth.totalCurrentMana = entityHealth.currentMana - bonusEquipmentMana;
+
+			entityHealth.totalPhyicalResistance = entityHealth.physicalResistance - bonusEquipmentPhysicalResistance;
+			entityHealth.totalPoisonResistance = entityHealth.poisonResistance - bonusEquipmentPoisonResistance;
+			entityHealth.totalFireResistance = entityHealth.fireResistance - bonusEquipmentFireResistance;
+			entityHealth.totalIceResistance = entityHealth.iceResistance - bonusEquipmentIceResistance;
+		}
 	}
 	public void OnArmorEquip(Armors armor)
 	{
@@ -167,5 +191,15 @@ public class EntityEquipmentHandler : MonoBehaviour
 		bonusEquipmentPoisonResistance += armor.bonusPoisonResistance;
 		bonusEquipmentFireResistance += armor.bonusFireResistance;
 		bonusEquipmentIceResistance += armor.bonusIceResistance;
+
+		entityHealth.totalMaxHealth = entityHealth.maxHealth + bonusEquipmentHealth;
+		entityHealth.totalCurrentHealth = entityHealth.currentHealth + bonusEquipmentHealth;
+		entityHealth.totalMaxMana = entityHealth.maxMana + bonusEquipmentMana;
+		entityHealth.totalCurrentMana = entityHealth.currentMana + bonusEquipmentMana;
+
+		entityHealth.totalPhyicalResistance = entityHealth.physicalResistance + bonusEquipmentPhysicalResistance;
+		entityHealth.totalPoisonResistance = entityHealth.poisonResistance + bonusEquipmentPoisonResistance;
+		entityHealth.totalFireResistance = entityHealth.fireResistance + bonusEquipmentFireResistance;
+		entityHealth.totalIceResistance = entityHealth.iceResistance + bonusEquipmentIceResistance;
 	}
 }
