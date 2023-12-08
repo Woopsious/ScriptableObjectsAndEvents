@@ -118,7 +118,7 @@ public class PlayerInventoryManager : MonoBehaviour
 
 		inventoryItem.weaponBaseRef = item.weaponBaseRef;
 		inventoryItem.damage = (int)(item.weaponBaseRef.baseDamage * item.statModifier);
-		inventoryItem.bonusMana = (int)(item.weaponBaseRef.baseBonusMana * item.statModifier);
+		inventoryItem.bonusWeaponMana = (int)(item.weaponBaseRef.baseBonusMana * item.statModifier);
 
 		inventoryItem.maxStackCount = item.weaponBaseRef.MaxStackCount;
 		inventoryItem.currentStackCount = item.currentStackCount;
@@ -133,8 +133,8 @@ public class PlayerInventoryManager : MonoBehaviour
 		inventoryItem.rarity = (InventoryItem.Rarity)item.rarity;
 
 		inventoryItem.armorBaseRef = item.armorBaseRef;
-		inventoryItem.baseBonusHealth = (int)(item.armorBaseRef.baseBonusHealth * item.statModifier);
-		inventoryItem.bonusMana = (int)(item.armorBaseRef.baseBonusMana * item.statModifier);
+		inventoryItem.bonusArmorHealth = (int)(item.armorBaseRef.baseBonusHealth * item.statModifier);
+		inventoryItem.bonusArmorMana = (int)(item.armorBaseRef.baseBonusMana * item.statModifier);
 
 		inventoryItem.armorSlot = (InventoryItem.ArmorSlot)item.armorBaseRef.armorSlot;
 		inventoryItem.bonusPhysicalResistance = (int)(item.armorBaseRef.bonusPhysicalResistance * item.statModifier);
@@ -171,8 +171,6 @@ public class PlayerInventoryManager : MonoBehaviour
 			if (inventorySlot.IsSlotNotEmpty())
 				numOfFilledSlots++;
 		}
-		Debug.LogWarning("number of inventroy slots currently full: " + numOfFilledSlots);
-		Debug.LogWarning("max number of inventroy slots: " + PlayerInventoryUi.Instance.InventorySlots.Count);
 
 		if (numOfFilledSlots == PlayerInventoryUi.Instance.InventorySlots.Count)
 			return true;

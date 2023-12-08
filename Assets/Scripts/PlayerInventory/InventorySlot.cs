@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
@@ -9,6 +10,10 @@ using UnityEngine.EventSystems;
 
 public class InventorySlot : MonoBehaviour, IDropHandler
 {
+	[Serializable]
+	public class OnNewItemEquipEvent : UnityEvent<InventoryItem> { }
+	public OnNewItemEquipEvent onNewItemEquipEvent;
+
 	public SlotType slotType;
 	public enum SlotType
 	{
@@ -21,24 +26,19 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 	{
 		slotIndex = transform.GetSiblingIndex();
 	}
-	public void SetUpEquipItemEvents(InventoryItem item)
+	public void SetUpEquipItemEvents()
 	{
 		if (slotType == SlotType.generic) return;
-
-		PlayerEquipmentHandler equipmentHandler;
-
-		if (slotType == SlotType.helmet)
+		else
 		{
-			equipmentHandler = PlayerInventoryManager.Instance.GetComponent<PlayerEquipmentHandler>();
-			equipmentHandler.onNewItemEquipEvent.Invoke(gameObject.GetComponentInChildren<InventoryItem>());
-
-			//equipmentHandler.onNewItemEquipEvent.AddListener( delegate {equipmentHandler.EquipArmor()})
+			PlayerEquipmentHandler equipmentHandler = PlayerInventoryManager.Instance.GetComponent<PlayerEquipmentHandler>();
+			onNewItemEquipEvent.AddListener(delegate { equipmentHandler.EquipItem(gameObject.GetComponentInChildren<InventoryItem>()); }) ;
 		}
-
 	}
 
 	public void OnDrop(PointerEventData eventData)
 	{
+		InventoryItem itemInSlot;
 		GameObject droppeditem = eventData.pointerDrag;
 		InventoryItem item = droppeditem.GetComponent<InventoryItem>();
 
@@ -46,7 +46,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
 		if (IsSlotNotEmpty())
 		{
-			InventoryItem itemInSlot = GetComponentInChildren<InventoryItem>();
+			itemInSlot = GetComponentInChildren<InventoryItem>();
 			itemInSlot.transform.SetParent(item.parentAfterDrag, false);
 			itemInSlot.inventorySlotIndex = item.inventorySlotIndex;
 		}
@@ -56,7 +56,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
 		if (slotType == SlotType.generic) return;
 
-		//onNewItemEquipEvent.Invoke(gameObject.GetComponentInChildren<InventoryItem>());
+		onNewItemEquipEvent.Invoke(item);
 	}
 
 	public InventoryItem ReturnItemInSlot(InventoryItem item)

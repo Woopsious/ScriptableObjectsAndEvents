@@ -40,27 +40,15 @@ public class EntityEquipmentHandler : MonoBehaviour
 	public int bonusEquipmentFireResistance;
 	public int bonusEquipmentIceResistance;
 
-	/// <summary>
-	/// have equipped armor slots here as well that differ slightly from weapons as armor will just add to resistances
-	/// where weapons will actually exist in the game world for my planned 2D Dungeon crawler
-	/// public List<Armor> possibleHelmetsList = new List<Armor>();
-	/// public Armor equippedHelmet
-	/// public List<Armor> possibleChestPiecesList = new List<Armor>();
-	/// public Armor equippedChestPiece
-	/// public List<Armor> possibleLegPiecesList = new List<Armor>();
-	/// public Armor equippedLegPiece
-	/// </summary>
-	/// 
-
 	public virtual void Start()
 	{
 		entityHealth = GetComponent<EntityHealth>();
-		EquipWeapon(null);
-		EquipArmor(null);
+		EquipRandomWeapon();
+		EquipRandomArmor();
 	}
 
 	//weapon
-	public virtual void EquipWeapon(InventoryItem weapon)
+	public void EquipRandomWeapon()
 	{
 		GameObject go;
 		int index;
@@ -99,7 +87,7 @@ public class EntityEquipmentHandler : MonoBehaviour
 	}
 
 	//armors
-	public virtual void EquipArmor(InventoryItem armor)
+	public virtual void EquipRandomArmor()
 	{
 		GameObject go;
 		int index;

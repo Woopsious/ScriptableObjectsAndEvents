@@ -40,11 +40,11 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 	[Header("Weapon Info")]
 	public SOWeapons weaponBaseRef;
 	public int damage;
-	public int bonusMana;
+	public int bonusWeaponMana;
 
 	[Header("Armor Info")]
-	public int baseBonusHealth;
-	public int baseBonusMana;
+	public int bonusArmorHealth;
+	public int bonusArmorMana;
 
 	[Header("Armor Slot")]
 	public SOArmors armorBaseRef;
@@ -67,6 +67,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
 	public void UpdateName()
 	{
+		gameObject.name = itemName;
 		uiItemName.text = itemName;
 	}
 
