@@ -49,6 +49,6 @@ public class PlayerController : MonoBehaviour
 	public void HideShowInventory()
 	{
 		if (Input.GetKeyDown(KeyCode.I))
-			PlayerInventoryUi.Instance.HideShowInventory();
+			InventoryUi.Instance.HideShowInventory();
 	}
 }

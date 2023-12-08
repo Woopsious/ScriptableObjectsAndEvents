@@ -25,10 +25,11 @@ public class PlayerInventoryManager : MonoBehaviour
 	}
 	public void SetUpInventory()
 	{
-		foreach (GameObject slot in PlayerInventoryUi.Instance.InventorySlots)
+		foreach (GameObject slot in InventoryUi.Instance.InventorySlots)
 		{
 			InventorySlot inventorySlot = slot.GetComponent<InventorySlot>();
 			inventorySlot.SetUpInventorySlots();
+			//inventorySlot.SetUpEquipItemEvents();
 
 			if (inventorySlot.slotType == InventorySlot.SlotType.generic) return;
 		}
@@ -43,11 +44,11 @@ public class PlayerInventoryManager : MonoBehaviour
 	}
 	public void TryStackItem(Items newItem)
 	{
-		for (int i = 0; i < PlayerInventoryUi.Instance.InventorySlots.Count; i++)
+		for (int i = 0; i < InventoryUi.Instance.InventorySlots.Count; i++)
 		{
-			InventorySlot inventroySlot = PlayerInventoryUi.Instance.InventorySlots[i].GetComponent<InventorySlot>();
+			InventorySlot inventroySlot = InventoryUi.Instance.InventorySlots[i].GetComponent<InventorySlot>();
 
-			if (inventroySlot.IsSlotNotEmpty())
+			if (!inventroySlot.IsSlotEmpty())
 			{
 				AddToStackCount(inventroySlot, newItem);
 			}
@@ -81,28 +82,28 @@ public class PlayerInventoryManager : MonoBehaviour
 
 	public void SpawnNewItemInInventory(Items item)
 	{
-		for (int i = 0; i < PlayerInventoryUi.Instance.InventorySlots.Count; i++)
+		for (int i = 0; i < InventoryUi.Instance.InventorySlots.Count; i++)
 		{
-			InventorySlot inventorySlot = PlayerInventoryUi.Instance.InventorySlots[i].GetComponent<InventorySlot>();
+			InventorySlot inventorySlot = InventoryUi.Instance.InventorySlots[i].GetComponent<InventorySlot>();
 
-			if (!inventorySlot.IsSlotNotEmpty())
+			if (inventorySlot.IsSlotEmpty())
 			{
-				GameObject go = Instantiate(PlayerInventoryUi.Instance.ItemUiPrefab, inventorySlot.transform);
-				InventoryItem newitemInSlot = go.GetComponent<InventoryItem>();
+				GameObject go = Instantiate(InventoryUi.Instance.ItemUiPrefab, inventorySlot.transform);
+				inventorySlot.itemInSlot = go.GetComponent<InventoryItem>();
 
 				if (item.weaponBaseRef != null)
-					AddWeaponToInventory(newitemInSlot, item);
+					AddWeaponToInventory(inventorySlot.itemInSlot, item);
 
 				if (item.armorBaseRef != null)
-					AddArmorToInventory(newitemInSlot, item);
+					AddArmorToInventory(inventorySlot.itemInSlot, item);
 
 				if (item.consumableBaseRef != null)
-					AddConsumableToInventory(newitemInSlot, item);
+					AddConsumableToInventory(inventorySlot.itemInSlot, item);
 
-				newitemInSlot.UpdateName();
-				newitemInSlot.UpdateImage();
-				newitemInSlot.UpdateStackCounter();
-				newitemInSlot.inventorySlotIndex = i;
+				inventorySlot.itemInSlot.UpdateName();
+				inventorySlot.itemInSlot.UpdateImage();
+				inventorySlot.itemInSlot.UpdateStackCounter();
+				inventorySlot.itemInSlot.inventorySlotIndex = i;
 				return;
 			}
 		}
@@ -164,15 +165,15 @@ public class PlayerInventoryManager : MonoBehaviour
 	{
 		int numOfFilledSlots = 0;
 
-		foreach (GameObject obj in PlayerInventoryUi.Instance.InventorySlots)
+		foreach (GameObject obj in InventoryUi.Instance.InventorySlots)
 		{
 			InventorySlot inventorySlot = obj.GetComponent<InventorySlot>();
 
-			if (inventorySlot.IsSlotNotEmpty())
+			if (!inventorySlot.IsSlotEmpty())
 				numOfFilledSlots++;
 		}
 
-		if (numOfFilledSlots == PlayerInventoryUi.Instance.InventorySlots.Count)
+		if (numOfFilledSlots == InventoryUi.Instance.InventorySlots.Count)
 			return true;
 		else return false;
 	}

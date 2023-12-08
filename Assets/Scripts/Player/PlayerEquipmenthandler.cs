@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -11,6 +12,22 @@ public class PlayerEquipmentHandler : EntityEquipmentHandler
 		entityHealth = GetComponent<EntityHealth>();
 		//when loading/saving game, once inventory is loaded then load/instantiate equipped items based on loaded inventory
 	}
+	private void OnEnable()
+	{
+		InventorySlot.onItemEquip += EquipItem;
+	}
+
+	private void OnDisable()
+	{
+		InventorySlot.onItemEquip -= EquipItem;
+		Debug.Log("Player Equipment Handler Disables and Unsubbed");
+	}
+
+	public void OnDestroy()
+	{
+		
+	}
+
 	public virtual void EquipItem(InventoryItem item)
 	{
 		if (item.itemType == InventoryItem.ItemType.isWeapon)
@@ -22,16 +39,19 @@ public class PlayerEquipmentHandler : EntityEquipmentHandler
 		if (item.armorSlot == InventoryItem.ArmorSlot.helmet)
 		{
 			EquipArmor(item, equippedHelmet, helmetSlotContainer);
+			equippedHelmet = helmetSlotContainer.GetComponentInChildren<Armors>();
 		}
 
 		if (item.armorSlot == InventoryItem.ArmorSlot.chestpiece)
 		{
 			EquipArmor(item, equippedChestpiece, chestpieceSlotContainer);
+			equippedChestpiece = chestpieceSlotContainer.GetComponentInChildren<Armors>();
 		}
 
 		if (item.armorSlot == InventoryItem.ArmorSlot.legs)
 		{
 			EquipArmor(item, equippedLegs, legsSlotContainer);
+			equippedLegs = legsSlotContainer.GetComponentInChildren<Armors>();
 		}
 
 		/* ROBE NOT FULLY IMPLEMENTED

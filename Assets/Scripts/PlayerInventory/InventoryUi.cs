@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerInventoryUi : MonoBehaviour
+public class InventoryUi : MonoBehaviour
 {
-	public static PlayerInventoryUi Instance;
+	public static InventoryUi Instance;
 
 	public GameObject ItemUiPrefab;
 	public List<GameObject> InventorySlots = new List<GameObject>();

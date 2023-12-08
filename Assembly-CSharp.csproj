@@ -72,6 +72,7 @@
     <Compile Include="Assets\Scripts\Interfaces\IDamagable.cs" />
     <Compile Include="Assets\Scripts\Scriptables\SOLootPools.cs" />
     <Compile Include="Assets\Scripts\Scriptables\SOArmors.cs" />
+    <Compile Include="Assets\Scripts\PlayerInventory\InventoryUi.cs" />
     <Compile Include="Assets\Scripts\PlayerInventory\InventoryItem.cs" />
     <Compile Include="Assets\Scripts\Entities\PlayerDetection.cs" />
     <Compile Include="Assets\Scripts\Entities\EntityBehaviour.cs" />
@@ -84,7 +85,6 @@
     <Compile Include="Assets\Scripts\Utilities.cs" />
     <Compile Include="Assets\Scripts\Entities\EntityHealthUi.cs" />
     <Compile Include="Assets\Scripts\Scriptables\SOEntityBehaviours.cs" />
-    <Compile Include="Assets\Scripts\PlayerInventory\PlayerInventoryUi.cs" />
     <Compile Include="Assets\Scripts\Entities\EntityHealth.cs" />
     <Compile Include="Assets\Scripts\PlayerInventory\InventorySlot.cs" />
     <Compile Include="Assets\Scripts\PlayerInventory\PlayerInventoryManager.cs" />

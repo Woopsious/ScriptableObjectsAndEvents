@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Unity.Services.Analytics.Internal;
 using Unity.VisualScripting;
 using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
@@ -10,9 +11,9 @@ using UnityEngine.EventSystems;
 
 public class InventorySlot : MonoBehaviour, IDropHandler
 {
-	[Serializable]
-	public class OnNewItemEquipEvent : UnityEvent<InventoryItem> { }
-	public OnNewItemEquipEvent onNewItemEquipEvent;
+	public PlayerEquipmentHandler playerEquipmentHandler;
+
+	public static event Action<InventoryItem> onItemEquip;
 
 	public SlotType slotType;
 	public enum SlotType
@@ -21,42 +22,38 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 	}
 
 	public int slotIndex;
+	public InventoryItem itemInSlot;
 
 	public void SetUpInventorySlots()
 	{
 		slotIndex = transform.GetSiblingIndex();
 	}
-	public void SetUpEquipItemEvents()
-	{
-		if (slotType == SlotType.generic) return;
-		else
-		{
-			PlayerEquipmentHandler equipmentHandler = PlayerInventoryManager.Instance.GetComponent<PlayerEquipmentHandler>();
-			onNewItemEquipEvent.AddListener(delegate { equipmentHandler.EquipItem(gameObject.GetComponentInChildren<InventoryItem>()); }) ;
-		}
-	}
 
 	public void OnDrop(PointerEventData eventData)
 	{
-		InventoryItem itemInSlot;
 		GameObject droppeditem = eventData.pointerDrag;
 		InventoryItem item = droppeditem.GetComponent<InventoryItem>();
 
 		if (!IsCorrectSlotType(item)) return;
 
-		if (IsSlotNotEmpty())
+		if (!IsSlotEmpty()) //swap slot data
 		{
-			itemInSlot = GetComponentInChildren<InventoryItem>();
 			itemInSlot.transform.SetParent(item.parentAfterDrag, false);
 			itemInSlot.inventorySlotIndex = item.inventorySlotIndex;
+			item.parentAfterDrag.GetComponent<InventorySlot>().itemInSlot = itemInSlot;
+		}
+		else //set ref to null
+		{
+			item.parentAfterDrag.GetComponent<InventorySlot>().itemInSlot = null;
 		}
 
+		//set new slot data
 		item.parentAfterDrag = transform;
 		item.inventorySlotIndex = slotIndex;
+		itemInSlot = item;
 
 		if (slotType == SlotType.generic) return;
-
-		onNewItemEquipEvent.Invoke(item);
+		onItemEquip?.Invoke(item);
 	}
 
 	public InventoryItem ReturnItemInSlot(InventoryItem item)
@@ -64,11 +61,11 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 		return item;
 	}
 
-	public bool IsSlotNotEmpty()
+	public bool IsSlotEmpty()
 	{
 		if (GetComponentInChildren<InventoryItem>() == null)
-			return false;
-		else return true;
+			return true;
+		else return false;
 	}
 	public bool IsItemInSlotStackable()
 	{
