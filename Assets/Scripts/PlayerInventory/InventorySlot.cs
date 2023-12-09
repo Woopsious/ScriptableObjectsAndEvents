@@ -38,14 +38,17 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
 		if (!IsSlotEmpty()) //swap slot data
 		{
-			if (IsItemInSlotStackable())
+			if (IsItemInSlotStackable() && IsItemInSlotSameAs(item))
 			{
-
+				PlayerInventoryManager.Instance.AddToStackCount(this, item);
+				if (item.currentStackCount > 0) return;
 			}
-
-			itemInSlot.transform.SetParent(item.parentAfterDrag, false);
-			itemInSlot.inventorySlotIndex = item.inventorySlotIndex;
-			item.parentAfterDrag.GetComponent<InventorySlot>().itemInSlot = itemInSlot;
+			else
+			{
+				itemInSlot.transform.SetParent(item.parentAfterDrag, false);
+				itemInSlot.inventorySlotIndex = item.inventorySlotIndex;
+				item.parentAfterDrag.GetComponent<InventorySlot>().itemInSlot = itemInSlot;
+			}
 		}
 		else //set ref to null
 		{
