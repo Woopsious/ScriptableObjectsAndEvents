@@ -24,7 +24,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 	public int slotIndex;
 	public InventoryItem itemInSlot;
 
-	public void SetUpInventorySlots()
+	public void Start()
 	{
 		slotIndex = transform.GetSiblingIndex();
 	}
@@ -38,6 +38,11 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
 		if (!IsSlotEmpty()) //swap slot data
 		{
+			if (IsItemInSlotStackable())
+			{
+
+			}
+
 			itemInSlot.transform.SetParent(item.parentAfterDrag, false);
 			itemInSlot.inventorySlotIndex = item.inventorySlotIndex;
 			item.parentAfterDrag.GetComponent<InventorySlot>().itemInSlot = itemInSlot;
@@ -56,11 +61,6 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 		onItemEquip?.Invoke(item);
 	}
 
-	public InventoryItem ReturnItemInSlot(InventoryItem item)
-	{
-		return item;
-	}
-
 	public bool IsSlotEmpty()
 	{
 		if (GetComponentInChildren<InventoryItem>() == null)
@@ -74,10 +74,10 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 			return true;
 		else return false;
 	}
-	public bool IsItemInSlotSameAs(Items newItem)
+	public bool IsItemInSlotSameAs(InventoryItem Item)
 	{
 		InventoryItem itemInSlot = GetComponentInChildren<InventoryItem>();
-		if (itemInSlot.itemName == newItem.itemName)
+		if (itemInSlot.itemName == Item.itemName)
 			return true;
 		else return false;
 	}

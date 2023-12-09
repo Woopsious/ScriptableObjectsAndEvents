@@ -19,30 +19,37 @@ public class PlayerInventoryManager : MonoBehaviour
 		Instance = this;
 	}
 
-	public void Start()
+	//on item pickup
+	public InventoryItem ConvertPickupsToInventoryItem(Items item)
 	{
-		SetUpInventory();
-	}
-	public void SetUpInventory()
-	{
-		foreach (GameObject slot in InventoryUi.Instance.InventorySlots)
-		{
-			InventorySlot inventorySlot = slot.GetComponent<InventorySlot>();
-			inventorySlot.SetUpInventorySlots();
-			//inventorySlot.SetUpEquipItemEvents();
+		GameObject go = Instantiate(InventoryUi.Instance.ItemUiPrefab, gameObject.transform);
+		InventoryItem newItem = go.GetComponent<InventoryItem>();
 
-			if (inventorySlot.slotType == InventorySlot.SlotType.generic) return;
-		}
-	}
+		if (item.weaponBaseRef != null)
+			SetWeaponData(newItem, item);
 
+		if (item.armorBaseRef != null)
+			SetArmorData(newItem, item);
+
+		if (item.consumableBaseRef != null)
+			SetConsumableData(newItem, item);
+
+		newItem.UpdateName();
+		newItem.UpdateImage();
+		newItem.UpdateStackCounter();
+
+		return newItem;
+	}
 	public void AddItemToPlayerInventory(Items item)
 	{
 		if (item.isStackable)
-			TryStackItem(item);
+			TryStackItem(ConvertPickupsToInventoryItem(item));
 		else
-			SpawnNewItemInInventory(item);
+			SpawnNewItemInInventory(ConvertPickupsToInventoryItem(item));
 	}
-	public void TryStackItem(Items newItem)
+
+	//item stacking
+	public void TryStackItem(InventoryItem newItem)
 	{
 		for (int i = 0; i < InventoryUi.Instance.InventorySlots.Count; i++)
 		{
@@ -59,7 +66,7 @@ public class PlayerInventoryManager : MonoBehaviour
 			}
 		}
 	}
-	public void AddToStackCount(InventorySlot inventroySlot, Items newItem)
+	public void AddToStackCount(InventorySlot inventroySlot, InventoryItem newItem)
 	{
 		InventoryItem itemInSlot = inventroySlot.GetComponentInChildren<InventoryItem>();
 		if (inventroySlot.IsItemInSlotSameAs(newItem) && itemInSlot.currentStackCount < itemInSlot.maxStackCount)
@@ -67,9 +74,10 @@ public class PlayerInventoryManager : MonoBehaviour
 			//add to itemInSlot.CurrentStackCount till maxStackCountReached
 			for (int itemCount = itemInSlot.currentStackCount; itemCount < itemInSlot.maxStackCount; itemCount++)
 			{
-				if (newItem.currentStackCount <= 0) return; //stop adding when newItem.currentStackCount == 0
+				if (newItem.currentStackCount <= 0) return; //stop adding
 
 				newItem.currentStackCount--;
+				newItem.UpdateStackCounter();
 				itemInSlot.currentStackCount++;
 				itemInSlot.UpdateStackCounter();
 			}
@@ -80,7 +88,8 @@ public class PlayerInventoryManager : MonoBehaviour
 			return;
 	}
 
-	public void SpawnNewItemInInventory(Items item)
+	//adding new item
+	public void SpawnNewItemInInventory(InventoryItem item)
 	{
 		for (int i = 0; i < InventoryUi.Instance.InventorySlots.Count; i++)
 		{
@@ -88,27 +97,16 @@ public class PlayerInventoryManager : MonoBehaviour
 
 			if (inventorySlot.IsSlotEmpty())
 			{
-				GameObject go = Instantiate(InventoryUi.Instance.ItemUiPrefab, inventorySlot.transform);
-				inventorySlot.itemInSlot = go.GetComponent<InventoryItem>();
-
-				if (item.weaponBaseRef != null)
-					AddWeaponToInventory(inventorySlot.itemInSlot, item);
-
-				if (item.armorBaseRef != null)
-					AddArmorToInventory(inventorySlot.itemInSlot, item);
-
-				if (item.consumableBaseRef != null)
-					AddConsumableToInventory(inventorySlot.itemInSlot, item);
-
-				inventorySlot.itemInSlot.UpdateName();
-				inventorySlot.itemInSlot.UpdateImage();
-				inventorySlot.itemInSlot.UpdateStackCounter();
-				inventorySlot.itemInSlot.inventorySlotIndex = i;
+				item.inventorySlotIndex = i;
+				item.transform.SetParent(inventorySlot.transform);
+				inventorySlot.itemInSlot = item;
 				return;
 			}
 		}
 	}
-	public void AddWeaponToInventory(InventoryItem inventoryItem, Items item)
+
+	//set specific item data on pickup
+	public void SetWeaponData(InventoryItem inventoryItem, Items item)
 	{
 		inventoryItem.itemName = item.itemName;
 		inventoryItem.itemImage = item.itemImage;
@@ -124,7 +122,7 @@ public class PlayerInventoryManager : MonoBehaviour
 		inventoryItem.maxStackCount = item.weaponBaseRef.MaxStackCount;
 		inventoryItem.currentStackCount = item.currentStackCount;
 	}
-	public void AddArmorToInventory(InventoryItem inventoryItem, Items item)
+	public void SetArmorData(InventoryItem inventoryItem, Items item)
 	{
 		inventoryItem.itemName = item.itemName;
 		inventoryItem.itemImage = item.itemImage;
@@ -147,7 +145,7 @@ public class PlayerInventoryManager : MonoBehaviour
 		inventoryItem.maxStackCount = item.armorBaseRef.MaxStackCount;
 		inventoryItem.currentStackCount = item.currentStackCount;
 	}
-	public void AddConsumableToInventory(InventoryItem inventoryItem, Items item)
+	public void SetConsumableData(InventoryItem inventoryItem, Items item)
 	{
 		inventoryItem.itemName = item.itemName;
 		inventoryItem.itemImage = item.itemImage;
@@ -161,6 +159,7 @@ public class PlayerInventoryManager : MonoBehaviour
 		inventoryItem.currentStackCount = item.currentStackCount;
 	}
 
+	//bool check before item pickup
 	public bool CheckIfInventoryFull()
 	{
 		int numOfFilledSlots = 0;

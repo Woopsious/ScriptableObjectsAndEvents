@@ -79,6 +79,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 	public void UpdateStackCounter()
 	{
 		uiItemStackCount.text = currentStackCount.ToString();
+		if (currentStackCount <= 0) Destroy(gameObject);
 	}
 	public void OnBeginDrag(PointerEventData eventData)
 	{
