@@ -68,19 +68,21 @@ public class EntityEquipmentHandler : MonoBehaviour
 			equippedWeapon.SetItemStats(Items.Rarity.isCommon, GetComponent<EntityHealth>().entityLevel);
 		}
 	}
-	public void OnWeaponUnequip()
+	public void OnWeaponUnequip(Weapons weapon)
 	{
 		if (equippedWeapon != null)
 		{
-			bonusEquipmentMana -= equippedWeapon.bonusMana;
+			bonusEquipmentMana -= weapon.bonusMana;
 
 			entityHealth.totalMaxMana = entityHealth.maxMana + bonusEquipmentMana;
 			entityHealth.totalCurrentMana = entityHealth.currentMana + bonusEquipmentMana;
 		}
 	}
-	public void OnWeaponEquip()
+	public void OnWeaponEquip(Weapons weapon, bool equippedByPlayer, bool equippedByNonPlayer)
 	{
-		bonusEquipmentMana += equippedWeapon.bonusMana;
+		weapon.isEquippedByPlayer = equippedByPlayer;
+		weapon.isEquippedByNonPlayer = equippedByNonPlayer;
+		bonusEquipmentMana += weapon.bonusMana;
 
 		entityHealth.totalMaxMana = entityHealth.maxMana + bonusEquipmentMana;
 		entityHealth.totalCurrentMana = entityHealth.currentMana + bonusEquipmentMana;
@@ -97,7 +99,6 @@ public class EntityEquipmentHandler : MonoBehaviour
 			if (helmetSlotContainer.transform.childCount == 0)
 			{
 				go = Instantiate(itemPrefab, helmetSlotContainer.transform);
-				go.transform.position = Vector3.zero;
 				go.AddComponent<Armors>();
 				equippedHelmet = go.GetComponent<Armors>();
 			}
@@ -116,7 +117,6 @@ public class EntityEquipmentHandler : MonoBehaviour
 			if (chestpieceSlotContainer.transform.childCount == 0)
 			{
 				go = Instantiate(itemPrefab, chestpieceSlotContainer.transform);
-				go.transform.position = Vector3.zero;
 				go.AddComponent<Armors>();
 				equippedChestpiece = go.GetComponent<Armors>();
 			}
@@ -135,7 +135,6 @@ public class EntityEquipmentHandler : MonoBehaviour
 			if (legsSlotContainer.transform.childCount == 0)
 			{
 				go = Instantiate(itemPrefab, legsSlotContainer.transform);
-				go.transform.position = Vector3.zero;
 				go.AddComponent<Armors>();
 				equippedLegs = go.GetComponent<Armors>();
 			}

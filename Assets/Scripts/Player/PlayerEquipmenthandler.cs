@@ -20,71 +20,65 @@ public class PlayerEquipmentHandler : EntityEquipmentHandler
 	private void OnDisable()
 	{
 		InventorySlot.onItemEquip -= EquipItem;
-		Debug.Log("Player Equipment Handler Disables and Unsubbed");
-	}
-
-	public void OnDestroy()
-	{
-		
 	}
 
 	public virtual void EquipItem(InventoryItem item)
 	{
 		if (item.itemType == InventoryItem.ItemType.isWeapon)
 		{
-			EquipWeapon(item);
+			EquipWeapon(item, equippedWeapon);
 			equippedWeapon = weaponSlotContainer.GetComponentInChildren<Weapons>();// add this for armor pieces
 		}
-
-		if (item.armorSlot == InventoryItem.ArmorSlot.helmet)
+		else if (item.itemType == InventoryItem.ItemType.isArmor)
 		{
-			EquipArmor(item, equippedHelmet, helmetSlotContainer);
-			equippedHelmet = helmetSlotContainer.GetComponentInChildren<Armors>();
-		}
+			if (item.armorSlot == InventoryItem.ArmorSlot.helmet)
+			{
+				EquipArmor(item, equippedHelmet, helmetSlotContainer);
+				equippedHelmet = helmetSlotContainer.GetComponentInChildren<Armors>();
+			}
 
-		if (item.armorSlot == InventoryItem.ArmorSlot.chestpiece)
-		{
-			EquipArmor(item, equippedChestpiece, chestpieceSlotContainer);
-			equippedChestpiece = chestpieceSlotContainer.GetComponentInChildren<Armors>();
-		}
+			if (item.armorSlot == InventoryItem.ArmorSlot.chestpiece)
+			{
+				EquipArmor(item, equippedChestpiece, chestpieceSlotContainer);
+				equippedChestpiece = chestpieceSlotContainer.GetComponentInChildren<Armors>();
+			}
 
-		if (item.armorSlot == InventoryItem.ArmorSlot.legs)
-		{
-			EquipArmor(item, equippedLegs, legsSlotContainer);
-			equippedLegs = legsSlotContainer.GetComponentInChildren<Armors>();
-		}
+			if (item.armorSlot == InventoryItem.ArmorSlot.legs)
+			{
+				EquipArmor(item, equippedLegs, legsSlotContainer);
+				equippedLegs = legsSlotContainer.GetComponentInChildren<Armors>();
+			}
 
-		/* ROBE NOT FULLY IMPLEMENTED
-		if (item.armorSlot == InventoryItem.ArmorSlot.robe)
-			EquipArmor(item, equippedHelmet, helmetSlotContainer);
-		*/
+			/* ROBE NOT FULLY IMPLEMENTED
+			if (item.armorSlot == InventoryItem.ArmorSlot.robe)
+				EquipArmor(item, equippedHelmet, helmetSlotContainer);
+			*/
+		}
 	}
 
-	public void EquipWeapon(InventoryItem weapon)
+	public void EquipWeapon(InventoryItem weapon, Weapons equippedWeaponRef)
 	{
 		GameObject go;
 
 		if (weaponSlotContainer.transform.childCount == 0)
 		{
 			go = Instantiate(itemPrefab, weaponSlotContainer.transform);
-			go.transform.position = Vector3.zero;
 			go.AddComponent<Weapons>();
-			equippedWeapon = go.GetComponent<Weapons>();
+			equippedWeaponRef = go.GetComponent<Weapons>();
 		}
 
-		OnWeaponUnequip();
-		equippedWeapon.entityEquipmentHandler = this;
+		OnWeaponUnequip(equippedWeaponRef);
 
-		equippedWeapon.itemName = weapon.itemName;
-		equippedWeapon.itemImage = weapon.itemImage;
-		equippedWeapon.itemLevel = weapon.itemLevel;
-		equippedWeapon.rarity = (Items.Rarity)weapon.rarity;
+		equippedWeaponRef.itemName = weapon.itemName;
+		equippedWeaponRef.itemImage = weapon.itemImage;
+		equippedWeaponRef.itemLevel = weapon.itemLevel;
+		equippedWeaponRef.rarity = (Items.Rarity)weapon.rarity;
 
-		equippedWeapon.weaponBaseRef = weapon.weaponBaseRef;
-		equippedWeapon.damage = weapon.damage;
-		equippedWeapon.bonusMana = weapon.bonusWeaponMana;
+		equippedWeaponRef.weaponBaseRef = weapon.weaponBaseRef;
+		equippedWeaponRef.damage = weapon.damage;
+		equippedWeaponRef.bonusMana = weapon.bonusWeaponMana;
 
-		OnWeaponEquip();
+		OnWeaponEquip(equippedWeaponRef, true, false);
 	}
 	public void EquipArmor(InventoryItem armorToEquip, Armors equippedArmorRef, GameObject slot)
 	{
@@ -93,7 +87,6 @@ public class PlayerEquipmentHandler : EntityEquipmentHandler
 		if (slot.transform.childCount == 0)
 		{
 			go = Instantiate(itemPrefab, slot.transform);
-			go.transform.position = Vector3.zero;
 			go.AddComponent<Armors>();
 			equippedArmorRef = go.GetComponent<Armors>();
 		}
@@ -104,6 +97,7 @@ public class PlayerEquipmentHandler : EntityEquipmentHandler
 		equippedArmorRef.itemImage = armorToEquip.itemImage;
 		equippedArmorRef.itemLevel = armorToEquip.itemLevel;
 		equippedArmorRef.rarity = (Items.Rarity)armorToEquip.rarity;
+		equippedArmorRef.armorSlot = (Armors.ArmorSlot)armorToEquip.armorSlot;
 
 		equippedArmorRef.armorBaseRef = armorToEquip.armorBaseRef;
 		equippedArmorRef.bonusHealth = armorToEquip.bonusArmorHealth;

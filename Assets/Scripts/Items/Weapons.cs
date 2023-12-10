@@ -25,8 +25,8 @@ public class Weapons : Items, IGetStatModifier
 		bonusMana = (int)(weaponBaseRef.baseBonusMana * statModifier);
 		isStackable = weaponBaseRef.isStackable;
 
-		if (entityEquipmentHandler != null)
-			entityEquipmentHandler.OnWeaponEquip();
+		if (entityEquipmentHandler != null) //for non player
+			entityEquipmentHandler.OnWeaponEquip(this, false, true);
 	}
 
 	public virtual void OnTriggerEnter(Collider other)
