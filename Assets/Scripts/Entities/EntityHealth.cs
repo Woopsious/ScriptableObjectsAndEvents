@@ -39,17 +39,20 @@ public class EntityHealth : MonoBehaviour, IGetStatModifier
 	public int totalFireResistance;
 	public int totalIceResistance;
 
-	[Serializable]
-	public class OnRecieveDamageEvent : UnityEvent<int, int> { }
-	public OnRecieveDamageEvent onRecieveDamageEvent;
+	public event Action<int, int> onRecieveDamageEvent;
+	public event Action<GameObject> onDeathEvent;
 
-	[Serializable]
-	public class OnDeathEvent : UnityEvent<Vector3> { }
-	public OnDeathEvent onDeathEvent;
-
-	public void Start()
+	private void Start()
 	{
 		GetStatModifier(entityLevel, IGetStatModifier.Rarity.isCommon);
+	}
+	private void OnEnable()
+	{
+		
+	}
+	private void OnDisable()
+	{
+		
 	}
 	public void GetStatModifier(int level, IGetStatModifier.Rarity rarity)
 	{
@@ -102,7 +105,7 @@ public class EntityHealth : MonoBehaviour, IGetStatModifier
 			damage = 2;
 
 		currentHealth -= damage;
-		onRecieveDamageEvent.Invoke(maxHealth, currentHealth);
+		onRecieveDamageEvent?.Invoke(maxHealth, currentHealth);
 
 		///
 		/// invoke onRecieveDamage like onEntityDeath that calls hit animations/sounds/knockback/ui health bar update
@@ -113,7 +116,7 @@ public class EntityHealth : MonoBehaviour, IGetStatModifier
 
 		if (currentHealth <= 0)
 		{
-			onDeathEvent.Invoke(gameObject.transform.position);
+			onDeathEvent?.Invoke(gameObject);
 			Destroy(gameObject);
 		}
 		//healthUi.UpdateHealthBar(currentHealth, maxHealth);	//ui not made atm

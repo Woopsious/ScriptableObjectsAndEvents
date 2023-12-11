@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.ProBuilder.MeshOperations;
 
 public class HoverTip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+	public bool isTip;
+
 	public string tipToShow;
 	private float timeToWait = 0.5f;
 	public void OnPointerEnter(PointerEventData eventData)
@@ -21,7 +24,7 @@ public class HoverTip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
 	private void ShowMessage()
 	{
-		HoverTipManager.OnMouseHover(tipToShow, Input.mousePosition);
+
 	}
 	public IEnumerator StartTimer()
 	{

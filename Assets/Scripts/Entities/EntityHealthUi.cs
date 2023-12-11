@@ -24,7 +24,10 @@ public class EntityHealthUi : MonoBehaviour
 		{
 			Debug.LogWarning("no Canvas in scene");
 		}
+		EntityObjRef.GetComponent<EntityHealth>().onRecieveDamageEvent += OnRecieveDamageEvent;
+		EntityObjRef.GetComponent<EntityHealth>().onDeathEvent += OnEntityDeathRemoveUiEvent;
 	}
+
 	public void Update()
 	{
 		if (!gameObject.activeInHierarchy)
@@ -44,6 +47,7 @@ public class EntityHealthUi : MonoBehaviour
 	//invoked from event
 	public void OnRecieveDamageEvent(int maxHealth, int currentHealth)
 	{
+		Debug.LogWarning("recieve damage for ui");
 		timer = timerCooldown;
 		ShowUIHealthBar(maxHealth, currentHealth);
 	}
@@ -68,8 +72,10 @@ public class EntityHealthUi : MonoBehaviour
 	}
 
 	//invoked from event
-	public void OnEntityDeathRemoveUiEvent()
+	public void OnEntityDeathRemoveUiEvent(GameObject obj)
 	{
+		EntityObjRef.GetComponent<EntityHealth>().onRecieveDamageEvent -= OnRecieveDamageEvent;
+		EntityObjRef.GetComponent<EntityHealth>().onDeathEvent -= OnEntityDeathRemoveUiEvent;
 		Destroy(gameObject);
 	}
 }

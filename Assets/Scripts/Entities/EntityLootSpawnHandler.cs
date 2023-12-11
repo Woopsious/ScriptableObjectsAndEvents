@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Unity.Services.Analytics;
 using Unity.VisualScripting;
 using UnityEngine;
+using static EntityHealth;
 using Random = UnityEngine.Random;
 
 public class EntityLootSpawnHandler : MonoBehaviour
@@ -14,7 +15,15 @@ public class EntityLootSpawnHandler : MonoBehaviour
 	public SOLootPools lootPool;
 
 	//invoked from event
-	public void OnDeathEvent(Vector3 position)
+	private void OnEnable()
+	{
+		GetComponent<EntityHealth>().onDeathEvent += OnDeathEvent;
+	}
+	private void OnDisable()
+	{
+		GetComponent<EntityHealth>().onDeathEvent -= OnDeathEvent;
+	}
+	public void OnDeathEvent(GameObject obj)
 	{
 		for (int i = 0; i < lootPool.minDroppedItemsAmount; i++) //spawn item from loot poll at death location
 		{
@@ -23,7 +32,7 @@ public class EntityLootSpawnHandler : MonoBehaviour
 			///
 
 			int index = Utilities.GetRandomNumber(lootPool.lootPoolList.Count);
-			GameObject go = Instantiate(droppedItemPrefab, position, Quaternion.identity);
+			GameObject go = Instantiate(droppedItemPrefab, obj.transform.position, Quaternion.identity);
 
 			if (lootPool.lootPoolList[index].itemType == SOItems.ItemType.isWeapon)
 				SetUpWeaponItem(go, index);

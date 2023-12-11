@@ -41,7 +41,6 @@ public class EnemySpawnHandler : MonoBehaviour
 
 		EntityHealth entityHealthRef = go.GetComponent<EntityHealth>();
 		entityHealthRef.entityLevel = spawnerLevel;
-		entityHealthRef.onDeathEvent.AddListener(delegate { OnEntityDeathEvent(); } );
 
 		OnEnemySpawn();
 	}

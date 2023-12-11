@@ -66,7 +66,6 @@
     <Compile Include="Assets\Scripts\Scriptables\SOWeapons.cs" />
     <Compile Include="Assets\Scripts\Entities\EntityLootSpawnHandler.cs" />
     <Compile Include="Assets\Scripts\Entities\EnemySpawnHandler.cs" />
-    <Compile Include="Assets\Scripts\Entities\EntityDeathHandler.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerEquipmentHandler.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Interfaces\IDamagable.cs" />
