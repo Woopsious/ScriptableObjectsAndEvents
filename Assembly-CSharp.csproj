@@ -79,6 +79,7 @@
     <Compile Include="Assets\Scripts\Interfaces\IGetModifier.cs" />
     <Compile Include="Assets\Scripts\Scriptables\SOItems.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\HoverTipManager.cs" />
     <Compile Include="Assets\Scripts\Items\Items.cs" />
     <Compile Include="Assets\Scripts\Items\Armors.cs" />
     <Compile Include="Assets\Scripts\Scriptables\SOEntityBaseStats.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Assets\Scripts\Entities\EntityHealthUi.cs" />
     <Compile Include="Assets\Scripts\Scriptables\SOEntityBehaviours.cs" />
     <Compile Include="Assets\Scripts\Entities\EntityHealth.cs" />
+    <Compile Include="Assets\Scripts\HoverTip.cs" />
     <Compile Include="Assets\Scripts\PlayerInventory\InventorySlot.cs" />
     <Compile Include="Assets\Scripts\PlayerInventory\PlayerInventoryManager.cs" />
     <Compile Include="Assets\Scripts\Items\Weapons.cs" />
